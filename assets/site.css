@@ -82,7 +82,7 @@ a{color:inherit}
 .story p{margin:0 0 15px; line-height:1.65}
 .pfloat{float:right; width:240px; margin:4px 0 20px 32px}
 .portrait{width:100%; height:auto; border-radius:14px; border:1px solid var(--line); display:block}
-.contactgrid{display:grid; grid-template-columns:300px minmax(0,1fr); gap:40px; align-items:start; padding-block:10px}
+.contactgrid{display:grid; grid-template-columns:210px minmax(0,1fr); gap:36px; align-items:start; padding-block:10px}
 .clist{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:16px}
 .clist .cl{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700; margin-bottom:3px}
 .clist a{color:var(--deep); font-weight:600; text-decoration:none; font-size:16.5px}
@@ -91,7 +91,7 @@ a{color:inherit}
 @media (max-width:760px){
   .pfloat{float:none; width:100%; max-width:300px; margin:0 0 18px}
   .contactgrid{grid-template-columns:1fr}
-  .contactgrid .portrait{max-width:300px}
+  .contactgrid .portrait{max-width:210px}
 }
 .grid.eq{grid-auto-rows:1fr}
 .grid.eq > li{display:flex}
