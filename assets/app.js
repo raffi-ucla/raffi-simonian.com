@@ -10,10 +10,26 @@
 
   function domain(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
 
-  [].slice.call(document.querySelectorAll('a[data-em-u]')).forEach(function(a){
-    var e=a.getAttribute('data-em-u')+'@'+a.getAttribute('data-em-d');
-    a.href='mailto:'+e; a.textContent=e;
-  });
+  var cf=document.getElementById('cform');
+  if(cf){
+    var st=document.getElementById('cstatus');
+    cf.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(!cf.checkValidity()){ cf.reportValidity(); return; }
+      var btn=cf.querySelector('.cbtn');
+      btn.disabled=true; st.textContent='Sending…'; st.className='cstatus';
+      var data=new FormData(cf);
+      data.set('name', (data.get('first_name')||'')+' '+(data.get('last_name')||''));
+      fetch('https://api.web3forms.com/submit', { method:'POST', body:data, headers:{ 'Accept':'application/json' } })
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          if(j.success){ st.textContent='Thanks — your message is on its way. I’ll get back to you soon.'; st.className='cstatus ok'; cf.reset(); }
+          else { st.textContent='Something went wrong: '+(j.message||'please try again, or reach me on LinkedIn.'); st.className='cstatus err'; }
+        })
+        .catch(function(){ st.textContent='Could not send right now — please try again, or reach me on LinkedIn.'; st.className='cstatus err'; })
+        .then(function(){ btn.disabled=false; });
+    });
+  }
 
   // scoped search on collection pages
   var ps=document.getElementById('pagesearch');

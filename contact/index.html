@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="How to reach Raffi Simonian — email and LinkedIn.">
+<meta name="description" content="How to reach Raffi Simonian — contact form and LinkedIn.">
 <title>Contact · Raffi Simonian</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=muw3pwdr">
+<link rel="stylesheet" href="/assets/site.css?v=muwoxf3v">
 
 </head>
 <body>
@@ -26,14 +26,26 @@
   <p>Whether it's a project that needs untangling, a program to build, or a career that needs a strategy &mdash; I'd love to hear from you.</p>
 </div>
 <div class="contactgrid">
-  <img class="portrait" src="/assets/raffi.jpg" alt="Raffi Simonian at UCLA's Royce Hall">
   <div>
+    <img class="portrait" src="/assets/raffi.jpg" alt="Raffi Simonian at UCLA's Royce Hall">
     <ul class="clist">
-      <li><div class="cl">Email</div><a data-em-u="rsimonian" data-em-d="gmail.com" href="#">rsimonian [at] gmail</a></li>
       <li><div class="cl">LinkedIn</div><a href="https://www.linkedin.com/in/rsimonian/" target="_blank" rel="noopener">linkedin.com/in/rsimonian</a></li>
       <li><div class="cl">Based in</div><span class="cv">Los Angeles, California</span></li>
     </ul>
   </div>
+  <form class="cform" id="cform" novalidate>
+    <input type="hidden" name="access_key" value="19f31fba-0bf9-40bf-ab1a-9684ad03930d">
+    <input type="hidden" name="subject" value="New message from raffi-simonian.com">
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="frow">
+      <label>First name<input type="text" name="first_name" required autocomplete="given-name"></label>
+      <label>Last name<input type="text" name="last_name" required autocomplete="family-name"></label>
+    </div>
+    <label>Email<input type="email" name="email" required autocomplete="email"></label>
+    <label>Message<textarea name="message" rows="6" required></textarea></label>
+    <button type="submit" class="cbtn">Send message</button>
+    <p class="cstatus" id="cstatus" role="status"></p>
+  </form>
 </div>
 </main>
 <footer>
@@ -41,7 +53,7 @@
   <span>Curated from my <a href="https://raindrop.io" target="_blank" rel="noopener">Raindrop</a> library</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=muw3pwdr"></script>
+<script src="/assets/app.js?v=muwoxf3v"></script>
 
 </body>
 </html>

@@ -88,10 +88,25 @@ a{color:inherit}
 .clist a{color:var(--deep); font-weight:600; text-decoration:none; font-size:16.5px}
 .clist a:hover{color:var(--accent-ink)}
 .clist .cv{font-size:16.5px; font-weight:600}
+.contactgrid .clist{margin-top:18px}
+.cform{display:flex; flex-direction:column; gap:14px; max-width:560px}
+.cform label{display:flex; flex-direction:column; gap:6px; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700}
+.cform input[type=text], .cform input[type=email], .cform textarea{font:inherit; font-size:15.5px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:9px; padding:10px 12px; width:100%; box-sizing:border-box}
+.cform input:focus, .cform textarea:focus{outline:none; border-color:var(--accent)}
+.cform textarea{resize:vertical; min-height:120px}
+.frow{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
+.cbtn{font:inherit; font-size:15.5px; font-weight:700; color:#fff; background:var(--accent); border:none; border-radius:9px; padding:12px 22px; cursor:pointer; align-self:flex-start; transition:opacity .12s}
+.cbtn:hover{opacity:.88}
+.cbtn:disabled{opacity:.55; cursor:default}
+.cstatus{margin:0; font-size:14.5px; min-height:1.3em}
+.cstatus.ok{color:var(--good); font-weight:600}
+.cstatus.err{color:var(--bad); font-weight:600}
 @media (max-width:760px){
   .pfloat{float:none; width:100%; max-width:300px; margin:0 0 18px}
   .contactgrid{grid-template-columns:1fr}
   .contactgrid .portrait{max-width:210px}
+  .frow{grid-template-columns:1fr}
 }
 .grid.eq{grid-auto-rows:1fr}
 .grid.eq > li{display:flex}
