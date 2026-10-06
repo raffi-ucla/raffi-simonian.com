@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>CX Field Notes — Raffi Simonian</title>
+<link>https://raffi-simonian.com/cx/</link>
+<atom:link href="https://raffi-simonian.com/feed.xml" rel="self" type="application/rss+xml"/>
+<description>Customer experience done well and done badly, annotated with the principle each case teaches.</description>
+<language>en-us</language>
+<item>
+<title>GoDaddy — Support &amp; Service: 3 cases</title>
+<link>https://raffi-simonian.com/cx/godaddy/</link>
+<guid>https://raffi-simonian.com/cx/godaddy/</guid>
+<pubDate>Thu, 01 Oct 2026 12:00:00 GMT</pubDate>
+<description>“Chat Now” — with nothing to click · A text line that never texts back · AI agents that can't reach the problem</description>
+</item>
+<item>
+<title>Crate &amp; Barrel — Support &amp; Service: 3 cases</title>
+<link>https://raffi-simonian.com/cx/crate-barrel/</link>
+<guid>https://raffi-simonian.com/cx/crate-barrel/</guid>
+<pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
+<description>“There was an error. Please Try Again.” — for days · Support that declares victory — repeatedly · The official remedy: create a new account</description>
+</item>
+<item>
+<title>Apple — Support &amp; Service: 1 cases</title>
+<link>https://raffi-simonian.com/cx/apple/</link>
+<guid>https://raffi-simonian.com/cx/apple/</guid>
+<pubDate>Mon, 01 Jun 2026 12:00:00 GMT</pubDate>
+<description>A broken iPhone in Europe, fixed like it was home</description>
+</item>
+</channel>
+</rss>

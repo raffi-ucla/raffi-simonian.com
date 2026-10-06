@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="CX Field Notes by Raffi Simonian — customer experience, UX, and UI done well and done badly, annotated.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=muwpb7ec">
+<link rel="stylesheet" href="/assets/site.css?v=muwyeqga">
 
 </head>
 <body>
@@ -26,21 +26,22 @@
 <a class="nl" href="/">Home</a>
 <a class="nl" href="/about/">About</a>
 <div class="dd"><button type="button" class="nl ddbtn" aria-haspopup="true" aria-expanded="false">Resources <span class="caret">&#9662;</span></button><div class="ddmenu"><a class="ddi" href="/resources/">All resources <span class="c">372</span></a><a class="ddi" href="/career/">Career Development <span class="c">99</span></a><a class="ddi" href="/higher-education/">Higher Education <span class="c">94</span></a><a class="ddi" href="/entrepreneurship/">Entrepreneurship <span class="c">62</span></a><a class="ddi" href="/productivity/">Productivity Apps <span class="c">63</span></a><a class="ddi" href="/newsletters/">Newsletters &amp; Reading <span class="c">54</span></a></div></div>
-<div class="dd"><button type="button" class="nl ddbtn on" aria-haspopup="true" aria-expanded="false">CX Field Notes <span class="caret">&#9662;</span></button><div class="ddmenu"><a class="ddi on" href="/cx/">All cases <span class="c">3</span></a><a class="ddi" href="/cx/support-service/">Support &amp; Service <span class="c">3</span></a></div></div>
+<a class="nl on" href="/cx/">CX Field Notes</a>
 <a class="nl" href="/contact/">Contact</a>
 </div></nav>
 <div class="wrap">
 <main>
 <div class="pagehead">
   <div class="crumb"><a href="/">Raffi Simonian</a> / CX Field Notes</div>
-  <h1>CX Field Notes<span class="cnt">3</span></h1>
+  <h1>CX Field Notes<span class="cnt">7</span></h1>
   <p>Requirements gathering never stops &mdash; and it starts with empathy. These are my field notes from the other side of the counter: moments where a product honored the user's time and trust, and moments where it didn't. My approach to understanding problems is grounded in empathy and emotional intelligence &mdash; feeling what the user feels before naming the pattern &mdash; because you can't fix an experience you haven't understood. Each case ends with the principle I carry into my own projects. CX here includes UX and UI: everything from an interface detail to a support channel shapes how a product treats its people.</p>
-  <div class="uxchips"><a class="chip active" href="/cx/">All cases</a><a class="chip" href="/cx/support-service/">Support &amp; Service <span class="c">3</span></a><span class="vsep"></span><button type="button" class="chip vf active" data-v="all">All</button><button type="button" class="chip vf" data-v="good">&#10003; Works</button><button type="button" class="chip vf" data-v="fail">&#10007; Fails</button></div>
+  <div class="uxchips"><button type="button" class="chip vf active" data-v="all">All</button><button type="button" class="chip vf" data-v="good">&#10003; Works</button><button type="button" class="chip vf" data-v="fail">&#10007; Fails</button><span class="vsep"></span><button type="button" class="chip bf active" data-b="all">All brands</button><button type="button" class="chip bf" data-b="apple">Apple</button><button type="button" class="chip bf" data-b="crate-barrel">Crate &amp; Barrel</button><button type="button" class="chip bf" data-b="godaddy">GoDaddy</button></div>
 </div>
-<section class="uxgroup">
+<section class="uxgroup" data-b="godaddy">
 <div class="uxhead">
   <span class="logo">G<img src="/assets/logos/godaddy.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('imgok')"></span>
-  <div><div class="uxco">GoDaddy</div><div class="uxctx">Support &amp; Service &middot; Support contact page — Call / Text / Chat</div></div>
+  <div><div class="uxco">GoDaddy</div><div class="uxctx">Support &amp; Service &middot; Support contact page — Call / Text / Chat</div>
+  <div class="uxmeta">Observed October 2026 &middot; <a href="https://www.godaddy.com/help/contact-us" target="_blank" rel="noopener nofollow">Source page</a> &middot; <a href="/cx/godaddy/">Permalink</a></div></div>
 </div>
 <figure class="exhibit"><img src="/assets/godaddy-support.webp" alt="GoDaddy support page offering Call Us, Text Us, and Chat Now columns" loading="lazy"><figcaption>GoDaddy's support options as presented, October 2026.</figcaption></figure>
 <div class="uxcase bad" data-v="fail">
@@ -62,13 +63,52 @@
 <p class="principle"><strong>The principle: </strong>Automation should absorb the easy cases so humans get the hard ones faster — not stand between the user and resolution.</p>
 </div>
 </section>
+<section class="uxgroup" data-b="crate-barrel">
+<div class="uxhead">
+  <span class="logo wide">C<img src="/assets/logos/crate-barrel.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('imgok')"></span>
+  <div><div class="uxco">Crate &amp; Barrel</div><div class="uxctx">Support &amp; Service &middot; Login Settings — Update Email</div>
+  <div class="uxmeta">Observed September 2026 &middot; <a href="/cx/crate-barrel/">Permalink</a></div></div>
+</div>
+<figure class="exhibit"><img src="/assets/crate-barrel-email.webp" alt="Crate &amp; Barrel Login Settings page showing 'There was an error updating your information. Please Try Again.' above the Update Email form" loading="lazy"><figcaption>Crate &amp; Barrel's Update Email form after another failed attempt, September 2026. (Email redacted.)</figcaption></figure>
+<div class="uxcase bad" data-v="fail">
+<div class="uxtop"><span class="verdict vbad">&#10007; Fails</span><span class="pattern">Error without a reason</span></div>
+<h3>“There was an error. Please Try Again.” — for days</h3>
+<p class="uxbody">A simple email change fails with the same generic message every time: no reason, no error code, no path forward. Days of retries — incognito windows, different browsers — ruled out everything on the customer's side, and the message still offers nothing but “try again,” which by then is a proven dead end.</p>
+<p class="principle"><strong>The principle: </strong>An error message is an interface, not an apology. Say what failed, whose fault it is, and what to do next — or one bug becomes an endless loop.</p>
+</div>
+<div class="uxcase bad" data-v="fail">
+<div class="uxtop"><span class="verdict vbad">&#10007; Fails</span><span class="pattern">Promises instead of fixes</span></div>
+<h3>Support that declares victory — repeatedly</h3>
+<p class="uxbody">Text support said it was fixed “now.” Then to wait 48 hours. Then to wait until a specific date. Each promise expired without the fix, and each new contact restarted the script from the top. A promised resolution that doesn't arrive teaches the customer to distrust the next one — and the brand behind it.</p>
+<p class="principle"><strong>The principle: </strong>Never close the loop before the problem closes. Verify the fix, then say it's fixed — a slow honest answer beats a fast false one.</p>
+</div>
+<div class="uxcase bad" data-v="fail">
+<div class="uxtop"><span class="verdict vbad">&#10007; Fails</span><span class="pattern">A workaround that punishes the customer</span></div>
+<h3>The official remedy: create a new account</h3>
+<p class="uxbody">After the lowest possible mark on their own CX survey, the response was a suggestion to create a new account — abandon the history and settings attached to the old one so the company wouldn't have to repair its own bug. That outsources the full cost of the defect to the person it already hurt.</p>
+<p class="principle"><strong>The principle: </strong>When your system fails, the remedy must cost you, not the customer. “Start over” isn't support — it's surrender, billed to the user.</p>
+</div>
+</section>
+<section class="uxgroup" data-b="apple">
+<div class="uxhead">
+  <span class="logo">A<img src="/assets/logos/apple.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('imgok')"></span>
+  <div><div class="uxco">Apple</div><div class="uxctx">Support &amp; Service &middot; Apple Store — iPhone repair abroad</div>
+  <div class="uxmeta">Observed June 2026 &middot; <a href="/cx/apple/">Permalink</a></div></div>
+</div>
+
+<div class="uxcase good" data-v="good">
+<div class="uxtop"><span class="verdict vgood">&#10003; Works</span><span class="pattern">Consistency across borders</span></div>
+<h3>A broken iPhone in Europe, fixed like it was home</h3>
+<p class="uxbody">Mid-vacation in Europe, a dropped iPhone and shattered glass. Walking into a local Apple Store, the whole experience — the booking, the Genius Bar flow, the way the problem was handled — worked exactly as it does in the US, and the phone was replaced within a few hours. No special pleading, no “not your region,” nothing to re-learn. The brand's promise traveled with the customer.</p>
+<p class="principle"><strong>The principle: </strong>Consistency is a feature. When a customer can predict your process anywhere in the world, trust compounds — the experience itself becomes the brand.</p>
+</div>
+</section>
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
-  <span>Curated from my <a href="https://raindrop.io" target="_blank" rel="noopener">Raindrop</a> library</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=muwpb7ec"></script>
+<script src="/assets/app.js?v=muwyeqga"></script>
 
 </body>
 </html>

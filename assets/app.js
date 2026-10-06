@@ -59,20 +59,31 @@
 
   // verdict filters on CX pages
   var vfs=[].slice.call(document.querySelectorAll('.vf'));
+  var bfs=[].slice.call(document.querySelectorAll('.bf'));
   if(vfs.length){
     var groups=[].slice.call(document.querySelectorAll('.uxgroup'));
+    var mode='all', brand='all';
+    function applyF(){
+      groups.forEach(function(g){
+        var bOk = brand==='all' || g.getAttribute('data-b')===brand;
+        var vis=0;
+        [].slice.call(g.querySelectorAll('.uxcase')).forEach(function(c){
+          var ok = mode==='all' || c.getAttribute('data-v')===mode;
+          c.hidden=!ok; if(ok)vis++;
+        });
+        g.hidden = !bOk || vis===0;
+      });
+    }
     vfs.forEach(function(btn){
       btn.addEventListener('click', function(){
         vfs.forEach(function(b){ b.classList.toggle('active', b===btn); });
-        var mode=btn.getAttribute('data-v');
-        groups.forEach(function(g){
-          var vis=0;
-          [].slice.call(g.querySelectorAll('.uxcase')).forEach(function(c){
-            var ok = mode==='all' || c.getAttribute('data-v')===mode;
-            c.hidden=!ok; if(ok)vis++;
-          });
-          g.hidden = vis===0;
-        });
+        mode=btn.getAttribute('data-v'); applyF();
+      });
+    });
+    bfs.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        bfs.forEach(function(b){ b.classList.toggle('active', b===btn); });
+        brand=btn.getAttribute('data-b'); applyF();
       });
     });
   }
