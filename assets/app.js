@@ -10,6 +10,11 @@
 
   function domain(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
 
+  [].slice.call(document.querySelectorAll('a[data-em-u]')).forEach(function(a){
+    var e=a.getAttribute('data-em-u')+'@'+a.getAttribute('data-em-d');
+    a.href='mailto:'+e; a.textContent=e;
+  });
+
   // scoped search on collection pages
   var ps=document.getElementById('pagesearch');
   if(ps){
