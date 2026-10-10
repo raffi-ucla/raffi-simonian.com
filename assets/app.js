@@ -134,6 +134,25 @@
           });
       });
     }
+    var SIGNUP_ENDPOINT = window.SIGNUP_ENDPOINT || '';
+    var suw=document.getElementById('signupwrap');
+    if(SIGNUP_ENDPOINT && suw){
+      suw.hidden=false;
+      var suf=document.getElementById('signupform');
+      var sust=document.getElementById('sustatus');
+      suf.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        if(!suf.checkValidity()){ suf.reportValidity(); return; }
+        var sbtn=suf.querySelector('.cbtn'); sbtn.disabled=true;
+        sust.textContent='Signing you up…'; sust.className='cstatus';
+        var fd=new FormData(suf);
+        fd.set('page','career-plan');
+        fetch(SIGNUP_ENDPOINT, { method:'POST', mode:'no-cors', body:fd })
+          .then(function(){ sust.textContent='Thanks — you’re on the list. I’ll be in touch.'; sust.className='cstatus ok'; suf.reset(); })
+          .catch(function(){ sust.textContent='Could not sign up right now — please try again.'; sust.className='cstatus err'; })
+          .then(function(){ sbtn.disabled=false; });
+      });
+    }
     document.getElementById('aigo-claude').addEventListener('click', function(){ go('https://claude.ai/new?q='); });
     document.getElementById('aigo-chatgpt').addEventListener('click', function(){ go('https://chatgpt.com/?q='); });
     document.getElementById('aigo-copy').addEventListener('click', function(){

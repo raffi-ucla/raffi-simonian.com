@@ -17,8 +17,8 @@
 <meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mv2tt7gt">
-<script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";</script>
+<link rel="stylesheet" href="/assets/site.css?v=mv2vcyqm">
+<script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";window.SIGNUP_ENDPOINT="https://script.google.com/macros/s/AKfycbwpaLdrqne0oDME3iLI9HyxcYgioL2uW1E9Ep41niS3jgsNfXBvj3DK09fsP5tacckE/exec";</script>
 </head>
 <body>
 <nav class="topnav"><div class="in">
@@ -128,12 +128,26 @@
 <li><b>Follow creative job-search tactics.</b> See <a href="https://cultivatedculture.com/how-to-get-a-job-anywhere-no-connections/" target="_blank" rel="noopener">how to get a job anywhere with no connections</a> and <a href="https://medium.com/write-a-catalyst/i-found-remote-jobs-with-0-5-applicants-while-others-competed-with-2-000-f7ce7639bae1" target="_blank" rel="noopener">how one job-seeker beat 2,000+ applicants</a>.</li>
 <li><b>Build a simple timeline.</b> Decide what you will do this quarter, this year, and next year &mdash; then review and adjust each term, keeping the plan focused on transferable skills, not checking boxes.</li>
 </ol>
+<div id="signupwrap" hidden>
+<h2 class="secttl">Want a human in the loop?</h2>
+<p class="sectsub">Leave your details and I’ll follow up with personalized career guidance — no newsletter, no spam, just a conversation.</p>
+<form class="cform" id="signupform" novalidate>
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="frow">
+    <label>First name<input type="text" name="first_name" required autocomplete="given-name"></label>
+    <label>Last name<input type="text" name="last_name" required autocomplete="family-name"></label>
+  </div>
+  <label>Email<input type="email" name="email" required autocomplete="email"></label>
+  <button type="submit" class="cbtn">Sign up</button>
+  <p class="cstatus" id="sustatus" role="status"></p>
+</form>
+</div>
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=mv2tt7gt"></script>
+<script src="/assets/app.js?v=mv2vcyqm"></script>
 
 </body>
 </html>
