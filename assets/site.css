@@ -102,6 +102,28 @@ a{color:inherit}
 .cstatus{margin:0; font-size:14.5px; min-height:1.3em}
 .cstatus.ok{color:var(--good); font-weight:600}
 .cstatus.err{color:var(--bad); font-weight:600}
+.cbtn.sec{background:var(--chip); color:var(--ink)}
+.ikgrid{display:grid; grid-template-columns:360px minmax(0,1fr); gap:36px; align-items:center; margin:4px 0 26px}
+.ikdiag svg{width:100%; height:auto; display:block}
+.ikcall{background:var(--chip); border-radius:11px; padding:18px 20px; font-size:15px; line-height:1.55}
+.qcard{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:18px 20px; margin:0 0 14px}
+.qcard h3{margin:0 0 2px; font-size:17px; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-.01em}
+.qcard .sub{color:var(--faint); font-size:13.5px; font-style:italic; margin:0 0 10px}
+.qcard details, .followups{font-size:13.5px; color:var(--muted); margin:0 0 10px}
+.qcard summary, .followups summary{cursor:pointer; color:var(--deep); font-weight:600}
+.qcard details ul, .followups ul{margin:8px 0 0 18px; padding:0}
+.qcard details li, .followups li{margin:0 0 4px}
+.qcard textarea{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:10px 12px; min-height:88px; resize:vertical}
+.qcard textarea:focus{outline:none; border-color:var(--accent)}
+.aibar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:14px 0 10px}
+.followups{margin:4px 0 30px}
+.airesult{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:20px 24px; margin:4px 0 14px; max-width:74ch; line-height:1.6; font-size:15px; white-space:pre-wrap}
+.airesult p{margin:0 0 10px; white-space:normal}
+.airesult .h{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:16px; margin:14px 0 4px}
+.stepcols{display:grid; grid-template-columns:1fr 1fr; gap:40px}
+.roadmap{max-width:74ch; margin:0; padding-left:22px}
+.roadmap li{margin:0 0 12px; line-height:1.6}
+@media (max-width:760px){ .ikgrid{grid-template-columns:1fr} .stepcols{grid-template-columns:1fr} }
 @media (max-width:760px){
   .pfloat{float:none; width:100%; max-width:300px; margin:0 0 18px}
   .contactgrid{grid-template-columns:1fr}

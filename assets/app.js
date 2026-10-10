@@ -57,6 +57,93 @@
     });
   }
 
+  // career plan: Ikigai -> AI prompt
+  var ikf=document.getElementById('ikform');
+  if(ikf){
+    var ids=['love','good','need','paid'];
+    var tas={}; ids.forEach(function(k){ tas[k]=document.getElementById('ik-'+k); });
+    try{
+      var saved=JSON.parse(localStorage.getItem('ikigai-draft')||'{}');
+      ids.forEach(function(k){ if(saved[k]) tas[k].value=saved[k]; });
+    }catch(e){}
+    ids.forEach(function(k){ tas[k].addEventListener('input', function(){
+      try{ var d={}; ids.forEach(function(x){ d[x]=tas[x].value; }); localStorage.setItem('ikigai-draft', JSON.stringify(d)); }catch(e){}
+    }); });
+    var ist=document.getElementById('ikstatus');
+    function ikPrompt(){
+      var v={}; var any=false;
+      ids.forEach(function(k){ v[k]=tas[k].value.trim(); if(v[k])any=true; });
+      if(!any){ ist.textContent='Answer at least one question first.'; ist.className='cstatus err'; return null; }
+      ist.textContent=''; ist.className='cstatus';
+      return "I'm working through the Ikigai framework to find my career direction. Here are my reflections:\n\n"+
+        "What I love: "+(v.love||'(not answered yet)')+"\n\n"+
+        "What I'm good at: "+(v.good||'(not answered yet)')+"\n\n"+
+        "What the world needs, that I care about: "+(v.need||'(not answered yet)')+"\n\n"+
+        "What I can be paid for: "+(v.paid||'(not answered yet)')+"\n\n"+
+        "Acting as an expert career counselor, summarize specific roles and industries that will be a good fit for me as a new college graduate. Specifically:\n"+
+        "1. Identify the themes where my answers overlap - my Ikigai.\n"+
+        "2. Recommend 5-7 specific target roles (from across the ~900 careers in 14 industry clusters) and the industries where they live, explaining how each fits my answers.\n"+
+        "3. For my top 3 roles: typical entry paths, realistic salary ranges, and demand outlook.\n"+
+        "4. List the skill gaps I should expect and a skills-based learning plan to close them (courses, certificates, and work-based learning such as internships or job shadowing).\n"+
+        "5. Suggest 3 questions I should ask in informational interviews with professionals in these fields.";
+    }
+    function go(base){
+      var pr=ikPrompt(); if(!pr) return;
+      var url=base+encodeURIComponent(pr);
+      var w=null; try{ w=window.open(url, '_blank', 'noopener'); }catch(e){}
+      if(w) return;
+      function fb(){ ist.textContent='Could not open a new tab here (preview windows block it). Use "Copy the prompt" and paste it into your AI assistant.'; ist.className='cstatus err'; }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(pr).then(function(){ ist.textContent='A new tab is blocked here, so the prompt was copied instead. Paste it into claude.ai or chatgpt.com.'; ist.className='cstatus ok'; }, fb);
+      } else { fb(); }
+    }
+    var AI_ENDPOINT = window.AI_ENDPOINT || '';
+    var inlineBtn=document.getElementById('aigo-inline');
+    var box=document.getElementById('airesult');
+    function mdlite(t){
+      t = t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      t = t.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+      t = t.replace(/^#{1,4} (.+)$/gm,'<b class="h">$1</b>');
+      return t.split(/\n\n+/).map(function(pp){ return '<p>'+pp.replace(/\n/g,'<br>')+'</p>'; }).join('');
+    }
+    if(AI_ENDPOINT && inlineBtn){
+      inlineBtn.hidden=false;
+      inlineBtn.addEventListener('click', function(){
+        var pr=ikPrompt(); if(!pr) return;
+        inlineBtn.disabled=true; ist.textContent='Generating your recommendations…'; ist.className='cstatus';
+        box.hidden=false; box.textContent='';
+        var full='';
+        fetch(AI_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })
+          .then(function(res){
+            if(!res.ok || !res.body) throw new Error('bad response');
+            var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
+            function pump(){ return rd.read().then(function(r){
+              if(r.done){ box.innerHTML=mdlite(full); ist.textContent=''; inlineBtn.disabled=false; return; }
+              buf+=dec.decode(r.value,{stream:true});
+              var lines=buf.split('\n'); buf=lines.pop();
+              lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
+                try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; } }catch(e){} } });
+              return pump();
+            }); }
+            return pump();
+          })
+          .catch(function(){
+            box.hidden = full==='';
+            ist.textContent='Could not generate right now — try again, or use Ask Claude / Ask ChatGPT below.'; ist.className='cstatus err';
+            inlineBtn.disabled=false;
+          });
+      });
+    }
+    document.getElementById('aigo-claude').addEventListener('click', function(){ go('https://claude.ai/new?q='); });
+    document.getElementById('aigo-chatgpt').addEventListener('click', function(){ go('https://chatgpt.com/?q='); });
+    document.getElementById('aigo-copy').addEventListener('click', function(){
+      var p=ikPrompt(); if(!p) return;
+      function ok(){ ist.textContent='Prompt copied - paste it into any AI assistant.'; ist.className='cstatus ok'; }
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(p).then(ok, function(){ ist.textContent='Copy failed - select and copy manually.'; ist.className='cstatus err'; }); }
+      else { ist.textContent='Copy not available in this browser.'; ist.className='cstatus err'; }
+    });
+  }
+
   // verdict filters on CX pages
   var vfs=[].slice.call(document.querySelectorAll('.vf'));
   var bfs=[].slice.call(document.querySelectorAll('.bf'));

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
+<title>Steps to a Successful Career · Raffi Simonian</title>
+<link rel="canonical" href="https://raffi-simonian.com/career-plan/">
+<meta property="og:site_name" content="Raffi Simonian">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Steps to a Successful Career · Raffi Simonian">
+<meta property="og:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
+<meta property="og:url" content="https://raffi-simonian.com/career-plan/">
+<meta property="og:image" content="https://raffi-simonian.com/assets/raffi.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Steps to a Successful Career · Raffi Simonian">
+<meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
+<meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mv2tt7gt">
+<script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";</script>
+</head>
+<body>
+<nav class="topnav"><div class="in">
+<a class="brand" href="/">Raffi <b>Simonian</b></a>
+<a class="nl" href="/">Home</a>
+<a class="nl" href="/about/">About</a>
+<div class="dd"><button type="button" class="nl ddbtn" aria-haspopup="true" aria-expanded="false">Resources <span class="caret">&#9662;</span></button><div class="ddmenu"><a class="ddi" href="/resources/">All resources <span class="c">372</span></a><a class="ddi" href="/career/">Career Development <span class="c">99</span></a><a class="ddi" href="/higher-education/">Higher Education <span class="c">94</span></a><a class="ddi" href="/entrepreneurship/">Entrepreneurship <span class="c">62</span></a><a class="ddi" href="/productivity/">Productivity Apps <span class="c">63</span></a><a class="ddi" href="/newsletters/">Newsletters &amp; Reading <span class="c">54</span></a></div></div>
+<a class="nl" href="/cx/">CX Field Notes</a>
+<a class="nl on" href="/career-plan/">Career Plan</a>
+<a class="nl" href="/contact/">Contact</a>
+</div></nav>
+<div class="wrap">
+<main>
+<div class="pagehead">
+  <div class="crumb"><a href="/">Raffi Simonian</a> / Career Plan</div>
+  <h1>Steps to a Successful Career</h1>
+  <p>The framework I use in career counseling, made interactive. It starts with Ikigai &mdash; a Japanese concept meaning &ldquo;a reason for being,&rdquo; the sweet spot where passion, mission, vocation, and profession align. Reflect on the four questions below, then let AI turn your answers into personalized career recommendations.</p>
+</div>
+<div class="ikgrid">
+  <div class="ikdiag"><svg viewBox="0 0 400 400" role="img" aria-label="Ikigai diagram: four overlapping circles for what you love, what you are good at, what the world needs, and what you can be paid for">
+<g fill-opacity="0.16" stroke-opacity="0.5">
+<circle cx="200" cy="140" r="108" fill="#b8551a" stroke="#b8551a"/>
+<circle cx="260" cy="200" r="108" fill="#2f7d4e" stroke="#2f7d4e"/>
+<circle cx="200" cy="260" r="108" fill="#2f5468" stroke="#2f5468"/>
+<circle cx="140" cy="200" r="108" fill="#8a6d1a" stroke="#8a6d1a"/>
+</g>
+<g fill="var(--ink)" font-family="Instrument Sans,sans-serif" font-size="13" text-anchor="middle">
+<text x="200" y="72" font-weight="700">What you LOVE</text>
+<text x="328" y="204" font-weight="700">What the</text><text x="328" y="219" font-weight="700">world NEEDS</text>
+<text x="200" y="342" font-weight="700">What you can be</text><text x="200" y="357" font-weight="700">PAID FOR</text>
+<text x="72" y="196" font-weight="700">What you are</text><text x="72" y="211" font-weight="700">GOOD AT</text>
+<g font-size="11.5" fill="var(--muted)">
+<text x="155" y="140">Passion</text>
+<text x="245" y="140">Mission</text>
+<text x="245" y="266">Vocation</text>
+<text x="152" y="266">Profession</text>
+</g>
+<text x="200" y="206" font-size="16" font-weight="800" font-family="Bricolage Grotesque,sans-serif">IKIGAI</text>
+</g>
+</svg></div>
+  <div class="ikcall">&#128161; Ikigai is a framework for finding purpose and fulfillment. The four questions map your passions, strengths, the world's needs, and the market &mdash; your target roles and industries live where the answers overlap. The more specific your answers, the more personalized the recommendations.</div>
+</div>
+<h2 class="secttl">Step 1 &middot; Self-Awareness: discover your reason for being</h2>
+<p class="sectsub">Self-awareness precedes job titles, salaries, or degrees. The more detail you give, the better the recommendations.</p>
+<div id="ikform">
+<div class="qcard">
+<h3>1. What do you love?</h3>
+<p class="sub">What activities or hobbies bring you happiness in your life?</p>
+<details><summary>&#128173; Prompts</summary><ul>
+<li>What activities make you feel most alive and fulfilled?</li><li>What are the things you could spend hours doing without feeling drained?</li><li>When do you feel a sense of joy, excitement, or deep satisfaction?</li>
+</ul></details>
+<textarea id="ik-love" rows="4" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>2. What are you good at?</h3>
+<p class="sub">What skills or talents come naturally to you?</p>
+<details><summary>&#128173; Prompts</summary><ul>
+<li>What are your strengths?</li><li>What do you excel at?</li><li>What skills or abilities come naturally to you?</li>
+</ul></details>
+<textarea id="ik-good" rows="4" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>3. What does the world need?</h3>
+<p class="sub">What societal challenges, causes, or needs resonate with you and inspire a desire to contribute positively to the world?</p>
+<details><summary>&#128173; Prompts</summary><ul>
+<li>What problems or issues in your community or globally do you feel passionate about solving?</li><li>How can you contribute to making a positive impact on society or the lives of others?</li><li>What skills or expertise do you possess that could address a societal or global need?</li>
+</ul></details>
+<textarea id="ik-need" rows="4" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>4. What can you be paid for?</h3>
+<p class="sub">What skills, services, or expertise can you offer that others find valuable enough to compensate you for?</p>
+<details><summary>&#128173; Prompts</summary><ul>
+<li>What skills, services, or products can you offer that people are willing to pay for?</li><li>How can you leverage your abilities to create a source of income?</li>
+</ul></details>
+<textarea id="ik-paid" rows="4" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+</div>
+<h2 class="secttl">Step 2 &middot; Career Exploration: generate recommendations</h2>
+<p class="sectsub">There are over 900 careers in 14 industry clusters &mdash; most people never see the full menu. Your answers above become an expert career-counseling prompt; open it in the AI assistant you already use.</p>
+<div class="aibar">
+  <button type="button" class="cbtn" id="aigo-inline" hidden>Generate recommendations</button>
+  <button type="button" class="cbtn sec" id="aigo-claude">Ask Claude</button>
+  <button type="button" class="cbtn sec" id="aigo-chatgpt">Ask ChatGPT</button>
+  <button type="button" class="cbtn sec" id="aigo-copy">Copy the prompt</button>
+  <span class="cstatus" id="ikstatus" role="status"></span>
+</div>
+<div class="airesult" id="airesult" hidden></div>
+<details class="followups"><summary>&#128173; Follow-up questions to ask the AI afterwards</summary><ul>
+<li>Can you provide sample companies or startups in the industries you recommended?</li>
+<li>What is an ideal company size for me if I want to make an impact, value personal growth, or need work-life balance?</li>
+<li>Who should I try to meet for informational interviews, and how do I find them?</li>
+</ul></details>
+<h2 class="secttl">Step 3 &middot; Career Planning: set a direction</h2>
+<p class="sectsub">Career planning does not require a perfect or permanent decision. Set an initial direction that aligns your natural abilities with the realities of the labor market &mdash; projected wages, demand, and where your skills can develop enough to excel.</p>
+<ol class="roadmap">
+<li><b>Choose a career direction.</b> From your AI recommendations above, pick 1&ndash;2 target roles that fit your strengths, interests, and labor-market realities (pay, demand, growth).</li>
+<li><b>Identify required skills.</b> For each role, list the academic, technical, and employability skills (communication, teamwork, leadership) employers expect.</li>
+<li><b>Map your gaps.</b> Compare those lists to your current skills and highlight what to close in the next 1&ndash;3 years.</li>
+</ol>
+<h2 class="secttl">Step 4 &middot; Skills-Based Education: build the plan and work it</h2>
+<p class="sectsub">More than an education plan &mdash; a roadmap based on skills and competencies. Education is no longer a single track: degrees, industry certifications, work-based learning, entrepreneurship, and employability skills all work together.</p>
+<ol class="roadmap">
+<li><b>Design a skills-based learning path.</b> For each gap, pick a route: university courses or minors, certificates and bootcamps, internships and research, volunteering and leadership roles, online courses and self-study projects.</li>
+<li><b>Map out a networking plan.</b> Tools like <a href="https://www.ctd.ai/personal" target="_blank" rel="noopener">Connect The Dots</a> (maps your network from your email conversations) and <a href="https://www.withnira.com/" target="_blank" rel="noopener">Nira</a> (conversational search over your LinkedIn network) keep your relationships working for you.</li>
+<li><b>Get ready for interviews.</b> Use the <a href="https://www.indeed.com/career-advice/interviewing/par-method" target="_blank" rel="noopener">PAR method</a> on your resume to show impact with metrics, and practice behavioral interviews.</li>
+<li><b>Follow creative job-search tactics.</b> See <a href="https://cultivatedculture.com/how-to-get-a-job-anywhere-no-connections/" target="_blank" rel="noopener">how to get a job anywhere with no connections</a> and <a href="https://medium.com/write-a-catalyst/i-found-remote-jobs-with-0-5-applicants-while-others-competed-with-2-000-f7ce7639bae1" target="_blank" rel="noopener">how one job-seeker beat 2,000+ applicants</a>.</li>
+<li><b>Build a simple timeline.</b> Decide what you will do this quarter, this year, and next year &mdash; then review and adjust each term, keeping the plan focused on transferable skills, not checking boxes.</li>
+</ol>
+</main>
+<footer>
+  <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
+</footer>
+</div>
+<script src="/assets/app.js?v=mv2tt7gt"></script>
+
+</body>
+</html>
