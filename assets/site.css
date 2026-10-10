@@ -117,6 +117,11 @@ a{color:inherit}
 .qcard textarea:focus{outline:none; border-color:var(--accent)}
 .aibar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:14px 0 10px}
 .followups{margin:4px 0 30px}
+.gateoverlay{position:fixed; inset:0; background:rgba(22,21,17,.55); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px}
+.gatecard{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:28px 30px; max-width:480px; width:100%; box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.gatecard h3{font-family:'Bricolage Grotesque',sans-serif; font-size:22px; letter-spacing:-.01em; margin:0 0 6px}
+.gatecard .gsub{color:var(--muted); font-size:14.5px; line-height:1.55; margin:0 0 16px}
+body.gated{overflow:hidden}
 .airesult{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:20px 24px; margin:4px 0 14px; max-width:74ch; line-height:1.6; font-size:15px; white-space:pre-wrap}
 .airesult p{margin:0 0 10px; white-space:normal}
 .airesult .h{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:16px; margin:14px 0 4px}

@@ -135,23 +135,67 @@
       });
     }
     var SIGNUP_ENDPOINT = window.SIGNUP_ENDPOINT || '';
-    var suw=document.getElementById('signupwrap');
-    if(SIGNUP_ENDPOINT && suw){
-      suw.hidden=false;
-      var suf=document.getElementById('signupform');
-      var sust=document.getElementById('sustatus');
-      suf.addEventListener('submit', function(ev){
-        ev.preventDefault();
-        if(!suf.checkValidity()){ suf.reportValidity(); return; }
-        var sbtn=suf.querySelector('.cbtn'); sbtn.disabled=true;
-        sust.textContent='Signing you up…'; sust.className='cstatus';
-        var fd=new FormData(suf);
-        fd.set('page','career-plan');
-        fetch(SIGNUP_ENDPOINT, { method:'POST', mode:'no-cors', body:fd })
-          .then(function(){ sust.textContent='Thanks — you’re on the list. I’ll be in touch.'; sust.className='cstatus ok'; suf.reset(); })
-          .catch(function(){ sust.textContent='Could not sign up right now — please try again.'; sust.className='cstatus err'; })
-          .then(function(){ sbtn.disabled=false; });
-      });
+    var gate=document.getElementById('cpgate');
+    if(gate){
+      var verified=false;
+      try{ verified=!!localStorage.getItem('cp-verified'); }catch(e){}
+      function closeGate(){ gate.hidden=true; document.body.classList.remove('gated'); }
+      function openGate(){ gate.hidden=false; document.body.classList.add('gated'); }
+      if(SIGNUP_ENDPOINT && !verified){
+        openGate();
+        var g1=document.getElementById('gform1'), g2=document.getElementById('gform2');
+        var s1=document.getElementById('gstatus1'), s2=document.getElementById('gstatus2');
+        var step1=document.getElementById('gstep1'), step2=document.getElementById('gstep2');
+        var gm=document.getElementById('gemail');
+        var who={};
+        function gpost(data){
+          return fetch(SIGNUP_ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(data) })
+            .then(function(r){ return r.text(); })
+            .then(function(t){ try{ return JSON.parse(t); }catch(e){ return {ok:false}; } });
+        }
+        function sendCode(st){
+          st.textContent='Sending your code'+String.fromCharCode(8230); st.className='cstatus';
+          return gpost({ action:'start', first_name:who.first, last_name:who.last, email:who.email })
+            .then(function(j){
+              if(j.ok){ st.textContent=''; return true; }
+              st.textContent='Could not send the code. Check the email address and try again.'; st.className='cstatus err'; return false;
+            })
+            .catch(function(){ st.textContent='Could not send the code right now. Please try again.'; st.className='cstatus err'; return false; });
+        }
+        g1.addEventListener('submit', function(ev){
+          ev.preventDefault();
+          if(!g1.checkValidity()){ g1.reportValidity(); return; }
+          var fd=new FormData(g1);
+          if(fd.get('botcheck')) return;
+          who={ first:String(fd.get('first_name')||'').trim(), last:String(fd.get('last_name')||'').trim(), email:String(fd.get('email')||'').trim() };
+          var btn=g1.querySelector('.cbtn'); btn.disabled=true;
+          sendCode(s1).then(function(okay){
+            btn.disabled=false;
+            if(okay){ gm.textContent=who.email; step1.hidden=true; step2.hidden=false; g2.querySelector('input[name=code]').focus(); }
+          });
+        });
+        document.getElementById('gresend').addEventListener('click', function(){ sendCode(s2); });
+        g2.addEventListener('submit', function(ev){
+          ev.preventDefault();
+          var code=String(new FormData(g2).get('code')||'').trim();
+          if(code.length!==6){ s2.textContent='Enter the 6-digit code from the email.'; s2.className='cstatus err'; return; }
+          var btn=g2.querySelector('.cbtn'); btn.disabled=true;
+          s2.textContent='Verifying'+String.fromCharCode(8230); s2.className='cstatus';
+          gpost({ action:'verify', email:who.email, code:code, page:'career-plan' })
+            .then(function(j){
+              if(j.ok){
+                try{ localStorage.setItem('cp-verified', who.email); }catch(e){}
+                s2.textContent='Verified. Welcome!'; s2.className='cstatus ok';
+                setTimeout(closeGate, 500);
+              } else {
+                s2.textContent = j.error==='expired' ? 'That code expired. Click Resend code for a new one.' : 'That code does not match. Check the email and try again.';
+                s2.className='cstatus err';
+              }
+            })
+            .catch(function(){ s2.textContent='Could not verify right now. Please try again.'; s2.className='cstatus err'; })
+            .then(function(){ btn.disabled=false; });
+        });
+      }
     }
     document.getElementById('aigo-claude').addEventListener('click', function(){ go('https://claude.ai/new?q='); });
     document.getElementById('aigo-chatgpt').addEventListener('click', function(){ go('https://chatgpt.com/?q='); });
