@@ -158,7 +158,10 @@
           return gpost({ action:'start', first_name:who.first, last_name:who.last, email:who.email })
             .then(function(j){
               if(j.ok){ st.textContent=''; return true; }
-              st.textContent='Could not send the code. Check the email address and try again.'; st.className='cstatus err'; return false;
+              st.textContent = j.error==='too_many'
+                ? 'That email has requested several codes in the past hour. Please wait a while and try again.'
+                : 'Could not send the code. Check the email address and try again.';
+              st.className='cstatus err'; return false;
             })
             .catch(function(){ st.textContent='Could not send the code right now. Please try again.'; st.className='cstatus err'; return false; });
         }
