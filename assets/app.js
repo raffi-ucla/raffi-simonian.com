@@ -174,7 +174,10 @@
             if(okay){ gm.textContent=who.email; step1.hidden=true; step2.hidden=false; g2.querySelector('input[name=code]').focus(); }
           });
         });
-        document.getElementById('gresend').addEventListener('click', function(){ sendCode(s2); });
+        document.getElementById('gresend').addEventListener('click', function(){
+          var ci=g2.querySelector('input[name=code]'); ci.value=''; ci.focus();
+          sendCode(s2).then(function(okay){ if(okay){ s2.textContent='New code sent - the previous code no longer works.'; s2.className='cstatus ok'; } });
+        });
         g2.addEventListener('submit', function(ev){
           ev.preventDefault();
           var code=String(new FormData(g2).get('code')||'').trim();
