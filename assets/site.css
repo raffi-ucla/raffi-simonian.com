@@ -123,6 +123,9 @@ a{color:inherit}
 .gatecard h3{font-family:'Bricolage Grotesque',sans-serif; font-size:22px; letter-spacing:-.01em; margin:0 0 6px}
 .gatecard .gsub{color:var(--muted); font-size:14.5px; line-height:1.55; margin:0 0 16px}
 body.gated{overflow:hidden}
+.gback{margin:18px 0 0; text-align:center; font-size:13.5px}
+.gback a{color:var(--faint); text-decoration:none; font-weight:600}
+.gback a:hover{color:var(--accent-ink)}
 .airesult{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:20px 24px; margin:4px 0 14px; max-width:74ch; line-height:1.6; font-size:15px; white-space:pre-wrap}
 .airesult p{margin:0 0 10px; white-space:normal}
 .airesult .h{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:16px; margin:14px 0 4px}
