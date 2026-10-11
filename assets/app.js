@@ -9,6 +9,16 @@
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(null); });
 
   function domain(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
+  function nameOk(v){
+    v = String(v||'').trim();
+    var letters = 0;
+    for (var i = 0; i < v.length; i++) {
+      var ch = v.charAt(i);
+      if (ch.toLowerCase() !== ch.toUpperCase()) letters++;
+    }
+    return letters >= 2;
+  }
+
 
   var cf=document.getElementById('cform');
   if(cf){
@@ -16,6 +26,10 @@
     cf.addEventListener('submit', function(ev){
       ev.preventDefault();
       if(!cf.checkValidity()){ cf.reportValidity(); return; }
+      var cdata=new FormData(cf);
+      if(!nameOk(cdata.get('first_name')) || !nameOk(cdata.get('last_name'))){
+        st.textContent="Please enter your full first and last name - initials alone won't work."; st.className='cstatus err'; return;
+      }
       var btn=cf.querySelector('.cbtn');
       btn.disabled=true; st.textContent='Sending…'; st.className='cstatus';
       var data=new FormData(cf);
@@ -171,6 +185,7 @@
           var fd=new FormData(g1);
           if(fd.get('botcheck')) return;
           who={ first:String(fd.get('first_name')||'').trim(), last:String(fd.get('last_name')||'').trim(), email:String(fd.get('email')||'').trim() };
+          if(!nameOk(who.first) || !nameOk(who.last)){ s1.textContent="Please enter your full first and last name - initials alone won't work."; s1.className='cstatus err'; return; }
           var btn=g1.querySelector('.cbtn'); btn.disabled=true;
           sendCode(s1).then(function(okay){
             btn.disabled=false;
