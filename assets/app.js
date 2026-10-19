@@ -86,30 +86,41 @@
     if(askWrap) askWrap.hidden=false;
     var askQ=document.getElementById('askq');
     var askSt=document.getElementById('askstatus');
-    var askBox=document.getElementById('askresult');
+    var thread=document.getElementById('askthread');
+    var hist=[];
     var askGo=function(){
       var q=(askQ.value||'').trim();
       if(!q){ askSt.textContent='Type what you are looking for first.'; askSt.className='cstatus err'; askQ.focus(); return; }
-      askBtn.disabled=true; askSt.textContent='Looking through the library…'; askSt.className='cstatus';
-      askBox.hidden=false; askBox.textContent='';
+      askBtn.disabled=true; askQ.value='';
+      askSt.textContent='Looking through the library…'; askSt.className='cstatus';
+      var qEl=document.createElement('div'); qEl.className='askq'; qEl.textContent=q; thread.appendChild(qEl);
+      var box=document.createElement('div'); box.className='airesult'; thread.appendChild(box);
+      hist.push({ role:'user', content:q });
       var full='';
-      fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ question:q }) })
+      fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ messages: hist.slice(-8) }) })
         .then(function(res){
           if(!res.ok || !res.body) throw new Error('bad response');
           var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
           function pump(){ return rd.read().then(function(r){
-            if(r.done){ askBox.innerHTML=mdlite(full); askSt.textContent=''; askBtn.disabled=false; return; }
+            if(r.done){
+              box.innerHTML=mdlite(full);
+              hist.push({ role:'assistant', content: full });
+              askSt.textContent=''; askBtn.disabled=false;
+              askQ.placeholder='Ask a follow-up…'; askQ.focus();
+              return;
+            }
             buf+=dec.decode(r.value,{stream:true});
             var lines=buf.split('\n'); buf=lines.pop();
             lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
-              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; askBox.textContent=full; } }catch(e){} } });
+              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; } }catch(e){} } });
             return pump();
           }); }
           return pump();
         })
         .catch(function(){
-          askBox.hidden = full==='';
-          askSt.textContent='Could not reach the assistant right now — try again in a moment, or use the search box above.'; askSt.className='cstatus err';
+          if(full===''){ thread.removeChild(box); thread.removeChild(qEl); hist.pop(); askQ.value=q; }
+          else { box.innerHTML=mdlite(full); hist.push({ role:'assistant', content: full }); }
+          askSt.textContent='Could not reach the guide right now — please try again in a moment.'; askSt.className='cstatus err';
           askBtn.disabled=false;
         });
     };
@@ -187,6 +198,79 @@
             inlineBtn.disabled=false;
           });
       });
+    }
+    // paid Personalized Career Assessment
+    var aw=document.getElementById('assesswrap');
+    if(aw){
+      var PAID_DIGEST='65880756e9705e3a968122f51b760c0f728178bcff4330921f294aa73102a1cf';
+      var paidOk=false;
+      try{ paidOk=!!localStorage.getItem('cp-paid'); }catch(e){}
+      if(paidOk) aw.hidden=false;
+      var pq=null; try{ pq=new URLSearchParams(location.search).get('paid'); }catch(e){}
+      if(pq && window.crypto && crypto.subtle){
+        crypto.subtle.digest('SHA-256', new TextEncoder().encode(pq)).then(function(buf){
+          var hex=Array.prototype.map.call(new Uint8Array(buf), function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
+          if(hex===PAID_DIGEST){
+            try{ localStorage.setItem('cp-paid', pq); }catch(e){}
+            aw.hidden=false;
+            try{ history.replaceState(null,'',location.pathname); }catch(e){}
+            try{ aw.scrollIntoView({behavior:'smooth'}); }catch(e){}
+          }
+        });
+      }
+      var promoEl=document.getElementById('promocode');
+      function claimPromo(){
+        if(!promoEl) return;
+        var cached=null; try{ cached=localStorage.getItem('cp-promo'); }catch(e){}
+        if(cached){ promoEl.textContent=cached; return; }
+        var ep=window.SIGNUP_ENDPOINT||'';
+        var token=''; try{ token=localStorage.getItem('cp-paid')||''; }catch(e){}
+        function fail(){ promoEl.parentNode.innerHTML='<b>Your $50 credit:</b> I will email your personal promo code shortly — or <a href="/contact/">contact me</a> and I will send it right away.'; }
+        if(!ep || !token){ fail(); return; }
+        fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'claim_code', paid: token, page:'career-plan' }) })
+          .then(function(res){ return res.json(); })
+          .then(function(j){
+            if(j && j.ok && j.code){ promoEl.textContent=j.code; try{ localStorage.setItem('cp-promo', j.code); }catch(e){} }
+            else fail();
+          })
+          .catch(fail);
+      }
+      var ago=document.getElementById('assessgo');
+      var ast=document.getElementById('assessstatus');
+      var abox=document.getElementById('assessresult');
+      var aprint=document.getElementById('assessprint');
+      var acredit=document.getElementById('assesscredit');
+      if(ago && AI_ENDPOINT){
+        ago.addEventListener('click', function(){
+          var pr=ikPrompt(); if(!pr) return;
+          ago.disabled=true; ast.textContent='Writing your assessment — this takes about a minute…'; ast.className='cstatus';
+          abox.hidden=false; abox.textContent='';
+          var full='';
+          fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'assessment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })
+            .then(function(res){
+              if(!res.ok || !res.body) throw new Error('bad response');
+              var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
+              function pump(){ return rd.read().then(function(r){
+                if(r.done){ abox.innerHTML=mdlite(full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; aprint.hidden=false; acredit.hidden=false; claimPromo(); return; }
+                buf+=dec.decode(r.value,{stream:true});
+                var lines=buf.split('\n'); buf=lines.pop();
+                lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
+                  try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; abox.textContent=full; } }catch(e){} } });
+                return pump();
+              }); }
+              return pump();
+            })
+            .catch(function(){
+              abox.hidden = full==='';
+              ast.textContent='Could not generate right now — your purchase is saved on this device; please try again in a few minutes.'; ast.className='cstatus err';
+              ago.disabled=false;
+            });
+        });
+        if(aprint) aprint.addEventListener('click', function(){
+          document.body.classList.add('print-assess');
+          setTimeout(function(){ window.print(); setTimeout(function(){ document.body.classList.remove('print-assess'); }, 500); }, 50);
+        });
+      }
     }
     var SIGNUP_ENDPOINT = window.SIGNUP_ENDPOINT || '';
     var gate=document.getElementById('cpgate');

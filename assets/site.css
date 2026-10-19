@@ -139,6 +139,22 @@ body.gated{overflow:hidden}
 .askrow input{flex:1; min-width:0; font:inherit; font-size:15.5px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:9px; padding:10px 12px}
 .askrow input:focus{outline:none; border-color:var(--accent)}
 @media (max-width:560px){.askrow{flex-direction:column}}
+.tiers{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:14px 0 8px}
+.tier{border:1px solid var(--line); border-radius:12px; padding:18px; background:var(--card); display:flex; flex-direction:column; gap:8px}
+.tier.hl{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent)}
+.tier h3{margin:0; font-family:'Bricolage Grotesque',sans-serif; font-size:17px}
+.tier .price{font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800}
+.tier p{margin:0; color:var(--muted); font-size:14.5px; flex:1}
+.tier .cbtn{align-self:flex-start}
+.creditbox{border:1px dashed var(--accent); border-radius:11px; padding:14px 16px; margin:10px 0 16px; background:var(--faint)}
+.creditbox code{font-weight:700; background:var(--chip); padding:2px 7px; border-radius:6px}
+.askq{margin:18px 0 8px; padding:7px 13px; border-left:3px solid var(--accent); font-weight:600; background:var(--faint); border-radius:0 9px 9px 0}
+#askthread .airesult{margin-top:0}
+@media print{
+  body.print-assess *{visibility:hidden}
+  body.print-assess #assessresult, body.print-assess #assessresult *{visibility:visible}
+  body.print-assess #assessresult{position:absolute; left:0; top:0; width:100%; border:none; max-width:none}
+}
 .stepcols{display:grid; grid-template-columns:1fr 1fr; gap:40px}
 .roadmap{max-width:74ch; margin:0; padding-left:22px}
 .roadmap li{margin:0 0 12px; line-height:1.6}
