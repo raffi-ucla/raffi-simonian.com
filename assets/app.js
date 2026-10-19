@@ -71,6 +71,52 @@
     });
   }
 
+  // resources page: Ask-AI guide
+  function mdlite(t){
+    t = t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    t = t.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+    t = t.replace(/^#{1,4} (.+)$/gm,'<b class="h">$1</b>');
+    t = t.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return t.split(/\n\n+/).map(function(pp){ return '<p>'+pp.replace(/\n/g,'<br>')+'</p>'; }).join('');
+  }
+  var askBtn=document.getElementById('askgo');
+  var RES_ENDPOINT = window.AI_ENDPOINT || '';
+  if(RES_ENDPOINT && askBtn){
+    var askWrap=document.getElementById('askai');
+    if(askWrap) askWrap.hidden=false;
+    var askQ=document.getElementById('askq');
+    var askSt=document.getElementById('askstatus');
+    var askBox=document.getElementById('askresult');
+    var askGo=function(){
+      var q=(askQ.value||'').trim();
+      if(!q){ askSt.textContent='Type what you are looking for first.'; askSt.className='cstatus err'; askQ.focus(); return; }
+      askBtn.disabled=true; askSt.textContent='Looking through the library…'; askSt.className='cstatus';
+      askBox.hidden=false; askBox.textContent='';
+      var full='';
+      fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ question:q }) })
+        .then(function(res){
+          if(!res.ok || !res.body) throw new Error('bad response');
+          var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
+          function pump(){ return rd.read().then(function(r){
+            if(r.done){ askBox.innerHTML=mdlite(full); askSt.textContent=''; askBtn.disabled=false; return; }
+            buf+=dec.decode(r.value,{stream:true});
+            var lines=buf.split('\n'); buf=lines.pop();
+            lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
+              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; askBox.textContent=full; } }catch(e){} } });
+            return pump();
+          }); }
+          return pump();
+        })
+        .catch(function(){
+          askBox.hidden = full==='';
+          askSt.textContent='Could not reach the assistant right now — try again in a moment, or use the search box above.'; askSt.className='cstatus err';
+          askBtn.disabled=false;
+        });
+    };
+    askBtn.addEventListener('click', askGo);
+    askQ.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); askGo(); } });
+  }
+
   // career plan: Ikigai -> AI prompt
   var ikf=document.getElementById('ikform');
   if(ikf){
@@ -114,12 +160,6 @@
     var AI_ENDPOINT = window.AI_ENDPOINT || '';
     var inlineBtn=document.getElementById('aigo-inline');
     var box=document.getElementById('airesult');
-    function mdlite(t){
-      t = t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-      t = t.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
-      t = t.replace(/^#{1,4} (.+)$/gm,'<b class="h">$1</b>');
-      return t.split(/\n\n+/).map(function(pp){ return '<p>'+pp.replace(/\n/g,'<br>')+'</p>'; }).join('');
-    }
     if(AI_ENDPOINT && inlineBtn){
       inlineBtn.hidden=false;
       inlineBtn.addEventListener('click', function(){

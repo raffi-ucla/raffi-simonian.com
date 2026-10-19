@@ -131,6 +131,14 @@ body.gated{overflow:hidden}
 .airesult{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:20px 24px; margin:4px 0 14px; max-width:74ch; line-height:1.6; font-size:15px; white-space:pre-wrap}
 .airesult p{margin:0 0 10px; white-space:normal}
 .airesult .h{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:16px; margin:14px 0 4px}
+.airesult a{color:var(--accent); font-weight:600}
+.askai{border:1px solid var(--line); background:var(--faint); border-radius:12px; padding:18px 20px; margin:4px 0 26px}
+.askai h2{margin:0 0 4px; font-family:'Bricolage Grotesque',sans-serif; font-size:19px}
+.askai .sub{color:var(--muted); font-size:14.5px; margin:0 0 12px}
+.askrow{display:flex; gap:10px}
+.askrow input{flex:1; min-width:0; font:inherit; font-size:15.5px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:9px; padding:10px 12px}
+.askrow input:focus{outline:none; border-color:var(--accent)}
+@media (max-width:560px){.askrow{flex-direction:column}}
 .stepcols{display:grid; grid-template-columns:1fr 1fr; gap:40px}
 .roadmap{max-width:74ch; margin:0; padding-left:22px}
 .roadmap li{margin:0 0 12px; line-height:1.6}
