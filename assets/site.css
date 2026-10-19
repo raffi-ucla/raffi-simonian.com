@@ -150,6 +150,11 @@ body.gated{overflow:hidden}
 .creditbox code{font-weight:700; background:var(--chip); padding:2px 7px; border-radius:6px}
 .askq{margin:18px 0 8px; padding:7px 13px; border-left:3px solid var(--accent); font-weight:600; background:var(--faint); border-radius:0 9px 9px 0}
 #askthread .airesult{margin-top:0}
+.airesult{position:relative}
+.airesult.hascopy{padding-bottom:48px}
+.copybtn{position:absolute; right:12px; bottom:12px; font:inherit; font-size:12.5px; padding:4px 10px; border:1px solid var(--line); border-radius:7px; background:var(--card); color:var(--muted); cursor:pointer; white-space:nowrap}
+.copybtn:hover{color:var(--ink); border-color:var(--accent)}
+@media print{ body.print-assess .copybtn{display:none !important} }
 @media print{
   body.print-assess *{visibility:hidden}
   body.print-assess #assessresult, body.print-assess #assessresult *{visibility:visible}

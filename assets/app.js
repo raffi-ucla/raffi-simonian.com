@@ -79,6 +79,24 @@
     t = t.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
     return t.split(/\n\n+/).map(function(pp){ return '<p>'+pp.replace(/\n/g,'<br>')+'</p>'; }).join('');
   }
+  function addCopy(box, raw){
+    var old=box.querySelector('.copybtn'); if(old) old.parentNode.removeChild(old);
+    var t=raw
+      .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'$1 ($2)')
+      .replace(/\*\*/g,'')
+      .replace(/^#{1,4} /gm,'')
+      .trim();
+    var b=document.createElement('button');
+    b.type='button'; b.className='copybtn'; b.setAttribute('aria-label','Copy this answer');
+    b.textContent='⧉ Copy';
+    b.addEventListener('click', function(){
+      function ok(){ b.textContent='✓ Copied'; setTimeout(function(){ b.textContent='⧉ Copy'; },1600); }
+      function fail(){ b.textContent='Copy failed'; setTimeout(function(){ b.textContent='⧉ Copy'; },1600); }
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, fail); } else fail();
+    });
+    box.classList.add('hascopy');
+    box.appendChild(b);
+  }
   var askBtn=document.getElementById('askgo');
   var RES_ENDPOINT = window.AI_ENDPOINT || '';
   if(RES_ENDPOINT && askBtn){
@@ -104,6 +122,7 @@
           function pump(){ return rd.read().then(function(r){
             if(r.done){
               box.innerHTML=mdlite(full);
+              addCopy(box, full);
               hist.push({ role:'assistant', content: full });
               askSt.textContent=''; askBtn.disabled=false;
               askQ.placeholder='Ask a follow-up…'; askQ.focus();
@@ -251,7 +270,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; aprint.hidden=false; acredit.hidden=false; claimPromo(); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; aprint.hidden=false; acredit.hidden=false; claimPromo(); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
