@@ -207,7 +207,7 @@
       var url=base+encodeURIComponent(pr);
       var w=null; try{ w=window.open(url, '_blank', 'noopener'); }catch(e){}
       if(w) return;
-      function fb(){ ist.textContent='Could not open a new tab here (preview windows block it). Use "Copy the prompt" and paste it into your AI assistant.'; ist.className='cstatus err'; }
+      function fb(){ ist.textContent='Could not open a new tab here — please allow pop-ups for this site and try again.'; ist.className='cstatus err'; }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(pr).then(function(){ ist.textContent='A new tab is blocked here, so the prompt was copied instead. Paste it into claude.ai or chatgpt.com.'; ist.className='cstatus ok'; }, fb);
       } else { fb(); }
@@ -227,7 +227,16 @@
             if(!res.ok || !res.body) throw new Error('bad response');
             var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
             function pump(){ return rd.read().then(function(r){
-              if(r.done){ box.innerHTML=mdlite(full); ist.textContent=''; inlineBtn.disabled=false; return; }
+              if(r.done){
+                box.innerHTML=mdlite(full); ist.textContent=''; inlineBtn.disabled=false;
+                var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-paid'); }catch(e){}
+                if(!isPaid){
+                  var up=document.createElement('p'); up.className='upsell';
+                  up.innerHTML='This was the free snapshot. The <b>$50 Personalized Career Assessment</b> goes much deeper — a written report with your Ikigai analysis, a skills-gap review, a 90-day action plan, recommended certifications, and hand-picked resources — delivered as a downloadable PDF and credited in full toward any session. <a href="#buytier">Get my assessment ↓</a>';
+                  box.appendChild(up);
+                  var ua=up.querySelector('a'); if(ua) ua.addEventListener('click', function(ev){ ev.preventDefault(); var bt2=document.getElementById('buytier'); if(bt2) bt2.scrollIntoView({behavior:'smooth'}); });
+                }
+                return; }
               buf+=dec.decode(r.value,{stream:true});
               var lines=buf.split('\n'); buf=lines.pop();
               lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
@@ -251,6 +260,7 @@
       try{ paidOk=!!localStorage.getItem('cp-paid'); }catch(e){}
       function markPaid(){
         aw.hidden=false;
+        var bt=document.getElementById('buytier'); if(bt) bt.hidden=true;
         var fb=document.getElementById('aigo-inline');
         if(fb && !document.getElementById('paidnote')){
           fb.hidden=true;
@@ -293,11 +303,53 @@
       var ago=document.getElementById('assessgo');
       var ast=document.getElementById('assessstatus');
       var abox=document.getElementById('assessresult');
-      var aprint=document.getElementById('assessprint');
+      var adl=document.getElementById('assessdl');
+      var lastMd='';
       var acredit=document.getElementById('assesscredit');
+      function withJsPDF(cb, fail){
+        if(window.jspdf && window.jspdf.jsPDF){ cb(window.jspdf.jsPDF); return; }
+        var s=document.createElement('script'); s.src='/assets/jspdf.umd.min.js';
+        s.onload=function(){ if(window.jspdf && window.jspdf.jsPDF) cb(window.jspdf.jsPDF); else fail(); };
+        s.onerror=fail; document.head.appendChild(s);
+      }
+      function assessPdf(jsPDF, md){
+        var doc=new jsPDF({ unit:'pt', format:'letter' });
+        var W=612, H=792, M=58, maxW=W-M*2, y=M+12;
+        function need(h){ if(y+h>H-M-14){ doc.addPage(); y=M+6; } }
+        doc.setFont('helvetica','bold'); doc.setFontSize(21); doc.setTextColor(32,30,27);
+        doc.text('Personalized Career Assessment', M, y); y+=20;
+        doc.setFont('helvetica','normal'); doc.setFontSize(10.5); doc.setTextColor(120);
+        doc.text('Prepared by Raffi Simonian · raffi-simonian.com · '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), M, y);
+        y+=10; doc.setDrawColor(190); doc.line(M, y, W-M, y); y+=20;
+        var lines=md.split('\n');
+        for(var i=0;i<lines.length;i++){
+          var ln=lines[i].trim();
+          if(!ln){ y+=5; continue; }
+          ln=ln.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)').replace(/\*\*/g,'');
+          if(ln.indexOf('## ')===0){
+            need(52); y+=10;
+            doc.setFont('helvetica','bold'); doc.setFontSize(13.5); doc.setTextColor(32,30,27);
+            doc.text(ln.slice(3), M, y); y+=7;
+            doc.setDrawColor(225); doc.line(M, y, W-M, y); y+=16;
+            continue;
+          }
+          doc.setFont('helvetica','normal'); doc.setFontSize(10.5); doc.setTextColor(60);
+          var ind=0, txt=ln;
+          var bm=ln.match(/^[-*] +(.*)$/);
+          if(bm){ ind=14; txt='•  '+bm[1]; }
+          var wrapped=doc.splitTextToSize(txt, maxW-ind);
+          for(var k=0;k<wrapped.length;k++){ need(15); doc.text(wrapped[k], M+ind+(bm&&k>0?11:0), y); y+=14.5; }
+          y+=3;
+        }
+        var n=doc.getNumberOfPages();
+        for(var p2=1;p2<=n;p2++){ doc.setPage(p2); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(150);
+          doc.text('raffi-simonian.com  ·  page '+p2+' of '+n, W/2, H-26, {align:'center'}); }
+        doc.save('Personalized-Career-Assessment.pdf');
+      }
       if(ago && AI_ENDPOINT){
         ago.addEventListener('click', function(){
-          var pr=ikPrompt(); if(!pr) return;
+          var pr=ikPrompt();
+          if(!pr){ ast.textContent='Please answer at least one of the four Step 1 questions above, then generate.'; ast.className='cstatus err'; var ikf0=document.getElementById('ikform'); if(ikf0) ikf0.scrollIntoView({behavior:'smooth'}); return; }
           ago.disabled=true; ast.textContent='Writing your assessment — this takes about a minute…'; ast.className='cstatus';
           abox.hidden=false; abox.textContent='';
           var full='';
@@ -306,7 +358,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; aprint.hidden=false; acredit.hidden=false; claimPromo(); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} acredit.hidden=false; claimPromo(); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
@@ -321,10 +373,20 @@
               ago.disabled=false;
             });
         });
-        if(aprint) aprint.addEventListener('click', function(){
-          document.body.classList.add('print-assess');
-          setTimeout(function(){ window.print(); setTimeout(function(){ document.body.classList.remove('print-assess'); }, 500); }, 50);
+        if(adl) adl.addEventListener('click', function(){
+          var md=lastMd; if(!md){ try{ md=localStorage.getItem('cp-assess-md')||''; }catch(e){} }
+          if(!md){ ast.textContent='Generate your assessment first.'; ast.className='cstatus err'; return; }
+          adl.disabled=true; ast.textContent='Preparing your PDF…'; ast.className='cstatus';
+          withJsPDF(function(jsPDF){ try{ assessPdf(jsPDF, md); ast.textContent=''; }catch(e){ ast.textContent='Could not prepare the PDF — please try again.'; ast.className='cstatus err'; } adl.disabled=false; },
+            function(){ adl.disabled=false; ast.textContent='Could not prepare the PDF — please try again.'; ast.className='cstatus err'; });
         });
+      }
+      var savedMd='';
+      try{ savedMd=localStorage.getItem('cp-assess-md')||''; }catch(e){}
+      if(paidOk && savedMd && abox){
+        abox.hidden=false; abox.innerHTML=mdlite(savedMd); addCopy(abox, savedMd);
+        lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate';
+        if(acredit){ acredit.hidden=false; claimPromo(); }
       }
     }
     var SIGNUP_ENDPOINT = window.SIGNUP_ENDPOINT || '';
@@ -411,12 +473,6 @@
     }
     document.getElementById('aigo-claude').addEventListener('click', function(){ go('https://claude.ai/new?q='); });
     document.getElementById('aigo-chatgpt').addEventListener('click', function(){ go('https://chatgpt.com/?q='); });
-    document.getElementById('aigo-copy').addEventListener('click', function(){
-      var p=ikPrompt(); if(!p) return;
-      function ok(){ ist.textContent='Prompt copied - paste it into any AI assistant.'; ist.className='cstatus ok'; }
-      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(p).then(ok, function(){ ist.textContent='Copy failed - select and copy manually.'; ist.className='cstatus err'; }); }
-      else { ist.textContent='Copy not available in this browser.'; ist.className='cstatus err'; }
-    });
   }
 
   // verdict filters on CX pages

@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mvfm3a8e">
+<link rel="stylesheet" href="/assets/site.css?v=mvfngq69">
 <script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";window.SIGNUP_ENDPOINT="https://script.google.com/macros/s/AKfycbwpaLdrqne0oDME3iLI9HyxcYgioL2uW1E9Ep41niS3jgsNfXBvj3DK09fsP5tacckE/exec";</script>
 </head>
 <body>
@@ -105,7 +105,6 @@
   <button type="button" class="cbtn" id="aigo-inline" hidden>Generate recommendations</button>
   <button type="button" class="cbtn sec" id="aigo-claude">Ask Claude</button>
   <button type="button" class="cbtn sec" id="aigo-chatgpt">Ask ChatGPT</button>
-  <button type="button" class="cbtn sec" id="aigo-copy">Copy the prompt</button>
   <span class="cstatus" id="ikstatus" role="status"></span>
 </div>
 <div class="airesult" id="airesult" hidden></div>
@@ -133,14 +132,14 @@
 <h2 class="secttl">Step 5 &middot; Go deeper</h2>
 <p class="sectsub">The AI gives you the map &mdash; here is how to turn it into your plan. Pick your depth:</p>
 <div class="tiers">
-<div class="tier"><h3>Intro Call</h3><div class="price">Free</div><p>15 minutes to meet, ask anything, and see whether coaching fits.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book intro call</a></div>
-<div class="tier hl"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>A detailed written analysis of your Ikigai answers: best-fit roles and industries, a skills-gap analysis, a 90-day action plan, and hand-picked resources &mdash; generated instantly on this page. Credited in full toward any coaching session.</p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
+<div class="tier hl" id="buytier"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>A detailed written analysis of your Ikigai answers: best-fit roles and industries, a skills-gap analysis, a 90-day action plan, and hand-picked resources &mdash; generated instantly on this page. Credited in full toward any coaching session.</p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
 <div class="tier"><h3>Coaching Sessions</h3><div class="price">$75 / $125</div><p>Career Launch for students &amp; new grads ($75, 45 min) or Career Strategy for seasoned professionals ($125, 1 hour) &mdash; live, one on one.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book a session</a></div>
+<div class="tier"><h3>Business &amp; Technology Consulting</h3><div class="price">$200 / hr</div><p>For organizations, founders, and teams: CRM and technology strategy, AI adoption, and program design &mdash; hands-on help from a practitioner.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book consulting</a></div>
 </div>
 <div id="assesswrap" hidden>
 <h2 class="secttl">Your Personalized Career Assessment</h2>
 <p class="sectsub">Thank you for your purchase. Make your four Ikigai answers above as complete as you can, then generate &mdash; you can regenerate after refining your answers.</p>
-<div class="aibar"><button type="button" class="cbtn" id="assessgo">Generate my assessment</button><button type="button" class="cbtn sec" id="assessprint" hidden>Print / Save as PDF</button><span class="cstatus" id="assessstatus" role="status"></span></div>
+<div class="aibar"><button type="button" class="cbtn" id="assessgo">Generate my assessment</button><button type="button" class="cbtn sec" id="assessdl" hidden>Download PDF</button><span class="cstatus" id="assessstatus" role="status"></span></div>
 <div class="airesult" id="assessresult" hidden></div>
 <div class="creditbox" id="assesscredit" hidden><b>Your $50 credit:</b> your personal one-time promo code is <code id="promocode">loading&hellip;</code> &mdash; use it when booking any session and the assessment price is credited in full. <a href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book now &rarr;</a></div>
 </div>
@@ -176,10 +175,10 @@
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
-  <span class="ver">v70</span>
+  <span class="ver">v72</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=mvfm3a8e"></script>
+<script src="/assets/app.js?v=mvfngq69"></script>
 
 </body>
 </html>
