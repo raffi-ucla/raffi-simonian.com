@@ -262,6 +262,8 @@
         aw.hidden=false;
         var bt=document.getElementById('buytier'); if(bt) bt.hidden=true;
         var fb=document.getElementById('aigo-inline');
+        var exClaude=document.getElementById('aigo-claude'); if(exClaude) exClaude.hidden=true;
+        var exGpt=document.getElementById('aigo-chatgpt'); if(exGpt) exGpt.hidden=true;
         if(fb && !document.getElementById('paidnote')){
           fb.hidden=true;
           var n=document.createElement('span'); n.id='paidnote'; n.className='cstatus';
@@ -306,6 +308,14 @@
       var adl=document.getElementById('assessdl');
       var lastMd='';
       var acredit=document.getElementById('assesscredit');
+      var arev=document.getElementById('reviewbox');
+      function saveAssessment(md){
+        var ep=window.SIGNUP_ENDPOINT||''; if(!ep) return;
+        var em=''; try{ em=localStorage.getItem('cp-verified')||''; }catch(e){}
+        var tok=''; try{ tok=localStorage.getItem('cp-paid')||''; }catch(e){}
+        if(!tok) return;
+        try{ fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'save_assessment', paid: tok, email: em, page:'career-plan', assessment: String(md||'').slice(0,40000) }) }).catch(function(){}); }catch(e){}
+      }
       function withJsPDF(cb, fail){
         if(window.jspdf && window.jspdf.jsPDF){ cb(window.jspdf.jsPDF); return; }
         var s=document.createElement('script'); s.src='/assets/jspdf.umd.min.js';
@@ -358,7 +368,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} acredit.hidden=false; claimPromo(); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} acredit.hidden=false; if(arev) arev.hidden=false; claimPromo(); saveAssessment(full); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
@@ -387,6 +397,7 @@
         abox.hidden=false; abox.innerHTML=mdlite(savedMd); addCopy(abox, savedMd);
         lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate';
         if(acredit){ acredit.hidden=false; claimPromo(); }
+        if(arev) arev.hidden=false;
       }
     }
     var SIGNUP_ENDPOINT = window.SIGNUP_ENDPOINT || '';
