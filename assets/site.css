@@ -154,6 +154,7 @@ body.gated{overflow:hidden}
 .airesult.hascopy{padding-bottom:48px}
 .copybtn{position:absolute; right:12px; bottom:12px; font:inherit; font-size:12.5px; padding:4px 10px; border:1px solid var(--line); border-radius:7px; background:var(--card); color:var(--muted); cursor:pointer; white-space:nowrap}
 .copybtn:hover{color:var(--ink); border-color:var(--accent)}
+footer .ver{color:var(--faint); font-size:12px; align-self:center}
 @media print{ body.print-assess .copybtn{display:none !important} }
 @media print{
   body.print-assess *{visibility:hidden}
