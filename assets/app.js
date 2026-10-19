@@ -249,14 +249,25 @@
       var PAID_DIGEST='65880756e9705e3a968122f51b760c0f728178bcff4330921f294aa73102a1cf';
       var paidOk=false;
       try{ paidOk=!!localStorage.getItem('cp-paid'); }catch(e){}
-      if(paidOk) aw.hidden=false;
+      function markPaid(){
+        aw.hidden=false;
+        var fb=document.getElementById('aigo-inline');
+        if(fb && !document.getElementById('paidnote')){
+          fb.hidden=true;
+          var n=document.createElement('span'); n.id='paidnote'; n.className='cstatus';
+          n.innerHTML='✓ You have the <b>Personalized Career Assessment</b> — a deeper version of this step. <a href="#assesswrap">Generate it below</a>.';
+          n.querySelector('a').addEventListener('click', function(ev){ ev.preventDefault(); aw.scrollIntoView({behavior:'smooth'}); });
+          fb.parentNode.insertBefore(n, fb);
+        }
+      }
+      if(paidOk) markPaid();
       var pq=null; try{ pq=new URLSearchParams(location.search).get('paid'); }catch(e){}
       if(pq && window.crypto && crypto.subtle){
         crypto.subtle.digest('SHA-256', new TextEncoder().encode(pq)).then(function(buf){
           var hex=Array.prototype.map.call(new Uint8Array(buf), function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
           if(hex===PAID_DIGEST){
             try{ localStorage.setItem('cp-paid', pq); }catch(e){}
-            aw.hidden=false;
+            markPaid();
             try{ history.replaceState(null,'',location.pathname); }catch(e){}
             try{ aw.scrollIntoView({behavior:'smooth'}); }catch(e){}
           }
