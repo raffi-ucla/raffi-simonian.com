@@ -269,7 +269,7 @@
         if(cached){ promoEl.textContent=cached; return; }
         var ep=window.SIGNUP_ENDPOINT||'';
         var token=''; try{ token=localStorage.getItem('cp-paid')||''; }catch(e){}
-        function fail(){ promoEl.parentNode.innerHTML='<b>Your $50 credit:</b> I will email your personal promo code shortly — or <a href="/contact/">contact me</a> and I will send it right away.'; }
+        function fail(){ promoEl.parentNode.innerHTML='<b>Your $50 credit:</b> within 24 hours I will personally email your one-time promo code to the email you used at checkout — use it when booking any session and the full $50 is credited. Need it sooner? <a href="/contact/">Contact me</a>. <a href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book now →</a>'; }
         if(!ep || !token){ fail(); return; }
         fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'claim_code', paid: token, page:'career-plan' }) })
           .then(function(res){ return res.json(); })
