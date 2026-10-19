@@ -81,7 +81,7 @@
   }
   function addCopy(box, raw){
     var old=box.querySelector('.copybtn'); if(old) old.parentNode.removeChild(old);
-    var t=raw
+    var plain=raw
       .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'$1 ($2)')
       .replace(/\*\*/g,'')
       .replace(/^#{1,4} /gm,'')
@@ -92,7 +92,21 @@
     b.addEventListener('click', function(){
       function ok(){ b.textContent='✓ Copied'; setTimeout(function(){ b.textContent='⧉ Copy'; },1600); }
       function fail(){ b.textContent='Copy failed'; setTimeout(function(){ b.textContent='⧉ Copy'; },1600); }
-      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, fail); } else fail();
+      function plainCopy(){
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(plain).then(ok, fail); } else fail();
+      }
+      var c=box.cloneNode(true);
+      var cb=c.querySelector('.copybtn'); if(cb) cb.parentNode.removeChild(cb);
+      var html=c.innerHTML;
+      if(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem){
+        try{
+          var item=new ClipboardItem({
+            'text/html': new Blob([html], {type:'text/html'}),
+            'text/plain': new Blob([plain], {type:'text/plain'})
+          });
+          navigator.clipboard.write([item]).then(ok, plainCopy);
+        }catch(e){ plainCopy(); }
+      } else plainCopy();
     });
     box.classList.add('hascopy');
     box.appendChild(b);
