@@ -129,6 +129,7 @@
       var qEl=document.createElement('div'); qEl.className='askq'; qEl.textContent=q; thread.appendChild(qEl);
       var wrap=document.createElement('div'); wrap.className='answrap'; thread.appendChild(wrap);
       var box=document.createElement('div'); box.className='airesult'; wrap.appendChild(box);
+      thread.scrollTop=qEl.offsetTop-6; var pinned=false;
       hist.push({ role:'user', content:q });
       var full='';
       fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ messages: hist.slice(-8) }) })
@@ -139,6 +140,7 @@
             if(r.done){
               box.innerHTML=mdlite(full);
               addCopy(box, full);
+              thread.scrollTop=qEl.offsetTop-6;
               hist.push({ role:'assistant', content: full });
               askSt.textContent=''; askBtn.disabled=false;
               askQ.placeholder='Ask a follow-up…'; askQ.focus();
@@ -147,7 +149,7 @@
             buf+=dec.decode(r.value,{stream:true});
             var lines=buf.split('\n'); buf=lines.pop();
             lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
-              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; box.scrollTop=box.scrollHeight; } }catch(e){} } });
+              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; if(!pinned && thread.scrollHeight-thread.clientHeight>=qEl.offsetTop-6){ thread.scrollTop=qEl.offsetTop-6; pinned=true; } } }catch(e){} } });
             return pump();
           }); }
           return pump();
