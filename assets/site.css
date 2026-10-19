@@ -155,6 +155,9 @@ body.gated{overflow:hidden}
 .copybtn{position:absolute; right:12px; bottom:12px; font:inherit; font-size:12.5px; padding:4px 10px; border:1px solid var(--line); border-radius:7px; background:var(--card); color:var(--muted); cursor:pointer; white-space:nowrap}
 .copybtn:hover{color:var(--ink); border-color:var(--accent)}
 footer .ver{color:var(--faint); font-size:12px; align-self:center}
+.answrap{position:relative}
+#askthread .answrap .airesult{max-height:440px; overflow-y:auto; overscroll-behavior:contain; margin-bottom:14px}
+.answrap .copybtn{position:absolute}
 @media print{ body.print-assess .copybtn{display:none !important} }
 @media print{
   body.print-assess *{visibility:hidden}

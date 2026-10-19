@@ -108,8 +108,9 @@
         }catch(e){ plainCopy(); }
       } else plainCopy();
     });
+    var host = (box.parentNode && box.parentNode.className === 'answrap') ? box.parentNode : box;
     box.classList.add('hascopy');
-    box.appendChild(b);
+    host.appendChild(b);
   }
   var askBtn=document.getElementById('askgo');
   var RES_ENDPOINT = window.AI_ENDPOINT || '';
@@ -126,7 +127,8 @@
       askBtn.disabled=true; askQ.value='';
       askSt.textContent='Looking through the library…'; askSt.className='cstatus';
       var qEl=document.createElement('div'); qEl.className='askq'; qEl.textContent=q; thread.appendChild(qEl);
-      var box=document.createElement('div'); box.className='airesult'; thread.appendChild(box);
+      var wrap=document.createElement('div'); wrap.className='answrap'; thread.appendChild(wrap);
+      var box=document.createElement('div'); box.className='airesult'; wrap.appendChild(box);
       hist.push({ role:'user', content:q });
       var full='';
       fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ messages: hist.slice(-8) }) })
@@ -145,13 +147,13 @@
             buf+=dec.decode(r.value,{stream:true});
             var lines=buf.split('\n'); buf=lines.pop();
             lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
-              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; } }catch(e){} } });
+              try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; box.scrollTop=box.scrollHeight; } }catch(e){} } });
             return pump();
           }); }
           return pump();
         })
         .catch(function(){
-          if(full===''){ thread.removeChild(box); thread.removeChild(qEl); hist.pop(); askQ.value=q; }
+          if(full===''){ thread.removeChild(wrap); thread.removeChild(qEl); hist.pop(); askQ.value=q; }
           else { box.innerHTML=mdlite(full); hist.push({ role:'assistant', content: full }); }
           askSt.textContent='Could not reach the guide right now — please try again in a moment.'; askSt.className='cstatus err';
           askBtn.disabled=false;
