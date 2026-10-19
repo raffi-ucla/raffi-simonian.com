@@ -158,6 +158,7 @@ footer .ver{color:var(--faint); font-size:12px; align-self:center}
 .answrap{position:relative}
 #askthread .answrap .airesult{max-height:440px; overflow-y:auto; overscroll-behavior:contain; margin-bottom:14px}
 .answrap .copybtn{position:absolute}
+.airesult.askerr{border-style:dashed; color:var(--muted)}
 @media print{ body.print-assess .copybtn{display:none !important} }
 @media print{
   body.print-assess *{visibility:hidden}

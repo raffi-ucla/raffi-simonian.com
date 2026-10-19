@@ -133,7 +133,7 @@
       var full='';
       fetch(RES_ENDPOINT.replace(/\/?$/,'/')+'resources', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ messages: hist.slice(-8) }) })
         .then(function(res){
-          if(!res.ok || !res.body) throw new Error('bad response');
+          if(!res.ok || !res.body){ var err=new Error('bad response'); err.status=res.status; throw err; }
           var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
           function pump(){ return rd.read().then(function(r){
             if(r.done){
@@ -152,10 +152,17 @@
           }); }
           return pump();
         })
-        .catch(function(){
-          if(full===''){ thread.removeChild(wrap); thread.removeChild(qEl); hist.pop(); askQ.value=q; }
-          else { box.innerHTML=mdlite(full); hist.push({ role:'assistant', content: full }); }
-          askSt.textContent='Could not reach the guide right now — please try again in a moment.'; askSt.className='cstatus err';
+        .catch(function(err){
+          var limited = err && err.status === 429;
+          var msg = limited
+            ? 'Quite a few questions in a short time — please wait a couple of minutes, then ask again.'
+            : 'The guide could not answer just now — please try again in a moment.';
+          if(full===''){
+            box.innerHTML='<p>⚠ '+msg+'</p>';
+            box.classList.add('askerr');
+            hist.pop(); askQ.value=q;
+          } else { box.innerHTML=mdlite(full); hist.push({ role:'assistant', content: full }); }
+          askSt.textContent=msg; askSt.className='cstatus err';
           askBtn.disabled=false;
         });
     };
