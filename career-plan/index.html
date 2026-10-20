@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mvfqazf4">
+<link rel="stylesheet" href="/assets/site.css?v=mvfzhpyt">
 <script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";window.SIGNUP_ENDPOINT="https://script.google.com/macros/s/AKfycbwzaHCGChoM6R8sI6Q4tpxUAkqR6Nd-DsqDBBAX3F5Ylp9NvBrLET5a0fTGLWp4o3AFNQ/exec";</script>
 </head>
 <body>
@@ -99,24 +99,14 @@
 <textarea id="ik-paid" rows="4" placeholder="Write as much detail as you like&hellip;"></textarea>
 </div>
 </div>
-<h2 class="secttl">Step 2 &middot; Career Exploration: generate recommendations</h2>
-<p class="sectsub">There are over 900 careers in 14 industry clusters &mdash; most people never see the full menu. Your answers above become an expert career-counseling prompt; open it in the AI assistant you already use.</p>
-<div class="aibar">
-  <button type="button" class="cbtn" id="aigo-inline" hidden>Generate recommendations</button>
-  <button type="button" class="cbtn sec" id="aigo-claude">Ask Claude</button>
-  <button type="button" class="cbtn sec" id="aigo-chatgpt">Ask ChatGPT</button>
-  <span class="cstatus" id="ikstatus" role="status"></span>
-</div>
-<div class="airesult" id="airesult" hidden></div>
-<details class="followups"><summary>&#128173; Follow-up questions to ask the AI afterwards</summary><ul>
-<li>Can you provide sample companies or startups in the industries you recommended?</li>
-<li>What is an ideal company size for me if I want to make an impact, value personal growth, or need work-life balance?</li>
-<li>Who should I try to meet for informational interviews, and how do I find them?</li>
-</ul></details>
+<h2 class="secttl">Step 2 &middot; Career Exploration: discover your options</h2>
+<p class="sectsub">There are over 900 careers in 14 industry clusters &mdash; most people never see the full menu. Start with a free snapshot: the themes where your answers overlap and three directions worth exploring. Your <b>Personalized Career Assessment</b> (Step 5 below) then completes your Career Reflection Worksheet in depth &mdash; non-negotiables, values, future-proof skills, proximal peers, and year-by-year milestones &mdash; with my personal review.</p>
+<div class="aibar" id="snapbar"><button type="button" class="cbtn" id="snapgo">Get my free snapshot</button><span class="cstatus" id="ikstatus" role="status"></span></div>
+<div class="airesult" id="snapresult" hidden></div>
 <h2 class="secttl">Step 3 &middot; Career Planning: set a direction</h2>
 <p class="sectsub">Career planning does not require a perfect or permanent decision. Set an initial direction that aligns your natural abilities with the realities of the labor market &mdash; projected wages, demand, and where your skills can develop enough to excel.</p>
 <ol class="roadmap">
-<li><b>Choose a career direction.</b> From your AI recommendations above, pick 1&ndash;2 target roles that fit your strengths, interests, and labor-market realities (pay, demand, growth).</li>
+<li><b>Choose a career direction.</b> From your Personalized Career Assessment, pick 1&ndash;2 target roles that fit your strengths, interests, and labor-market realities (pay, demand, growth).</li>
 <li><b>Identify required skills.</b> For each role, list the academic, technical, and employability skills (communication, teamwork, leadership) employers expect.</li>
 <li><b>Map your gaps.</b> Compare those lists to your current skills and highlight what to close in the next 1&ndash;3 years.</li>
 </ol>
@@ -132,7 +122,7 @@
 <h2 class="secttl">Step 5 &middot; Go deeper</h2>
 <p class="sectsub">The AI gives you the map &mdash; here is how to turn it into your plan. Pick your depth:</p>
 <div class="tiers">
-<div class="tier hl" id="buytier"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>An in-depth written analysis of your Ikigai answers &mdash; best-fit roles, skills-gap analysis, 90-day action plan, and hand-picked resources &mdash; generated instantly as a downloadable PDF. Then I review it personally and email you my notes within 48 hours. Credited in full toward any coaching session.</p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
+<div class="tier hl" id="buytier"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>Your <b>Career Reflection Worksheet</b>, completed for you from your Ikigai answers &mdash; know yourself, your non-negotiables, values, future-proof skills, proximal peers, and Year 1&ndash;3 milestones &mdash; generated instantly as a downloadable PDF. Then I review it personally and email you my notes within 48 hours. Credited in full toward any coaching session.</p><p><a href="/assets/sample-career-assessment.pdf" target="_blank" rel="noopener">See a sample assessment (PDF) &rarr;</a></p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
 <div class="tier"><h3>Coaching Sessions</h3><div class="price">$75 / $125</div><p>Career Launch for students &amp; new grads ($75, 45 min) or Career Strategy for seasoned professionals ($125, 1 hour) &mdash; live, one on one.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book a session</a></div>
 <div class="tier"><h3>Business &amp; Technology Consulting</h3><div class="price">$200 / hr</div><p>For organizations, founders, and teams: CRM and technology strategy, AI adoption, and program design &mdash; hands-on help from a practitioner.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book consulting</a></div>
 <div class="tier"><h3>Custom Training</h3><div class="price">Custom</div><p>Workshops, bootcamps, and courses designed for your team or institution &mdash; project management, AI adoption, design thinking, and train-the-trainer programs, delivered live or virtually.</p><a class="cbtn sec" href="/contact/">Start a conversation</a></div>
@@ -177,10 +167,10 @@
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
-  <span class="ver">v76</span>
+  <span class="ver">v80</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=mvfqazf4"></script>
+<script src="/assets/app.js?v=mvfzhpyt"></script>
 
 </body>
 </html>

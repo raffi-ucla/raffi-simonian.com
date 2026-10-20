@@ -188,8 +188,8 @@
     function ikPrompt(){
       var v={}; var any=false;
       ids.forEach(function(k){ v[k]=tas[k].value.trim(); if(v[k])any=true; });
-      if(!any){ ist.textContent='Answer at least one question first.'; ist.className='cstatus err'; return null; }
-      ist.textContent=''; ist.className='cstatus';
+      if(!any){ if(ist){ ist.textContent='Answer at least one question first.'; ist.className='cstatus err'; } return null; }
+      if(ist){ ist.textContent=''; ist.className='cstatus'; }
       return "I'm working through the Ikigai framework to find my career direction. Here are my reflections:\n\n"+
         "What I love: "+(v.love||'(not answered yet)')+"\n\n"+
         "What I'm good at: "+(v.good||'(not answered yet)')+"\n\n"+
@@ -202,53 +202,46 @@
         "4. List the skill gaps I should expect and a skills-based learning plan to close them (courses, certificates, and work-based learning such as internships or job shadowing).\n"+
         "5. Suggest 3 questions I should ask in informational interviews with professionals in these fields.";
     }
-    function go(base){
-      var pr=ikPrompt(); if(!pr) return;
-      var url=base+encodeURIComponent(pr);
-      var w=null; try{ w=window.open(url, '_blank', 'noopener'); }catch(e){}
-      if(w) return;
-      function fb(){ ist.textContent='Could not open a new tab here — please allow pop-ups for this site and try again.'; ist.className='cstatus err'; }
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(pr).then(function(){ ist.textContent='A new tab is blocked here, so the prompt was copied instead. Paste it into claude.ai or chatgpt.com.'; ist.className='cstatus ok'; }, fb);
-      } else { fb(); }
-    }
     var AI_ENDPOINT = window.AI_ENDPOINT || '';
-    var inlineBtn=document.getElementById('aigo-inline');
-    var box=document.getElementById('airesult');
-    if(AI_ENDPOINT && inlineBtn){
-      inlineBtn.hidden=false;
-      inlineBtn.addEventListener('click', function(){
+        var snapBtn=document.getElementById('snapgo');
+    var snapBox=document.getElementById('snapresult');
+    if(AI_ENDPOINT && snapBtn && snapBox){
+      snapBtn.addEventListener('click', function(){
         var pr=ikPrompt(); if(!pr) return;
-        inlineBtn.disabled=true; ist.textContent='Generating your recommendations…'; ist.className='cstatus';
-        box.hidden=false; box.textContent='';
+        snapBtn.disabled=true; if(ist){ ist.textContent='Reading your answers…'; ist.className='cstatus'; }
+        snapBox.hidden=false; snapBox.textContent='';
         var full='';
-        fetch(AI_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })
+        fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'snapshot', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })
           .then(function(res){
-            if(!res.ok || !res.body) throw new Error('bad response');
+            if(!res.ok || !res.body){ var err=new Error('bad response'); err.status=res.status; throw err; }
             var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
             function pump(){ return rd.read().then(function(r){
               if(r.done){
-                box.innerHTML=mdlite(full); ist.textContent=''; inlineBtn.disabled=false;
+                snapBox.innerHTML=mdlite(full);
+                if(ist) ist.textContent='';
+                snapBtn.disabled=false; snapBtn.textContent='Refresh my snapshot';
                 var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-paid'); }catch(e){}
                 if(!isPaid){
                   var up=document.createElement('p'); up.className='upsell';
-                  up.innerHTML='This was the free snapshot. The <b>$50 Personalized Career Assessment</b> goes much deeper — a written report with your Ikigai analysis, a skills-gap review, a 90-day action plan, recommended certifications, and hand-picked resources — delivered as a downloadable PDF and credited in full toward any session. <a href="#buytier">Get my assessment ↓</a>';
-                  box.appendChild(up);
+                  up.innerHTML='That is the snapshot — the <b>$50 Personalized Career Assessment</b> completes your full Career Reflection Worksheet: non-negotiables, values, future-proof skills, proximal peers, Year 1–3 milestones, and your career compass — as a downloadable PDF with my personal review notes, credited in full toward any session. <a href="#buytier">Get my assessment ↓</a>';
+                  snapBox.appendChild(up);
                   var ua=up.querySelector('a'); if(ua) ua.addEventListener('click', function(ev){ ev.preventDefault(); var bt2=document.getElementById('buytier'); if(bt2) bt2.scrollIntoView({behavior:'smooth'}); });
                 }
-                return; }
+                return;
+              }
               buf+=dec.decode(r.value,{stream:true});
               var lines=buf.split('\n'); buf=lines.pop();
               lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
-                try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; box.textContent=full; } }catch(e){} } });
+                try{ var j=JSON.parse(d); var c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content; if(c){ full+=c; snapBox.textContent=full; } }catch(e){} } });
               return pump();
             }); }
             return pump();
           })
-          .catch(function(){
-            box.hidden = full==='';
-            ist.textContent='Could not generate right now — try again, or use Ask Claude / Ask ChatGPT below.'; ist.className='cstatus err';
-            inlineBtn.disabled=false;
+          .catch(function(err){
+            snapBox.hidden = full==='';
+            var limited = err && err.status === 429;
+            if(ist){ ist.textContent = limited ? 'Quite a few requests in a short time — please wait a couple of minutes and try again.' : 'Could not generate the snapshot just now — please try again in a moment.'; ist.className='cstatus err'; }
+            snapBtn.disabled=false;
           });
       });
     }
@@ -261,16 +254,8 @@
       function markPaid(){
         aw.hidden=false;
         var bt=document.getElementById('buytier'); if(bt) bt.hidden=true;
-        var fb=document.getElementById('aigo-inline');
-        var exClaude=document.getElementById('aigo-claude'); if(exClaude) exClaude.hidden=true;
-        var exGpt=document.getElementById('aigo-chatgpt'); if(exGpt) exGpt.hidden=true;
-        if(fb && !document.getElementById('paidnote')){
-          fb.hidden=true;
-          var n=document.createElement('span'); n.id='paidnote'; n.className='cstatus';
-          n.innerHTML='✓ You have the <b>Personalized Career Assessment</b> — a deeper version of this step. <a href="#assesswrap">Generate it below</a>.';
-          n.querySelector('a').addEventListener('click', function(ev){ ev.preventDefault(); aw.scrollIntoView({behavior:'smooth'}); });
-          fb.parentNode.insertBefore(n, fb);
-        }
+        var sb=document.getElementById('snapbar'); if(sb) sb.hidden=true;
+        var sr=document.getElementById('snapresult'); if(sr) sr.hidden=true;
       }
       if(paidOk) markPaid();
       var pq=null; try{ pq=new URLSearchParams(location.search).get('paid'); }catch(e){}
@@ -482,8 +467,6 @@
         });
       }
     }
-    document.getElementById('aigo-claude').addEventListener('click', function(){ go('https://claude.ai/new?q='); });
-    document.getElementById('aigo-chatgpt').addEventListener('click', function(){ go('https://chatgpt.com/?q='); });
   }
 
   // verdict filters on CX pages
