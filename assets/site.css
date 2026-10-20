@@ -118,6 +118,7 @@ a{color:inherit}
 .qcard textarea{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:10px 12px; min-height:88px; resize:vertical}
 .qcard textarea:focus{outline:none; border-color:var(--accent)}
 .aibar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:14px 0 10px}
+.aibar[hidden]{display:none}
 .followups{margin:4px 0 30px}
 .gateoverlay[hidden]{display:none!important}
 .gateoverlay{position:fixed; inset:0; background:rgba(22,21,17,.55); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px}
