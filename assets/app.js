@@ -411,6 +411,21 @@
         var step1=document.getElementById('gstep1'), step2=document.getElementById('gstep2');
         var gm=document.getElementById('gemail');
         var who={};
+        var TS_KEY=window.TURNSTILE_SITE_KEY||'';
+        var tsWid=null;
+        function tsRender(){
+          if(!TS_KEY || tsWid!==null) return;
+          if(window.turnstile && document.getElementById('cfts')){
+            try{ tsWid=turnstile.render('#cfts', { sitekey: TS_KEY }); }catch(e){ tsWid=null; }
+            if(tsWid===null) setTimeout(function(){ tsWid=null; tsRender(); }, 800);
+          } else { setTimeout(tsRender, 300); }
+        }
+        tsRender();
+        function tsToken(){
+          if(!TS_KEY) return '';
+          try{ return turnstile.getResponse(tsWid)||''; }catch(e){ return ''; }
+        }
+        function tsReset(){ if(!TS_KEY) return; try{ turnstile.reset(tsWid); }catch(e){} }
         function gpost(data){
           return fetch(SIGNUP_ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(data) })
             .then(function(r){ return r.text(); })
@@ -418,12 +433,16 @@
         }
         function sendCode(st){
           st.textContent='Sending your code'+String.fromCharCode(8230); st.className='cstatus';
-          return gpost({ action:'start', first_name:who.first, last_name:who.last, email:who.email })
+          var tk=tsToken();
+          if(TS_KEY && !tk){ st.textContent='Please complete the verification box first.'; st.className='cstatus err'; return Promise.resolve(false); }
+          return gpost({ action:'start', first_name:who.first, last_name:who.last, email:who.email, cf_token: tk })
             .then(function(j){
+              tsReset();
               if(j.ok){ st.textContent=''; return true; }
               st.textContent = j.error==='too_many'
                 ? 'That email has requested several codes in the past hour. Please wait a while and try again.'
-                : 'Could not send the code. Check the email address and try again.';
+                : (j.error==='captcha' ? 'Verification did not pass — please complete the check and try again.'
+                : 'Could not send the code. Check the email address and try again.');
               st.className='cstatus err'; return false;
             })
             .catch(function(){ st.textContent='Could not send the code right now. Please try again.'; st.className='cstatus err'; return false; });

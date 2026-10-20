@@ -150,6 +150,8 @@ body.gated{overflow:hidden}
 .tier .cbtn{align-self:flex-start}
 .creditbox{border:1px dashed var(--accent); border-radius:11px; padding:14px 16px; margin:10px 0 16px; background:var(--faint)}
 .creditbox code{font-weight:700; background:var(--chip); padding:2px 7px; border-radius:6px}
+#cfts{margin:2px 0}
+#cfts iframe{max-width:100%}
 .askq{margin:18px 0 8px; padding:7px 13px; border-left:3px solid var(--accent); font-weight:600; background:var(--faint); border-radius:0 9px 9px 0}
 #askthread .airesult{margin-top:0}
 .airesult{position:relative}
