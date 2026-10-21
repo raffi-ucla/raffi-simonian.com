@@ -177,6 +177,10 @@ footer .ver{color:var(--faint); font-size:12px; align-self:center}
 }
 .stepcols{display:grid; grid-template-columns:1fr 1fr; gap:40px}
 .roadmap{max-width:74ch; margin:0; padding-left:22px}
+.pathway{display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin:16px 0 4px}
+.pathway .pw{background:var(--accent-soft); color:var(--accent-ink); font-weight:700; padding:7px 15px; border-radius:999px; font-size:14px; letter-spacing:.01em}
+.pathway .pwar{color:var(--faint); font-weight:700; font-size:15px}
+.pwcap{color:var(--muted); font-size:14px; max-width:74ch; margin:6px 0 18px}
 .roadmap li{margin:0 0 12px; line-height:1.6}
 @media (max-width:760px){ .ikgrid{grid-template-columns:1fr} .stepcols{grid-template-columns:1fr} }
 @media (max-width:760px){
