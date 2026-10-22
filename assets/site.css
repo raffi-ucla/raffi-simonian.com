@@ -217,6 +217,12 @@ footer .ver{color:var(--faint); font-size:12px; align-self:center}
 .pathway .pw{background:var(--accent-soft); color:var(--accent-ink); font-weight:700; padding:7px 15px; border-radius:999px; font-size:14px; letter-spacing:.01em}
 .pathway .pwar{color:var(--faint); font-weight:700; font-size:15px}
 .pwcap{color:var(--muted); font-size:14px; max-width:74ch; margin:6px 0 18px}
+.statkick{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:15px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-ink); margin:22px 0 10px}
+.statband{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin:0 0 26px; max-width:1000px}
+.statband .st{background:var(--accent-soft); border:1px solid var(--accent); border-radius:13px; padding:18px 20px}
+.statband .n{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:40px; font-weight:800; color:var(--accent-ink); line-height:1; margin:0 0 8px}
+.statband .l{font-size:13.5px; color:var(--ink); line-height:1.55}
+.statband .l a{color:var(--muted); font-size:12px}
 .roadmap li{margin:0 0 12px; line-height:1.6}
 @media (max-width:760px){ .ikgrid{grid-template-columns:1fr} .stepcols{grid-template-columns:1fr} }
 @media (max-width:760px){
