@@ -178,7 +178,7 @@
     // Testing helper: /career-plan/?reset=all wipes all saved state and reloads fresh
     try{
       if(new URLSearchParams(location.search).get('reset')==='all'){
-        ['cp-verified','cp-paid','cp-assess-md','cp-promo','cp-planform','ikigai-draft'].forEach(function(k){ localStorage.removeItem(k); });
+        ['cp-verified','cp-paid','cp-prep','cp-assess-md','cp-promo','cp-planform','ikigai-draft'].forEach(function(k){ localStorage.removeItem(k); });
         location.replace(location.pathname);
       }
     }catch(e){}
