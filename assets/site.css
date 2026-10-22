@@ -176,6 +176,7 @@ body.gated{overflow:hidden}
 .tiers{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:14px 0 8px}
 .tier{border:1px solid var(--line); border-radius:12px; padding:18px; background:var(--card); display:flex; flex-direction:column; gap:8px}
 .tier[hidden]{display:none}
+.cbtn[hidden]{display:none}
 .tier.hl{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent)}
 .tier h3{margin:0; font-family:'Bricolage Grotesque',sans-serif; font-size:17px}
 .tier .price{font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800}

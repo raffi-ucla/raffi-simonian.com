@@ -433,7 +433,7 @@
           var pp=planPrompt();
           if(pp.err){ ast.textContent=pp.err; ast.className='cstatus err'; var tgt=document.getElementById(pp.to); if(tgt) tgt.scrollIntoView({behavior:'smooth'}); return; }
           var pr=pp.prompt;
-          ago.disabled=true; ast.textContent='Building your career plan — this takes a minute or two…'; ast.className='cstatus';
+          ago.disabled=true; ast.textContent='Drafting the plan we will review in your session — this takes a minute or two…'; ast.className='cstatus';
           abox.hidden=false; abox.textContent='';
           var full='';
           fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'assessment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })
@@ -441,7 +441,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} if(arev) arev.hidden=false; saveAssessment(full); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate draft'; adl.hidden=false; var abk=document.getElementById('assessbook'); if(abk) abk.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} if(arev) arev.hidden=false; saveAssessment(full); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
@@ -468,7 +468,7 @@
       try{ savedMd=localStorage.getItem('cp-assess-md')||''; }catch(e){}
       if(prepOk && savedMd && abox){
         abox.hidden=false; abox.innerHTML=mdlite(savedMd); addCopy(abox, savedMd);
-        lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate';
+        lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate draft'; var abk2=document.getElementById('assessbook'); if(abk2) abk2.hidden=false;
         if(arev) arev.hidden=false;
       }
     }
