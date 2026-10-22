@@ -181,7 +181,8 @@ body.gated{overflow:hidden}
 .tier .price{font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800}
 .tier p{margin:0; color:var(--muted); font-size:14.5px}
 .tier .cbtn{align-self:flex-start; margin-top:auto}
-.tiernote{margin:12px 0 0; color:var(--faint); font-size:12.5px; line-height:1.5}
+.tier .tiernote{margin-top:auto; color:var(--faint); font-size:12px; line-height:1.5}
+.tier .tiernote + .cbtn{margin-top:0}
 .creditbox{border:1px dashed var(--accent); border-radius:11px; padding:14px 16px; margin:10px 0 16px; background:var(--faint)}
 .creditbox code{font-weight:700; background:var(--chip); padding:2px 7px; border-radius:6px}
 #cfts{margin:2px 0}
