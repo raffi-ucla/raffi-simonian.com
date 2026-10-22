@@ -294,29 +294,27 @@
       var lastMd='';
       var acredit=document.getElementById('assesscredit');
       var arev=document.getElementById('reviewbox');
-      var pfIds=['must','never','values','skills','when','limits'];
+      var pfIds=['model','flow','strengths','drains','knownfor','top3','dealbreakers','causes','ratewhy','tech','transfer','leverage','peers','vision','milestones','resume','when','limits'];
       var pfEls={}; pfIds.forEach(function(k){ pfEls[k]=document.getElementById('pf-'+k); });
-      try{ var pfSaved=JSON.parse(localStorage.getItem('cp-planform')||'{}'); pfIds.forEach(function(k){ if(pfEls[k]&&pfSaved[k]) pfEls[k].value=pfSaved[k]; }); }catch(e){}
-      pfIds.forEach(function(k){ if(pfEls[k]) pfEls[k].addEventListener('input', function(){
-        try{ var d={}; pfIds.forEach(function(x){ d[x]=pfEls[x]?pfEls[x].value:''; }); localStorage.setItem('cp-planform', JSON.stringify(d)); }catch(e){}
-      }); });
+      var pfLink=document.getElementById('pf-link');
+      function pfState(){ var d={}; pfIds.forEach(function(x){ d[x]=pfEls[x]?pfEls[x].value:''; }); d._link=pfLink?pfLink.value:''; d._mh=[]; document.querySelectorAll('input[name=pfmh]:checked').forEach(function(c){ d._mh.push(c.value); }); var r=document.querySelector('input[name=pfrate]:checked'); d._rate=r?r.value:''; return d; }
+      function pfSave(){ try{ localStorage.setItem('cp-planform', JSON.stringify(pfState())); }catch(e){} }
+      try{ var pfSaved=JSON.parse(localStorage.getItem('cp-planform')||'{}');
+        pfIds.forEach(function(k){ if(pfEls[k]&&pfSaved[k]) pfEls[k].value=pfSaved[k]; });
+        if(pfLink&&pfSaved._link) pfLink.value=pfSaved._link;
+        (pfSaved._mh||[]).forEach(function(v){ var c=document.querySelector('input[name=pfmh][value="'+v+'"]'); if(c) c.checked=true; });
+        if(pfSaved._rate){ var r0=document.querySelector('input[name=pfrate][value="'+pfSaved._rate+'"]'); if(r0) r0.checked=true; }
+      }catch(e){}
+      pfIds.forEach(function(k){ if(pfEls[k]) pfEls[k].addEventListener('input', pfSave); });
+      if(pfLink) pfLink.addEventListener('input', pfSave);
+      document.querySelectorAll('input[name=pfmh],input[name=pfrate]').forEach(function(c){ c.addEventListener('change', pfSave); });
       function planPrompt(){
         var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
-        var pv={}; var pfCount=0; pfIds.forEach(function(k){ pv[k]=pfEls[k]?pfEls[k].value.trim():''; if(pv[k])pfCount++; });
+        var d=pfState(); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
         if(!ikAny) return { err:'Answer at least one of the four Ikigai questions in Step 1 first — they are the foundation of your plan.', to:'ikform' };
-        if(pfCount<3) return { err:'Answer at least three of the six planning questions above — the more you give, the better your plan.', to:'planform' };
-        function nb(s){ return s||'(not answered)'; }
-        return { prompt: 'Here is my complete intake for my personalized career plan.\n\nMY IKIGAI REFLECTIONS\nWhat I love: '+nb(iv.love)+
-          '\n\nWhat I am good at: '+nb(iv.good)+
-          '\n\nWhat the world needs, that I care about: '+nb(iv.need)+
-          '\n\nWhat I can be paid for: '+nb(iv.paid)+
-          '\n\nMY PLANNING ANSWERS\nMy non-negotiables (must-haves and the tradeoffs I accept): '+nb(pv.must)+
-          '\n\nMy deal-breakers: '+nb(pv.never)+
-          '\n\nMy values and causes: '+nb(pv.values)+
-          '\n\nMy current skills and credentials: '+nb(pv.skills)+
-          '\n\nMy timeline and what achievement looks like: '+nb(pv.when)+
-          '\n\nMy constraints and resources: '+nb(pv.limits)+
-          '\n\nPlease build my detailed career project plan.' };
+        if(filled<6) return { err:'Please answer at least six of the reflection questions above — the more complete your answers, the better your plan.', to:'planform' };
+        function nb(s){ s=String(s||'').trim(); return s||'(not answered)'; }
+        return { prompt: 'Here is my complete intake for my personalized career plan.\n\nMY IKIGAI REFLECTIONS\nWhat I love: '+nb(iv.love)+'\n\nWhat I am good at: '+nb(iv.good)+'\n\nWhat the world needs, that I care about: '+nb(iv.need)+'\n\nWhat I can be paid for: '+nb(iv.paid)+'\n\nMY REFLECTION ANSWERS\nA career I admire and why: '+nb(d.model)+'\n\nActivities where I lose track of time: '+nb(d.flow)+'\n\nMy natural strengths (what others compliment): '+nb(d.strengths)+'\n\nWhat drains my energy: '+nb(d.drains)+'\n\nWhat I want to be known for in 5-10 years: '+nb(d.knownfor)+'\n\nMust-haves I checked: '+(d._mh.length?d._mh.join('; '):'(none checked)')+'\nMy top 3 non-negotiables, ranked, with tradeoffs: '+nb(d.top3)+'\n\nMy deal-breakers: '+nb(d.dealbreakers)+'\n\nCauses I care deeply about: '+nb(d.causes)+'\nHow important that my work serves these values (1-5): '+(d._rate||'(not rated)')+' — why: '+nb(d.ratewhy)+'\n\nTechnical skills I want to develop: '+nb(d.tech)+'\nTransferable skills I want to develop: '+nb(d.transfer)+'\nSkills I already have to leverage: '+nb(d.leverage)+'\n\nPeople 2-3 years ahead of me and what I can learn from them: '+nb(d.peers)+'\n\nWhere I see myself in 3-5 years: '+nb(d.vision)+'\nMilestones I imagine (Year 1/2/3): '+nb(d.milestones)+'\n\nMY PLANNING INPUTS\nMy timeline and what achievement looks like: '+nb(d.when)+'\n\nMy constraints and resources: '+nb(d.limits)+'\n\nMY RESUME (pasted text): '+nb(String(d.resume||'').slice(0,5000))+'\n\nMY PORTFOLIO / RESUME LINK (for the personal review): '+nb(d._link)+'\n\nPlease build my detailed career project plan.' };
       }
       function saveAssessment(md){
         var ep=window.SIGNUP_ENDPOINT||''; if(!ep) return;

@@ -119,6 +119,17 @@ a.ddbtn{text-decoration:none}
 .qcard details li, .followups li{margin:0 0 4px}
 .qcard textarea{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:10px 12px; min-height:88px; resize:vertical}
 .qcard textarea:focus{outline:none; border-color:var(--accent)}
+.pfhead{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:19px; letter-spacing:-.01em; margin:26px 0 2px}
+.pfhead:first-child{margin-top:4px}
+.pflede{color:var(--muted); font-size:14px; max-width:74ch; margin:0 0 12px}
+.pfgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(205px,1fr)); gap:7px 16px; margin:0 0 12px}
+.pfgrid label{display:flex; gap:8px; align-items:flex-start; font-size:14px; cursor:pointer}
+.pfgrid input{margin-top:3px; accent-color:var(--accent)}
+.pfrate{display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin:0 0 10px; font-size:14.5px}
+.pfrate label{display:flex; gap:6px; align-items:center; cursor:pointer}
+.pfrate input{accent-color:var(--accent)}
+.qcard input.pfin{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:10px 12px}
+.qcard input.pfin:focus{outline:none; border-color:var(--accent)}
 .aibar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:14px 0 10px}
 .aibar[hidden]{display:none}
 .followups{margin:4px 0 30px}
