@@ -133,6 +133,8 @@ a.ddbtn{text-decoration:none}
 .convprog{position:sticky; bottom:0; background:var(--bg); padding:12px 0 10px; z-index:5}
 .tierlist{margin:10px 0 14px; padding-left:18px; font-size:13.5px; color:var(--muted); line-height:1.55}
 .tierlist li{margin:0 0 6px}
+.tierlist.cols{columns:2; column-gap:18px}
+.tierlist.cols li{break-inside:avoid}
 .tierlist b{color:var(--ink); font-weight:600}
 .convbar{height:8px; background:var(--chip); border-radius:999px; overflow:hidden; margin:4px 0 6px}
 .convfill{height:100%; width:0%; background:var(--accent); border-radius:999px; transition:width .4s ease}
