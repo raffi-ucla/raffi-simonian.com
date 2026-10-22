@@ -223,7 +223,7 @@
                 var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-paid'); }catch(e){}
                 if(!isPaid){
                   var up=document.createElement('p'); up.className='upsell';
-                  up.innerHTML='That is the snapshot — the <b>$50 Personalized Career Assessment</b> completes your full Career Reflection Worksheet: non-negotiables, values, future-proof skills, proximal peers, Year 1–3 milestones, and your career compass — as a downloadable PDF with my personal review notes, credited in full toward any session. <a href="#buytier">Get my assessment ↓</a>';
+                  up.innerHTML='That is the snapshot — the <b>$50 Personalized Career Assessment</b> turns your answers into a full career project plan: your direction, where you stand today, your first year month by month, and a 3-year roadmap — as a downloadable PDF with my personal review notes, credited in full toward any session. <a href="#buytier">Get my plan ↓</a>';
                   snapBox.appendChild(up);
                   var ua=up.querySelector('a'); if(ua) ua.addEventListener('click', function(ev){ ev.preventDefault(); var bt2=document.getElementById('buytier'); if(bt2) bt2.scrollIntoView({behavior:'smooth'}); });
                 }
@@ -294,6 +294,30 @@
       var lastMd='';
       var acredit=document.getElementById('assesscredit');
       var arev=document.getElementById('reviewbox');
+      var pfIds=['must','never','values','skills','when','limits'];
+      var pfEls={}; pfIds.forEach(function(k){ pfEls[k]=document.getElementById('pf-'+k); });
+      try{ var pfSaved=JSON.parse(localStorage.getItem('cp-planform')||'{}'); pfIds.forEach(function(k){ if(pfEls[k]&&pfSaved[k]) pfEls[k].value=pfSaved[k]; }); }catch(e){}
+      pfIds.forEach(function(k){ if(pfEls[k]) pfEls[k].addEventListener('input', function(){
+        try{ var d={}; pfIds.forEach(function(x){ d[x]=pfEls[x]?pfEls[x].value:''; }); localStorage.setItem('cp-planform', JSON.stringify(d)); }catch(e){}
+      }); });
+      function planPrompt(){
+        var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
+        var pv={}; var pfCount=0; pfIds.forEach(function(k){ pv[k]=pfEls[k]?pfEls[k].value.trim():''; if(pv[k])pfCount++; });
+        if(!ikAny) return { err:'Answer at least one of the four Ikigai questions in Step 1 first — they are the foundation of your plan.', to:'ikform' };
+        if(pfCount<3) return { err:'Answer at least three of the six planning questions above — the more you give, the better your plan.', to:'planform' };
+        function nb(s){ return s||'(not answered)'; }
+        return { prompt: 'Here is my complete intake for my personalized career plan.\n\nMY IKIGAI REFLECTIONS\nWhat I love: '+nb(iv.love)+
+          '\n\nWhat I am good at: '+nb(iv.good)+
+          '\n\nWhat the world needs, that I care about: '+nb(iv.need)+
+          '\n\nWhat I can be paid for: '+nb(iv.paid)+
+          '\n\nMY PLANNING ANSWERS\nMy non-negotiables (must-haves and the tradeoffs I accept): '+nb(pv.must)+
+          '\n\nMy deal-breakers: '+nb(pv.never)+
+          '\n\nMy values and causes: '+nb(pv.values)+
+          '\n\nMy current skills and credentials: '+nb(pv.skills)+
+          '\n\nMy timeline and what achievement looks like: '+nb(pv.when)+
+          '\n\nMy constraints and resources: '+nb(pv.limits)+
+          '\n\nPlease build my detailed career project plan.' };
+      }
       function saveAssessment(md){
         var ep=window.SIGNUP_ENDPOINT||''; if(!ep) return;
         var em=''; try{ em=localStorage.getItem('cp-verified')||''; }catch(e){}
@@ -343,9 +367,10 @@
       }
       if(ago && AI_ENDPOINT){
         ago.addEventListener('click', function(){
-          var pr=ikPrompt();
-          if(!pr){ ast.textContent='Please answer at least one of the four Step 1 questions above, then generate.'; ast.className='cstatus err'; var ikf0=document.getElementById('ikform'); if(ikf0) ikf0.scrollIntoView({behavior:'smooth'}); return; }
-          ago.disabled=true; ast.textContent='Writing your assessment — this takes about a minute…'; ast.className='cstatus';
+          var pp=planPrompt();
+          if(pp.err){ ast.textContent=pp.err; ast.className='cstatus err'; var tgt=document.getElementById(pp.to); if(tgt) tgt.scrollIntoView({behavior:'smooth'}); return; }
+          var pr=pp.prompt;
+          ago.disabled=true; ast.textContent='Building your career plan — this takes a minute or two…'; ast.className='cstatus';
           abox.hidden=false; abox.textContent='';
           var full='';
           fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'assessment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ prompt: pr }) })

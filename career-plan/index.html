@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mvipj3ix">
+<link rel="stylesheet" href="/assets/site.css?v=mvjl4c1l">
 <script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";window.SIGNUP_ENDPOINT="https://script.google.com/macros/s/AKfycbwzaHCGChoM6R8sI6Q4tpxUAkqR6Nd-DsqDBBAX3F5Ylp9NvBrLET5a0fTGLWp4o3AFNQ/exec";window.TURNSTILE_SITE_KEY="0x4AAAAAAFdy7jp-l1yYflY8";</script><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
@@ -100,7 +100,7 @@
 </div>
 </div>
 <h2 class="secttl">Step 2 &middot; Career Exploration: discover your options</h2>
-<p class="sectsub">There are over 900 careers in 14 industry clusters &mdash; most people never see the full menu. Start with a free snapshot: the themes where your answers overlap and three directions worth exploring. Your <b>Personalized Career Assessment</b> (Step 5 below) then completes your Career Reflection Worksheet in depth &mdash; non-negotiables, values, future-proof skills, proximal peers, and year-by-year milestones &mdash; with my personal review.</p>
+<p class="sectsub">There are over 900 careers in 14 industry clusters &mdash; most people never see the full menu. Start with a free snapshot: the themes where your answers overlap and three directions worth exploring. Your <b>Personalized Career Assessment</b> (Step 5 below) then turns your answers into a full career project plan &mdash; your first year month by month across learning, networking, interviews, and search tactics, plus a 3-year roadmap &mdash; with my personal review.</p>
 <div class="aibar" id="snapbar"><button type="button" class="cbtn" id="snapgo">Get my free snapshot</button><span class="cstatus" id="ikstatus" role="status"></span></div>
 <div class="airesult" id="snapresult" hidden></div>
 <h2 class="secttl">Step 3 &middot; Career Planning: set a direction</h2>
@@ -124,15 +124,47 @@
 <h2 class="secttl">Step 5 &middot; Go deeper</h2>
 <p class="sectsub">The AI gives you the map &mdash; here is how to turn it into your plan. Pick your depth:</p>
 <div class="tiers">
-<div class="tier hl" id="buytier"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>Your <b>Career Reflection Worksheet</b>, completed for you from your Ikigai answers &mdash; know yourself, your non-negotiables, values, future-proof skills, proximal peers, and Year 1&ndash;3 milestones &mdash; generated instantly as a downloadable PDF. Then I review it personally and email you my notes within 48 hours. Credited in full toward any coaching session.</p><p><a href="/assets/sample-career-assessment.pdf" target="_blank" rel="noopener">See a sample assessment (PDF) &rarr;</a></p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
+<div class="tier hl" id="buytier"><h3>Personalized Career Assessment</h3><div class="price">$50</div><p>Your personal <b>career project plan</b>, built from your Ikigai plus six planning questions &mdash; your direction, where you stand today, your first year month by month across learning, networking, interviews, and search tactics, and a 3-year roadmap to your own definition of achievement &mdash; generated instantly as a downloadable PDF. Then I review it personally and email you my notes within 48 hours. Credited in full toward any coaching session.</p><p><a href="/assets/sample-career-assessment.pdf" target="_blank" rel="noopener">See a sample assessment (PDF) &rarr;</a></p><a class="cbtn" id="buyassess" href="https://buy.stripe.com/4gM7sL5pbgW60da7Vf5J600" target="_blank" rel="noopener">Get my assessment</a></div>
 <div class="tier"><h3>Coaching Sessions</h3><div class="price">$75 / $125</div><p>Career Launch for students &amp; new grads ($75, 45 min) or Career Strategy for seasoned professionals ($125, 1 hour) &mdash; live, one on one.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book a session</a></div>
 <div class="tier"><h3>Business &amp; Technology Consulting</h3><div class="price">$200 / hr</div><p>For organizations, founders, and teams: CRM and technology strategy, AI adoption, and program design &mdash; hands-on help from a practitioner.</p><a class="cbtn sec" href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book consulting</a></div>
 <div class="tier"><h3>Custom Training</h3><div class="price">Custom</div><p>Workshops, bootcamps, and courses designed for your team or institution &mdash; project management, AI adoption, design thinking, and train-the-trainer programs, delivered live or virtually.</p><a class="cbtn sec" href="/contact/">Start a conversation</a></div>
 </div>
 <div id="assesswrap" hidden>
 <h2 class="secttl">Your Personalized Career Assessment</h2>
-<p class="sectsub">Thank you for your purchase. Make your four Ikigai answers above as complete as you can, then generate &mdash; you can regenerate after refining your answers. Every assessment also gets my personal review: I email you my notes within 48 hours.</p>
-<div class="aibar"><button type="button" class="cbtn" id="assessgo">Generate my assessment</button><button type="button" class="cbtn sec" id="assessdl" hidden>Download PDF</button><span class="cstatus" id="assessstatus" role="status"></span></div>
+<p class="sectsub">Thank you for your purchase. Your four Ikigai answers above carry over automatically &mdash; now answer the six planning questions below (about 5 minutes), and your career project plan is built from all of it: your first year month by month, plus a 3-year roadmap to your own definition of achievement. You can regenerate after refining any answer. Every plan also gets my personal review: I email you my notes within 48 hours.</p>
+<div id="planform">
+<div class="qcard">
+<h3>1. Your non-negotiables</h3>
+<p class="sub">What must a role offer for you to say yes? Name your top three &mdash; mission, pay floor, growth, flexibility, culture &mdash; and the tradeoff you would accept for each.</p>
+<textarea id="pf-must" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>2. Your deal-breakers</h3>
+<p class="sub">What would make you walk away from an otherwise good offer? Kinds of work that drain you, cultures, schedules, commutes.</p>
+<textarea id="pf-never" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>3. Values &amp; causes</h3>
+<p class="sub">Which causes or kinds of impact matter enough to shape where you work &mdash; and how closely must your employer&rsquo;s mission match them?</p>
+<textarea id="pf-values" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>4. Skills &amp; credentials today</h3>
+<p class="sub">Your current inventory: degrees and certificates (done or in progress), technical skills, people skills, and anything you can show &mdash; projects, a portfolio, numbers.</p>
+<textarea id="pf-skills" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>5. Your timeline</h3>
+<p class="sub">When do you need the next role, and what does achievement look like by then? For example: employed in the field within 9 months; promoted within 2 years; business launched by 2028.</p>
+<textarea id="pf-when" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+<div class="qcard">
+<h3>6. Constraints &amp; resources</h3>
+<p class="sub">What the plan must work around and with: location or relocation limits, hours per week you can invest, budget for courses, family commitments, visa or licensing requirements.</p>
+<textarea id="pf-limits" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
+</div>
+</div>
+<div class="aibar"><button type="button" class="cbtn" id="assessgo">Generate my career plan</button><button type="button" class="cbtn sec" id="assessdl" hidden>Download PDF</button><span class="cstatus" id="assessstatus" role="status"></span></div>
 <div class="airesult" id="assessresult" hidden></div>
 <div class="creditbox" id="assesscredit" hidden><b>Your $50 credit:</b> your personal one-time promo code is <code id="promocode">loading&hellip;</code> &mdash; use it when booking any session and the assessment price is credited in full. <a href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book now &rarr;</a></div>
 <div class="creditbox" id="reviewbox" hidden><b>My personal review:</b> I read every assessment myself and will email you my notes &mdash; what the AI got right, what it missed, and the first move I would make &mdash; within 48 hours. Have not heard from me? <a href="/contact/">Contact me</a>.</div>
@@ -170,10 +202,10 @@
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
-  <span class="ver">v100</span>
+  <span class="ver">v101</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=mvipj3ix"></script>
+<script src="/assets/app.js?v=mvjl4c1l"></script>
 
 </body>
 </html>
