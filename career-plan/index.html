@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="An interactive career framework by Raffi Simonian: reflect on your Ikigai, generate AI-powered career recommendations, and build a skills-based plan.">
 <meta name="twitter:image" content="https://raffi-simonian.com/assets/raffi.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mvjljwmm">
+<link rel="stylesheet" href="/assets/site.css?v=mvjmkn67">
 <script>window.AI_ENDPOINT="https://career-ai.rsimonian.workers.dev/";window.SIGNUP_ENDPOINT="https://script.google.com/macros/s/AKfycbwzaHCGChoM6R8sI6Q4tpxUAkqR6Nd-DsqDBBAX3F5Ylp9NvBrLET5a0fTGLWp4o3AFNQ/exec";window.TURNSTILE_SITE_KEY="0x4AAAAAAFdy7jp-l1yYflY8";</script><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
@@ -131,7 +131,7 @@
 </div>
 <div id="assesswrap" hidden>
 <h2 class="secttl">Your Personalized Career Assessment</h2>
-<p class="sectsub">Thank you for your purchase. Your four Ikigai answers above carry over automatically &mdash; now complete the reflection form below (10&ndash;15 unhurried minutes &mdash; every answer auto-saves on this device), and your career project plan is built from all of it: your first year month by month, plus a 3-year roadmap to your own definition of achievement. You can regenerate after refining any answer. Every plan also gets my personal review: I email you my notes within 48 hours.</p>
+<p class="sectsub">Thank you for your purchase. Your four Ikigai answers above carry over automatically &mdash; the questions they already answer come pre-filled and marked below. Now complete the reflection form (10&ndash;15 unhurried minutes &mdash; every answer auto-saves on this device), and your career project plan is built from all of it: your first year month by month, plus a 3-year roadmap to your own definition of achievement. You can regenerate after refining any answer. Every plan also gets my personal review: I email you my notes within 48 hours.</p>
 <div id="planform">
 <h3 class="pfhead">Part 1 &middot; Know yourself</h3>
 <p class="pflede">We are shaped constantly by social media, family expectations, and stories about success. These questions cut through that noise &mdash; there are no right or wrong answers, only honest ones.</p>
@@ -143,11 +143,13 @@
 <div class="qcard">
 <h3>2. What makes you lose track of time?</h3>
 <p class="sub">Moments of real engagement &mdash; the activities that feel both effortless and energizing to you.</p>
+<p class="pfnote" id="pfnote-flow" hidden>&#10003; Pre-filled from Step 1 &mdash; &ldquo;What do you love?&rdquo;. Edit here to refine it.</p>
 <textarea id="pf-flow" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
 </div>
 <div class="qcard">
 <h3>3. What are your natural strengths?</h3>
 <p class="sub">Not just resume skills &mdash; the things people compliment you on, or that feel easy to you but hard for others.</p>
+<p class="pfnote" id="pfnote-strengths" hidden>&#10003; Pre-filled from Step 1 &mdash; &ldquo;What are you good at?&rdquo;. Edit here to refine it.</p>
 <textarea id="pf-strengths" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
 </div>
 <div class="qcard">
@@ -178,6 +180,7 @@
 <div class="qcard">
 <h3>8. What issues or causes do you care deeply about?</h3>
 <p class="sub">Think beyond work: environmental sustainability, education access, healthcare, economic opportunity, creative expression, social justice &mdash; whatever matters to you in the world.</p>
+<p class="pfnote" id="pfnote-causes" hidden>&#10003; Pre-filled from Step 1 &mdash; &ldquo;What does the world need?&rdquo;. Edit here to refine it.</p>
 <textarea id="pf-causes" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
 </div>
 <div class="qcard">
@@ -201,6 +204,7 @@
 <div class="qcard">
 <h3>11. Which skills do you already have to leverage?</h3>
 <p class="sub">What you already bring from coursework, internships, projects, jobs, or extracurriculars &mdash; recognize it before you build more.</p>
+<p class="pfnote" id="pfnote-leverage" hidden>&#10003; Pre-filled from Step 1 &mdash; &ldquo;What can you be paid for?&rdquo;. Edit here to refine it.</p>
 <textarea id="pf-leverage" rows="3" placeholder="Write as much detail as you like&hellip;"></textarea>
 </div>
 <h3 class="pfhead">Part 5 &middot; Find your proximal peers</h3>
@@ -285,10 +289,10 @@
 </main>
 <footer>
   <span>&copy; 2026 Raffi Simonian &middot; Los Angeles</span>
-  <span class="ver">v102</span>
+  <span class="ver">v103</span>
 </footer>
 </div>
-<script src="/assets/app.js?v=mvjljwmm"></script>
+<script src="/assets/app.js?v=mvjmkn67"></script>
 
 </body>
 </html>

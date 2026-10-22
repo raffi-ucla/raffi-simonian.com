@@ -297,8 +297,9 @@
       var pfIds=['model','flow','strengths','drains','knownfor','top3','dealbreakers','causes','ratewhy','tech','transfer','leverage','peers','vision','milestones','resume','when','limits'];
       var pfEls={}; pfIds.forEach(function(k){ pfEls[k]=document.getElementById('pf-'+k); });
       var pfLink=document.getElementById('pf-link');
-      function pfState(){ var d={}; pfIds.forEach(function(x){ d[x]=pfEls[x]?pfEls[x].value:''; }); d._link=pfLink?pfLink.value:''; d._mh=[]; document.querySelectorAll('input[name=pfmh]:checked').forEach(function(c){ d._mh.push(c.value); }); var r=document.querySelector('input[name=pfrate]:checked'); d._rate=r?r.value:''; return d; }
-      function pfSave(){ try{ localStorage.setItem('cp-planform', JSON.stringify(pfState())); }catch(e){} }
+      var pfSync={};
+      function pfState(forPrompt){ var d={}; pfIds.forEach(function(x){ var v=pfEls[x]?pfEls[x].value:''; d[x]=(pfSync[x]&&!forPrompt)?'':v; }); d._link=pfLink?pfLink.value:''; d._mh=[]; document.querySelectorAll('input[name=pfmh]:checked').forEach(function(c){ d._mh.push(c.value); }); var r=document.querySelector('input[name=pfrate]:checked'); d._rate=r?r.value:''; return d; }
+      function pfSave(){ try{ localStorage.setItem('cp-planform', JSON.stringify(pfState(false))); }catch(e){} }
       try{ var pfSaved=JSON.parse(localStorage.getItem('cp-planform')||'{}');
         pfIds.forEach(function(k){ if(pfEls[k]&&pfSaved[k]) pfEls[k].value=pfSaved[k]; });
         if(pfLink&&pfSaved._link) pfLink.value=pfSaved._link;
@@ -308,9 +309,18 @@
       pfIds.forEach(function(k){ if(pfEls[k]) pfEls[k].addEventListener('input', pfSave); });
       if(pfLink) pfLink.addEventListener('input', pfSave);
       document.querySelectorAll('input[name=pfmh],input[name=pfrate]').forEach(function(c){ c.addEventListener('change', pfSave); });
+      var IKMAP={flow:'love', strengths:'good', causes:'need', leverage:'paid'};
+      Object.keys(IKMAP).forEach(function(pk){
+        var ik=tas[IKMAP[pk]], pf=pfEls[pk], nt=document.getElementById('pfnote-'+pk);
+        if(!ik||!pf) return;
+        function apply(){ if(pfSync[pk]){ pf.value=ik.value; if(nt) nt.hidden=!ik.value.trim(); } }
+        if(!pf.value.trim()){ pfSync[pk]=true; apply(); }
+        ik.addEventListener('input', apply);
+        pf.addEventListener('input', function(){ if(pfSync[pk]){ pfSync[pk]=false; if(nt) nt.hidden=true; } pfSave(); });
+      });
       function planPrompt(){
         var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
-        var d=pfState(); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
+        var d=pfState(true); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
         if(!ikAny) return { err:'Answer at least one of the four Ikigai questions in Step 1 first — they are the foundation of your plan.', to:'ikform' };
         if(filled<6) return { err:'Please answer at least six of the reflection questions above — the more complete your answers, the better your plan.', to:'planform' };
         function nb(s){ s=String(s||'').trim(); return s||'(not answered)'; }
