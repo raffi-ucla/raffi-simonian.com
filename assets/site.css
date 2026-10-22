@@ -39,7 +39,7 @@ a{color:inherit}
 .nl:hover{color:var(--ink)}
 .nl.on{color:var(--accent-ink); border-bottom-color:var(--accent);}
 .dd{position:relative; display:flex; align-items:center}
-.ddbtn{background:none; border:none; cursor:pointer; font-family:inherit;}
+.ddbtn{background:none; cursor:pointer; font-family:inherit;}
 .caret{font-size:10px; opacity:.7; margin-left:2px}
 .ddmenu{position:absolute; top:calc(100% + 10px); left:0; background:var(--card); border:1px solid var(--line);
   border-radius:10px; padding:6px; min-width:250px; display:none; flex-direction:column; gap:1px;
