@@ -227,12 +227,12 @@
                 snapBox.innerHTML=mdlite(full);
                 if(ist) ist.textContent='';
                 snapBtn.disabled=false; snapBtn.textContent='Refresh my snapshot';
-                var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-paid'); }catch(e){}
+                var isPaid=false; try{ isPaid=!!(localStorage.getItem('cp-paid')||localStorage.getItem('cp-prep')); }catch(e){}
                 if(!isPaid){
                   var up=document.createElement('p'); up.className='upsell';
-                  up.innerHTML='That is the snapshot — the <b>$50 Personalized Career Assessment</b> turns your answers into a full career project plan: your direction, where you stand today, your first year month by month, and a 3-year roadmap — as a downloadable PDF with my personal review notes, credited in full toward any session. <a href="#buytier">Get my plan ↓</a>';
+                  up.innerHTML='That is the snapshot — book a <b>coaching session</b> and your included prep intake turns these answers into a full career project plan (first year month by month, 3-year roadmap) that we review together, live. <a href="#coachtier">See sessions ↓</a>';
                   snapBox.appendChild(up);
-                  var ua=up.querySelector('a'); if(ua) ua.addEventListener('click', function(ev){ ev.preventDefault(); var bt2=document.getElementById('buytier'); if(bt2) bt2.scrollIntoView({behavior:'smooth'}); });
+                  var ua=up.querySelector('a'); if(ua) ua.addEventListener('click', function(ev){ ev.preventDefault(); var bt2=document.getElementById('coachtier'); if(bt2) bt2.scrollIntoView({behavior:'smooth'}); });
                 }
                 return;
               }
@@ -258,13 +258,22 @@
       var PAID_DIGEST='65880756e9705e3a968122f51b760c0f728178bcff4330921f294aa73102a1cf';
       var paidOk=false;
       try{ paidOk=!!localStorage.getItem('cp-paid'); }catch(e){}
-      function markPaid(){
-        aw.hidden=false;
-        var bt=document.getElementById('buytier'); if(bt) bt.hidden=true;
-        var sb=document.getElementById('snapbar'); if(sb) sb.hidden=true;
-        var sr=document.getElementById('snapresult'); if(sr) sr.hidden=true;
+      function markPaid(){ aw.hidden=false; }
+      var prepOk=false; try{ prepOk=!!localStorage.getItem('cp-prep'); }catch(e){}
+      if(paidOk || prepOk) markPaid();
+      var bookBtn=document.getElementById('bookprep');
+      if(bookBtn){
+        bookBtn.addEventListener('click', function(ev){
+          if(aw.hidden){
+            ev.preventDefault();
+            try{ localStorage.setItem('cp-prep','1'); }catch(e){}
+            markPaid();
+            try{ aw.scrollIntoView({behavior:'smooth'}); }catch(e){}
+            bookBtn.textContent='Continue to booking →';
+          }
+          // second click (prep already open) follows the link to EveryExpert
+        });
       }
-      if(paidOk) markPaid();
       var pq=null; try{ pq=new URLSearchParams(location.search).get('paid'); }catch(e){}
       if(pq && window.crypto && crypto.subtle){
         crypto.subtle.digest('SHA-256', new TextEncoder().encode(pq)).then(function(buf){
@@ -277,29 +286,11 @@
           }
         });
       }
-      var promoEl=document.getElementById('promocode');
-      function claimPromo(){
-        if(!promoEl) return;
-        var cached=null; try{ cached=localStorage.getItem('cp-promo'); }catch(e){}
-        if(cached){ promoEl.textContent=cached; return; }
-        var ep=window.SIGNUP_ENDPOINT||'';
-        var token=''; try{ token=localStorage.getItem('cp-paid')||''; }catch(e){}
-        function fail(){ promoEl.parentNode.innerHTML='<b>Your $50 credit:</b> within 24 hours I will personally email your one-time promo code to the email you used at checkout — use it when booking any session and the full $50 is credited. Need it sooner? <a href="/contact/">Contact me</a>. <a href="https://www.everyexpert.com/raffisimonian" target="_blank" rel="noopener">Book now →</a>'; }
-        if(!ep || !token){ fail(); return; }
-        fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'claim_code', paid: token, page:'career-plan' }) })
-          .then(function(res){ return res.json(); })
-          .then(function(j){
-            if(j && j.ok && j.code){ promoEl.textContent=j.code; try{ localStorage.setItem('cp-promo', j.code); }catch(e){} }
-            else fail();
-          })
-          .catch(fail);
-      }
       var ago=document.getElementById('assessgo');
       var ast=document.getElementById('assessstatus');
       var abox=document.getElementById('assessresult');
       var adl=document.getElementById('assessdl');
       var lastMd='';
-      var acredit=document.getElementById('assesscredit');
       var arev=document.getElementById('reviewbox');
       var pfIds=['model','flow','strengths','drains','knownfor','top3','dealbreakers','causes','ratewhy','tech','transfer','leverage','peers','vision','milestones','resume','when','limits'];
       var pfEls={}; pfIds.forEach(function(k){ pfEls[k]=document.getElementById('pf-'+k); });
@@ -397,142 +388,7 @@
           });
         });
       }
-      // ---- Guided conversation intake ----
-      var convW=document.getElementById('convwrap'), convT=document.getElementById('convthread');
-      var convF=document.getElementById('convfill'), convL=document.getElementById('convlabel');
-      var pform=document.getElementById('planform');
-      if(convW && convT && pform){
-        pform.hidden=true; convW.hidden=false;
-        var abar=document.querySelector('#assesswrap .aibar'); if(abar) abar.hidden=true;
-        function escT(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
-        var steps=[]; var curSec=null;
-        Array.prototype.forEach.call(Array.prototype.slice.call(pform.children), function(el){
-          if(el.classList && el.classList.contains('pfhead')) curSec={ h: el.textContent, lede:'' };
-          else if(el.classList && el.classList.contains('pflede')){ if(curSec) curSec.lede=el.textContent; }
-          else if(el.classList && el.classList.contains('qcard')){
-            var ancr=document.createComment('conv-anchor');
-            pform.insertBefore(ancr, el);
-            var ta=el.querySelector('textarea'); var pin=el.querySelector('input.pfin');
-            var isResume=!!el.querySelector('#pf-resume'); var isLink=!!el.querySelector('#pf-link');
-            steps.push({ card: el, anchor: ancr, sec: curSec, ta: ta, pin: pin, ai: !isResume && !isLink && !!ta,
-              title: (el.querySelector('h3')||{}).textContent || '' });
-            curSec=null;
-          }
-        });
-        function stepText(st){
-          if(st.ta && st.ta.value.trim()) return st.ta.value.trim();
-          if(st.pin && st.pin.value.trim()) return st.pin.value.trim();
-          return '';
-        }
-        function stepFilled(st){
-          if(stepText(st)) return true;
-          if(st.card.querySelector('input[name=pfmh]:checked')) return true;
-          if(st.card.querySelector('input[name=pfrate]:checked')) return true;
-          return false;
-        }
-        function filledCount(){ var n=0; steps.forEach(function(s){ if(stepFilled(s)) n++; }); return n; }
-        function bar(active){
-          var n=filledCount();
-          convF.style.width=Math.round(n/steps.length*100)+'%';
-          convL.textContent = active!==null ? ('Question '+(active+1)+' of '+steps.length+'  ·  '+n+' answered') : (n+' of '+steps.length+' answered');
-        }
-        function bub(cls, html){ var d=document.createElement('div'); d.className=cls; d.innerHTML=html; convT.appendChild(d); return d; }
-        function seeB(el){ try{ el.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){} }
-        function echoFor(st){
-          var t=stepText(st);
-          var mh=[]; st.card.querySelectorAll('input[name=pfmh]:checked').forEach(function(c){ mh.push(c.value); });
-          var r=st.card.querySelector('input[name=pfrate]:checked');
-          var parts=[];
-          if(mh.length) parts.push('Checked: '+mh.join(', '));
-          if(r) parts.push('Rating: '+r.value+'/5');
-          if(st.card.querySelector('#pf-resume') && pfFileName) parts.push('Uploaded: '+pfFileName);
-          if(t) parts.push(t.length>220 ? t.slice(0,220)+'…' : t);
-          return parts.join('  ·  ');
-        }
-        var scripted=['Got it.','Noted — thank you.','Perfect, moving on.','Thanks — that helps.'];
-        var sIdx=0; function nextScripted(){ sIdx=(sIdx+1)%scripted.length; return scripted[sIdx]; }
-        var pos=0; var running=false;
-        function firstUnfilled(){ for(var i=0;i<steps.length;i++){ if(!stepFilled(steps[i])) return i; } return steps.length; }
-        function putBack(st){ st.anchor.parentNode.insertBefore(st.card, st.anchor.nextSibling); }
-        function finish(){
-          bar(null);
-          var hasPlan = abox && !abox.hidden && abox.textContent.length > 10;
-          var d=bub('convai','<b>That’s everything — thank you.</b> '+filledCount()+' of '+steps.length+' answered. '+(hasPlan?'Your plan is below — review any answer or regenerate anytime.':'Review any answer below, or generate your plan now.'));
-          var bt=document.createElement('div'); bt.className='convbtns';
-          function reveal(){ if(abar) abar.hidden=false; if(bt.parentNode) bt.parentNode.removeChild(bt); }
-          var rb=document.createElement('button'); rb.type='button'; rb.className='cbtn sec'; rb.textContent='Review & edit all answers';
-          rb.addEventListener('click', function(){ reveal(); pform.hidden=false; seeB(pform); });
-          if(!hasPlan){
-            var gb=document.createElement('button'); gb.type='button'; gb.className='cbtn'; gb.textContent='Generate my career plan';
-            gb.addEventListener('click', function(){ reveal(); var g=document.getElementById('assessgo'); if(g){ g.click(); seeB(g); } });
-            bt.appendChild(gb);
-          } else if(abar){ abar.hidden=false; }
-          bt.appendChild(rb); d.appendChild(bt); seeB(d);
-        }
-        function ask(i){
-          if(i>=steps.length){ finish(); return; }
-          pos=i; bar(i);
-          var st=steps[i];
-          if(st.sec) bub('convsec','<b>'+escT(st.sec.h)+'</b><br>'+escT(st.sec.lede));
-          var wrap=document.createElement('div'); wrap.className='convstep';
-          wrap.appendChild(st.card);
-          var bt=document.createElement('div'); bt.className='convbtns';
-          var cb=document.createElement('button'); cb.type='button'; cb.className='cbtn'; cb.textContent='Continue';
-          var sk=document.createElement('button'); sk.type='button'; sk.className='convskip'; sk.textContent='Skip for now';
-          bt.appendChild(cb); bt.appendChild(sk); wrap.appendChild(bt);
-          convT.appendChild(wrap); seeB(wrap);
-          var f=st.ta||st.pin; if(f){ try{ f.focus({preventScroll:true}); }catch(e){} }
-          var done=false;
-          function advance(){ if(done) return; done=true; putBack(st); wrap.parentNode && wrap.parentNode.removeChild(wrap); ask(i+1); }
-          sk.addEventListener('click', function(){ bub('convme','(skipped)'); advance(); });
-          cb.addEventListener('click', function(){
-            var txt=stepText(st);
-            if(!stepFilled(st)){ cb.textContent='Nothing yet — answer above or Skip'; setTimeout(function(){ cb.textContent='Continue'; }, 1800); return; }
-            if(done) return; done=true;
-            bub('convme', escT(echoFor(st)));
-            putBack(st); wrap.parentNode && wrap.parentNode.removeChild(wrap);
-            bar(i);
-            if(st.ai && txt && AI_ENDPOINT){
-              var dots=bub('convdots','…'); seeB(dots);
-              fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'intake', { method:'POST', headers:{'Content-Type':'application/json'},
-                body: JSON.stringify({ q: st.title+' '+((st.card.querySelector('.sub')||{}).textContent||''), a: txt.slice(0,2000) }) })
-              .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-              .then(function(j){
-                dots.remove();
-                bub('convai', escT(j.ack||nextScripted()));
-                if(j.follow){
-                  var fw=bub('convai convfollow', escT(j.follow));
-                  var fta=document.createElement('textarea'); fw.appendChild(fta);
-                  var fb=document.createElement('div'); fb.className='convbtns';
-                  var fc=document.createElement('button'); fc.type='button'; fc.className='cbtn'; fc.textContent='Continue';
-                  var fs2=document.createElement('button'); fs2.type='button'; fs2.className='convskip'; fs2.textContent='Skip';
-                  fb.appendChild(fc); fb.appendChild(fs2); fw.appendChild(fb); seeB(fw);
-                  try{ fta.focus({preventScroll:true}); }catch(e){}
-                  var fdone=false;
-                  function fadv(){ if(fdone) return; fdone=true; fc.disabled=true; fs2.disabled=true; fta.disabled=true; bub('convai', nextScripted()); ask(i+1); }
-                  fc.addEventListener('click', function(){
-                    var fr=fta.value.trim();
-                    if(fr && st.ta){ st.ta.value=st.ta.value+String.fromCharCode(10)+fr; try{ st.ta.dispatchEvent(new Event('input')); }catch(e){} bub('convme', escT(fr.length>220?fr.slice(0,220)+'…':fr)); }
-                    fadv();
-                  });
-                  fs2.addEventListener('click', fadv);
-                } else { ask(i+1); }
-              })
-              .catch(function(){ try{ dots.remove(); }catch(e){} bub('convai', nextScripted()); ask(i+1); });
-            } else {
-              bub('convai', nextScripted());
-              ask(i+1);
-            }
-          });
-        }
-        var startAt=firstUnfilled();
-        if(startAt>=steps.length){ finish(); }
-        else {
-          if(startAt>0) bub('convai','Welcome back — picking up where you left off.');
-          else bub('convai','Let’s build your plan. I’ll ask one question at a time — take your time, everything saves as you type.');
-          ask(startAt);
-        }
-      }
+
       function planPrompt(){
         var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
         var d=pfState(true); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
@@ -601,7 +457,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} acredit.hidden=false; if(arev) arev.hidden=false; claimPromo(); saveAssessment(full); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate'; adl.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} if(arev) arev.hidden=false; saveAssessment(full); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
@@ -629,7 +485,6 @@
       if(paidOk && savedMd && abox){
         abox.hidden=false; abox.innerHTML=mdlite(savedMd); addCopy(abox, savedMd);
         lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate';
-        if(acredit){ acredit.hidden=false; claimPromo(); }
         if(arev) arev.hidden=false;
       }
     }
