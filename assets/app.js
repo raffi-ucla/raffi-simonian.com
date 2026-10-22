@@ -394,7 +394,7 @@
         s.onload=function(){ if(window.jspdf && window.jspdf.jsPDF) cb(window.jspdf.jsPDF); else fail(); };
         s.onerror=fail; document.head.appendChild(s);
       }
-      function assessPdf(jsPDF, md){
+      function assessDoc(jsPDF, md){
         var doc=new jsPDF({ unit:'pt', format:'letter' });
         var W=612, H=792, M=58, maxW=W-M*2, y=M+12;
         function need(h){ if(y+h>H-M-14){ doc.addPage(); y=M+6; } }
@@ -426,7 +426,19 @@
         var n=doc.getNumberOfPages();
         for(var p2=1;p2<=n;p2++){ doc.setPage(p2); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(150);
           doc.text('raffi-simonian.com  ·  page '+p2+' of '+n, W/2, H-26, {align:'center'}); }
-        doc.save('Personalized-Career-Assessment.pdf');
+        return doc;
+      }
+      function assessPdf(jsPDF, md){ assessDoc(jsPDF, md).save('Personalized-Career-Assessment.pdf'); }
+      function archivePdf(md){
+        withJsPDF(function(jsPDF){
+          try{
+            var b64=assessDoc(jsPDF, md).output('datauristring').split(',')[1];
+            var ep=window.SIGNUP_ENDPOINT||''; if(!ep||!b64) return;
+            var em=''; try{ em=localStorage.getItem('cp-verified')||''; }catch(e){}
+            fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+              body: JSON.stringify({ action:'save_resume', paid:'assessment-c8d962c5', email: em, filename:'Career-Plan-draft.pdf', mime:'application/pdf', data: b64 }) }).catch(function(){});
+          }catch(e){}
+        }, function(){});
       }
       if(ago && AI_ENDPOINT){
         ago.addEventListener('click', function(){
@@ -441,7 +453,7 @@
               if(!res.ok || !res.body) throw new Error('bad response');
               var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
               function pump(){ return rd.read().then(function(r){
-                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate draft'; adl.hidden=false; var abk=document.getElementById('assessbook'); if(abk) abk.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} if(arev) arev.hidden=false; saveAssessment(full); return; }
+                if(r.done){ abox.innerHTML=mdlite(full); addCopy(abox, full); ast.textContent=''; ago.disabled=false; ago.textContent='Regenerate draft'; adl.hidden=false; var abk=document.getElementById('assessbook'); if(abk) abk.hidden=false; lastMd=full; try{ localStorage.setItem('cp-assess-md', full); }catch(e){} if(arev) arev.hidden=false; saveAssessment(full); archivePdf(full); return; }
                 buf+=dec.decode(r.value,{stream:true});
                 var lines=buf.split('\n'); buf=lines.pop();
                 lines.forEach(function(l){ l=l.trim(); if(l.indexOf('data: ')===0){ var d=l.slice(6); if(d==='[DONE]')return;
