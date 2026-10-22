@@ -390,6 +390,136 @@
           });
         });
       }
+      // ---- Guided conversation intake ----
+      var convW=document.getElementById('convwrap'), convT=document.getElementById('convthread');
+      var convF=document.getElementById('convfill'), convL=document.getElementById('convlabel');
+      var pform=document.getElementById('planform');
+      if(convW && convT && pform){
+        pform.hidden=true; convW.hidden=false;
+        function escT(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
+        var steps=[]; var curSec=null;
+        Array.prototype.forEach.call(Array.prototype.slice.call(pform.children), function(el){
+          if(el.classList && el.classList.contains('pfhead')) curSec={ h: el.textContent, lede:'' };
+          else if(el.classList && el.classList.contains('pflede')){ if(curSec) curSec.lede=el.textContent; }
+          else if(el.classList && el.classList.contains('qcard')){
+            var ancr=document.createComment('conv-anchor');
+            pform.insertBefore(ancr, el);
+            var ta=el.querySelector('textarea'); var pin=el.querySelector('input.pfin');
+            var isResume=!!el.querySelector('#pf-resume'); var isLink=!!el.querySelector('#pf-link');
+            steps.push({ card: el, anchor: ancr, sec: curSec, ta: ta, pin: pin, ai: !isResume && !isLink && !!ta,
+              title: (el.querySelector('h3')||{}).textContent || '' });
+            curSec=null;
+          }
+        });
+        function stepText(st){
+          if(st.ta && st.ta.value.trim()) return st.ta.value.trim();
+          if(st.pin && st.pin.value.trim()) return st.pin.value.trim();
+          return '';
+        }
+        function stepFilled(st){
+          if(stepText(st)) return true;
+          if(st.card.querySelector('input[name=pfmh]:checked')) return true;
+          if(st.card.querySelector('input[name=pfrate]:checked')) return true;
+          return false;
+        }
+        function filledCount(){ var n=0; steps.forEach(function(s){ if(stepFilled(s)) n++; }); return n; }
+        function bar(active){
+          var n=filledCount();
+          convF.style.width=Math.round(n/steps.length*100)+'%';
+          convL.textContent = active!==null ? ('Question '+(active+1)+' of '+steps.length+'  ·  '+n+' answered') : (n+' of '+steps.length+' answered');
+        }
+        function bub(cls, html){ var d=document.createElement('div'); d.className=cls; d.innerHTML=html; convT.appendChild(d); return d; }
+        function seeB(el){ try{ el.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){} }
+        function echoFor(st){
+          var t=stepText(st);
+          var mh=[]; st.card.querySelectorAll('input[name=pfmh]:checked').forEach(function(c){ mh.push(c.value); });
+          var r=st.card.querySelector('input[name=pfrate]:checked');
+          var parts=[];
+          if(mh.length) parts.push('Checked: '+mh.join(', '));
+          if(r) parts.push('Rating: '+r.value+'/5');
+          if(st.card.querySelector('#pf-resume') && pfFileName) parts.push('Uploaded: '+pfFileName);
+          if(t) parts.push(t.length>220 ? t.slice(0,220)+'…' : t);
+          return parts.join('  ·  ');
+        }
+        var scripted=['Got it.','Noted — thank you.','Perfect, moving on.','Thanks — that helps.'];
+        var sIdx=0; function nextScripted(){ sIdx=(sIdx+1)%scripted.length; return scripted[sIdx]; }
+        var pos=0; var running=false;
+        function firstUnfilled(){ for(var i=0;i<steps.length;i++){ if(!stepFilled(steps[i])) return i; } return steps.length; }
+        function putBack(st){ st.anchor.parentNode.insertBefore(st.card, st.anchor.nextSibling); }
+        function finish(){
+          bar(null);
+          var d=bub('convai','<b>That’s everything — thank you.</b> '+filledCount()+' of '+steps.length+' answered. Review any answer below, or generate your plan now.');
+          var bt=document.createElement('div'); bt.className='convbtns';
+          var rb=document.createElement('button'); rb.type='button'; rb.className='cbtn sec'; rb.textContent='Review & edit all answers';
+          rb.addEventListener('click', function(){ pform.hidden=false; rb.disabled=true; seeB(pform); });
+          var gb=document.createElement('button'); gb.type='button'; gb.className='cbtn'; gb.textContent='Generate my career plan';
+          gb.addEventListener('click', function(){ var g=document.getElementById('assessgo'); if(g){ g.click(); seeB(g); } });
+          bt.appendChild(gb); bt.appendChild(rb); d.appendChild(bt); seeB(d);
+        }
+        function ask(i){
+          if(i>=steps.length){ finish(); return; }
+          pos=i; bar(i);
+          var st=steps[i];
+          if(st.sec) bub('convsec','<b>'+escT(st.sec.h)+'</b><br>'+escT(st.sec.lede));
+          var wrap=document.createElement('div'); wrap.className='convstep';
+          wrap.appendChild(st.card);
+          var bt=document.createElement('div'); bt.className='convbtns';
+          var cb=document.createElement('button'); cb.type='button'; cb.className='cbtn'; cb.textContent='Continue';
+          var sk=document.createElement('button'); sk.type='button'; sk.className='convskip'; sk.textContent='Skip for now';
+          bt.appendChild(cb); bt.appendChild(sk); wrap.appendChild(bt);
+          convT.appendChild(wrap); seeB(wrap);
+          var f=st.ta||st.pin; if(f){ try{ f.focus({preventScroll:true}); }catch(e){} }
+          var done=false;
+          function advance(){ if(done) return; done=true; putBack(st); wrap.parentNode && wrap.parentNode.removeChild(wrap); ask(i+1); }
+          sk.addEventListener('click', function(){ bub('convme','(skipped)'); advance(); });
+          cb.addEventListener('click', function(){
+            var txt=stepText(st);
+            if(!stepFilled(st)){ cb.textContent='Nothing yet — answer above or Skip'; setTimeout(function(){ cb.textContent='Continue'; }, 1800); return; }
+            if(done) return; done=true;
+            bub('convme', escT(echoFor(st)));
+            putBack(st); wrap.parentNode && wrap.parentNode.removeChild(wrap);
+            bar(i);
+            if(st.ai && txt && AI_ENDPOINT){
+              var dots=bub('convdots','…'); seeB(dots);
+              fetch(AI_ENDPOINT.replace(/\/?$/,'/')+'intake', { method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ q: st.title+' '+((st.card.querySelector('.sub')||{}).textContent||''), a: txt.slice(0,2000) }) })
+              .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+              .then(function(j){
+                dots.remove();
+                bub('convai', escT(j.ack||nextScripted()));
+                if(j.follow){
+                  var fw=bub('convai convfollow', escT(j.follow));
+                  var fta=document.createElement('textarea'); fw.appendChild(fta);
+                  var fb=document.createElement('div'); fb.className='convbtns';
+                  var fc=document.createElement('button'); fc.type='button'; fc.className='cbtn'; fc.textContent='Continue';
+                  var fs2=document.createElement('button'); fs2.type='button'; fs2.className='convskip'; fs2.textContent='Skip';
+                  fb.appendChild(fc); fb.appendChild(fs2); fw.appendChild(fb); seeB(fw);
+                  try{ fta.focus({preventScroll:true}); }catch(e){}
+                  var fdone=false;
+                  function fadv(){ if(fdone) return; fdone=true; fc.disabled=true; fs2.disabled=true; fta.disabled=true; bub('convai', nextScripted()); ask(i+1); }
+                  fc.addEventListener('click', function(){
+                    var fr=fta.value.trim();
+                    if(fr && st.ta){ st.ta.value=st.ta.value+String.fromCharCode(10)+fr; try{ st.ta.dispatchEvent(new Event('input')); }catch(e){} bub('convme', escT(fr.length>220?fr.slice(0,220)+'…':fr)); }
+                    fadv();
+                  });
+                  fs2.addEventListener('click', fadv);
+                } else { ask(i+1); }
+              })
+              .catch(function(){ try{ dots.remove(); }catch(e){} bub('convai', nextScripted()); ask(i+1); });
+            } else {
+              bub('convai', nextScripted());
+              ask(i+1);
+            }
+          });
+        }
+        var startAt=firstUnfilled();
+        if(startAt>=steps.length){ finish(); }
+        else {
+          if(startAt>0) bub('convai','Welcome back — picking up where you left off.');
+          else bub('convai','Let’s build your plan. I’ll ask one question at a time — take your time, everything saves as you type.');
+          ask(startAt);
+        }
+      }
       function planPrompt(){
         var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
         var d=pfState(true); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
