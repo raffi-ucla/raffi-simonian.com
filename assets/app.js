@@ -227,7 +227,7 @@
                 snapBox.innerHTML=mdlite(full);
                 if(ist) ist.textContent='';
                 snapBtn.disabled=false; snapBtn.textContent='Refresh my snapshot';
-                var isPaid=false; try{ isPaid=!!(localStorage.getItem('cp-paid')||localStorage.getItem('cp-prep')); }catch(e){}
+                var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-prep'); }catch(e){}
                 if(!isPaid){
                   var up=document.createElement('p'); up.className='upsell';
                   up.innerHTML='That is the snapshot — book a <b>coaching session</b> and your included prep intake turns these answers into a full career project plan (first year month by month, 3-year roadmap) that we review together, live. <a href="#coachtier">See sessions ↓</a>';
@@ -255,12 +255,9 @@
     // paid Personalized Career Assessment
     var aw=document.getElementById('assesswrap');
     if(aw){
-      var PAID_DIGEST='65880756e9705e3a968122f51b760c0f728178bcff4330921f294aa73102a1cf';
-      var paidOk=false;
-      try{ paidOk=!!localStorage.getItem('cp-paid'); }catch(e){}
       function markPaid(){ aw.hidden=false; }
       var prepOk=false; try{ prepOk=!!localStorage.getItem('cp-prep'); }catch(e){}
-      if(paidOk || prepOk) markPaid();
+      if(prepOk) markPaid();
       var bookBtn=document.getElementById('bookprep');
       if(bookBtn){
         bookBtn.addEventListener('click', function(ev){
@@ -272,18 +269,6 @@
             bookBtn.textContent='Continue to booking →';
           }
           // second click (prep already open) follows the link to EveryExpert
-        });
-      }
-      var pq=null; try{ pq=new URLSearchParams(location.search).get('paid'); }catch(e){}
-      if(pq && window.crypto && crypto.subtle){
-        crypto.subtle.digest('SHA-256', new TextEncoder().encode(pq)).then(function(buf){
-          var hex=Array.prototype.map.call(new Uint8Array(buf), function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
-          if(hex===PAID_DIGEST){
-            try{ localStorage.setItem('cp-paid', pq); }catch(e){}
-            markPaid();
-            try{ history.replaceState(null,'',location.pathname); }catch(e){}
-            try{ aw.scrollIntoView({behavior:'smooth'}); }catch(e){}
-          }
         });
       }
       var ago=document.getElementById('assessgo');
@@ -346,8 +331,8 @@
         });
       }
       function uploadResume(file){
-        var ep=window.SIGNUP_ENDPOINT||''; var tok=''; try{ tok=localStorage.getItem('cp-paid')||''; }catch(e){}
-        if(!ep||!tok) return Promise.reject(new Error('noep'));
+        var ep=window.SIGNUP_ENDPOINT||''; var tok='assessment-c8d962c5';
+        if(!ep) return Promise.reject(new Error('noep'));
         return new Promise(function(res, rej){
           var r=new FileReader();
           r.onload=function(){ res(String(r.result).split(',')[1]||''); };
@@ -400,8 +385,7 @@
       function saveAssessment(md){
         var ep=window.SIGNUP_ENDPOINT||''; if(!ep) return;
         var em=''; try{ em=localStorage.getItem('cp-verified')||''; }catch(e){}
-        var tok=''; try{ tok=localStorage.getItem('cp-paid')||''; }catch(e){}
-        if(!tok) return;
+        var tok='assessment-c8d962c5'; // prep-save key (write-only: lets the intake save to the review queue)
         try{ fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'save_assessment', paid: tok, email: em, page:'career-plan', assessment: String(md||'').slice(0,40000) }) }).catch(function(){}); }catch(e){}
       }
       function withJsPDF(cb, fail){
@@ -482,7 +466,7 @@
       }
       var savedMd='';
       try{ savedMd=localStorage.getItem('cp-assess-md')||''; }catch(e){}
-      if(paidOk && savedMd && abox){
+      if(prepOk && savedMd && abox){
         abox.hidden=false; abox.innerHTML=mdlite(savedMd); addCopy(abox, savedMd);
         lastMd=savedMd; if(adl) adl.hidden=false; if(ago) ago.textContent='Regenerate';
         if(arev) arev.hidden=false;
