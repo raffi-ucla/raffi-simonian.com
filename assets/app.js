@@ -318,13 +318,85 @@
         ik.addEventListener('input', apply);
         pf.addEventListener('input', function(){ if(pfSync[pk]){ pfSync[pk]=false; if(nt) nt.hidden=true; } pfSave(); });
       });
+      var pfFile=document.getElementById('pf-file'), pfFs=document.getElementById('pf-filestat'), pfFileName='';
+      function loadLib(srcUrl, ready){
+        return new Promise(function(res, rej){
+          if(ready()) { res(); return; }
+          var s=document.createElement('script'); s.src=srcUrl;
+          s.onload=function(){ ready()?res():rej(new Error('lib')); }; s.onerror=function(){ rej(new Error('lib')); };
+          document.head.appendChild(s);
+        });
+      }
+      function pdfText(buf){
+        return loadLib('/assets/pdf.min.js', function(){ return !!window.pdfjsLib; }).then(function(){
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc='/assets/pdf.worker.min.js';
+          return window.pdfjsLib.getDocument({ data: buf }).promise;
+        }).then(function(doc){
+          var ps=[]; var n=Math.min(doc.numPages, 8);
+          for(var i=1;i<=n;i++) ps.push(doc.getPage(i).then(function(pg){ return pg.getTextContent(); }).then(function(tc){ return tc.items.map(function(it){ return it.str; }).join(' '); }));
+          return Promise.all(ps).then(function(a){ return a.join('\n').replace(/ {2,}/g,' ').trim(); });
+        });
+      }
+      function docxText(buf){
+        return loadLib('/assets/jszip.min.js', function(){ return !!window.JSZip; }).then(function(){
+          return window.JSZip.loadAsync(buf);
+        }).then(function(z){
+          var f=z.file('word/document.xml'); if(!f) throw new Error('nodoc');
+          return f.async('string');
+        }).then(function(xml){
+          return xml.replace(/<\/w:p>/g,'\n').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/\n{3,}/g,'\n\n').trim();
+        });
+      }
+      function uploadResume(file){
+        var ep=window.SIGNUP_ENDPOINT||''; var tok=''; try{ tok=localStorage.getItem('cp-paid')||''; }catch(e){}
+        if(!ep||!tok) return Promise.reject(new Error('noep'));
+        return new Promise(function(res, rej){
+          var r=new FileReader();
+          r.onload=function(){ res(String(r.result).split(',')[1]||''); };
+          r.onerror=function(){ rej(new Error('read')); };
+          r.readAsDataURL(file);
+        }).then(function(b64){
+          var em=''; try{ em=localStorage.getItem('cp-verified')||''; }catch(e){}
+          return fetch(ep, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action:'save_resume', paid: tok, email: em, filename: file.name.slice(0,120), mime: file.type||'application/octet-stream', data: b64 }) });
+        }).then(function(r2){ return r2.json(); }).then(function(j){ if(!j||!j.ok) throw new Error('up'); });
+      }
+      if(pfFile){
+        pfFile.addEventListener('change', function(){
+          var f=pfFile.files && pfFile.files[0]; if(!f) return;
+          if(f.size > 8*1024*1024){ pfFs.textContent='That file is over 8 MB - please upload a smaller version or paste the text below.'; pfFs.className='cstatus err'; return; }
+          pfFs.textContent='Reading '+f.name+'...'; pfFs.className='cstatus';
+          var ext=(f.name.split('.').pop()||'').toLowerCase();
+          var parse;
+          if(ext==='txt'){ parse=f.text(); }
+          else {
+            parse=f.arrayBuffer().then(function(buf){
+              if(ext==='pdf' || f.type==='application/pdf') return pdfText(buf);
+              if(ext==='docx') return docxText(buf);
+              throw new Error('type');
+            });
+          }
+          parse.then(function(text){
+            text=String(text||'').trim();
+            if(!text) throw new Error('empty');
+            var ra=pfEls.resume; if(ra){ ra.value=text.slice(0,12000); }
+            pfFileName=f.name; pfSave();
+            pfFs.textContent='OK '+f.name+' - text extracted below.'; pfFs.className='cstatus';
+            uploadResume(f).then(function(){ pfFs.textContent='OK '+f.name+' - text extracted below, and the file was sent to Raffi for his personal review.'; })
+              .catch(function(){ pfFs.textContent='OK '+f.name+' - text extracted below. (The file itself could not be sent, but the extracted text fully powers your plan.)'; });
+          }).catch(function(err){
+            var m = (err && err.message==='type') ? 'Please upload a PDF, Word (.docx), or plain-text file - or paste the text below.' : 'Could not read that file - please paste your resume text below instead.';
+            pfFs.textContent=m; pfFs.className='cstatus err';
+          });
+        });
+      }
       function planPrompt(){
         var iv={}; var ikAny=false; ids.forEach(function(k){ iv[k]=tas[k].value.trim(); if(iv[k])ikAny=true; });
         var d=pfState(true); var filled=0; pfIds.forEach(function(k){ if(String(d[k]||'').trim()) filled++; }); if(d._mh.length) filled++;
         if(!ikAny) return { err:'Answer at least one of the four Ikigai questions in Step 1 first — they are the foundation of your plan.', to:'ikform' };
         if(filled<6) return { err:'Please answer at least six of the reflection questions above — the more complete your answers, the better your plan.', to:'planform' };
         function nb(s){ s=String(s||'').trim(); return s||'(not answered)'; }
-        return { prompt: 'Here is my complete intake for my personalized career plan.\n\nMY IKIGAI REFLECTIONS\nWhat I love: '+nb(iv.love)+'\n\nWhat I am good at: '+nb(iv.good)+'\n\nWhat the world needs, that I care about: '+nb(iv.need)+'\n\nWhat I can be paid for: '+nb(iv.paid)+'\n\nMY REFLECTION ANSWERS\nA career I admire and why: '+nb(d.model)+'\n\nActivities where I lose track of time: '+nb(d.flow)+'\n\nMy natural strengths (what others compliment): '+nb(d.strengths)+'\n\nWhat drains my energy: '+nb(d.drains)+'\n\nWhat I want to be known for in 5-10 years: '+nb(d.knownfor)+'\n\nMust-haves I checked: '+(d._mh.length?d._mh.join('; '):'(none checked)')+'\nMy top 3 non-negotiables, ranked, with tradeoffs: '+nb(d.top3)+'\n\nMy deal-breakers: '+nb(d.dealbreakers)+'\n\nCauses I care deeply about: '+nb(d.causes)+'\nHow important that my work serves these values (1-5): '+(d._rate||'(not rated)')+' — why: '+nb(d.ratewhy)+'\n\nTechnical skills I want to develop: '+nb(d.tech)+'\nTransferable skills I want to develop: '+nb(d.transfer)+'\nSkills I already have to leverage: '+nb(d.leverage)+'\n\nPeople 2-3 years ahead of me and what I can learn from them: '+nb(d.peers)+'\n\nWhere I see myself in 3-5 years: '+nb(d.vision)+'\nMilestones I imagine (Year 1/2/3): '+nb(d.milestones)+'\n\nMY PLANNING INPUTS\nMy timeline and what achievement looks like: '+nb(d.when)+'\n\nMy constraints and resources: '+nb(d.limits)+'\n\nMY RESUME (pasted text): '+nb(String(d.resume||'').slice(0,5000))+'\n\nMY PORTFOLIO / RESUME LINK (for the personal review): '+nb(d._link)+'\n\nPlease build my detailed career project plan.' };
+        return { prompt: 'Here is my complete intake for my personalized career plan.\n\nMY IKIGAI REFLECTIONS\nWhat I love: '+nb(iv.love)+'\n\nWhat I am good at: '+nb(iv.good)+'\n\nWhat the world needs, that I care about: '+nb(iv.need)+'\n\nWhat I can be paid for: '+nb(iv.paid)+'\n\nMY REFLECTION ANSWERS\nA career I admire and why: '+nb(d.model)+'\n\nActivities where I lose track of time: '+nb(d.flow)+'\n\nMy natural strengths (what others compliment): '+nb(d.strengths)+'\n\nWhat drains my energy: '+nb(d.drains)+'\n\nWhat I want to be known for in 5-10 years: '+nb(d.knownfor)+'\n\nMust-haves I checked: '+(d._mh.length?d._mh.join('; '):'(none checked)')+'\nMy top 3 non-negotiables, ranked, with tradeoffs: '+nb(d.top3)+'\n\nMy deal-breakers: '+nb(d.dealbreakers)+'\n\nCauses I care deeply about: '+nb(d.causes)+'\nHow important that my work serves these values (1-5): '+(d._rate||'(not rated)')+' — why: '+nb(d.ratewhy)+'\n\nTechnical skills I want to develop: '+nb(d.tech)+'\nTransferable skills I want to develop: '+nb(d.transfer)+'\nSkills I already have to leverage: '+nb(d.leverage)+'\n\nPeople 2-3 years ahead of me and what I can learn from them: '+nb(d.peers)+'\n\nWhere I see myself in 3-5 years: '+nb(d.vision)+'\nMilestones I imagine (Year 1/2/3): '+nb(d.milestones)+'\n\nMY PLANNING INPUTS\nMy timeline and what achievement looks like: '+nb(d.when)+'\n\nMy constraints and resources: '+nb(d.limits)+'\n\nMY RESUME (pasted text): '+nb(String(d.resume||'').slice(0,5000))+'\n\nResume file uploaded for review: '+(pfFileName||'(none)')+'\nMY PORTFOLIO / RESUME LINK (for the personal review): '+nb(d._link)+'\n\nPlease build my detailed career project plan.' };
       }
       function saveAssessment(md){
         var ep=window.SIGNUP_ENDPOINT||''; if(!ep) return;
