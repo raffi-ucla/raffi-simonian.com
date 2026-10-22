@@ -175,6 +175,13 @@
   // career plan: Ikigai -> AI prompt
   var ikf=document.getElementById('ikform');
   if(ikf){
+    // Testing helper: /career-plan/?reset=all wipes all saved state and reloads fresh
+    try{
+      if(new URLSearchParams(location.search).get('reset')==='all'){
+        ['cp-verified','cp-paid','cp-assess-md','cp-promo','cp-planform','ikigai-draft'].forEach(function(k){ localStorage.removeItem(k); });
+        location.replace(location.pathname);
+      }
+    }catch(e){}
     var ids=['love','good','need','paid'];
     var tas={}; ids.forEach(function(k){ tas[k]=document.getElementById('ik-'+k); });
     try{
@@ -396,6 +403,7 @@
       var pform=document.getElementById('planform');
       if(convW && convT && pform){
         pform.hidden=true; convW.hidden=false;
+        var abar=document.querySelector('#assesswrap .aibar'); if(abar) abar.hidden=true;
         function escT(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
         var steps=[]; var curSec=null;
         Array.prototype.forEach.call(Array.prototype.slice.call(pform.children), function(el){
@@ -448,13 +456,18 @@
         function putBack(st){ st.anchor.parentNode.insertBefore(st.card, st.anchor.nextSibling); }
         function finish(){
           bar(null);
-          var d=bub('convai','<b>That’s everything — thank you.</b> '+filledCount()+' of '+steps.length+' answered. Review any answer below, or generate your plan now.');
+          var hasPlan = abox && !abox.hidden && abox.textContent.length > 10;
+          var d=bub('convai','<b>That’s everything — thank you.</b> '+filledCount()+' of '+steps.length+' answered. '+(hasPlan?'Your plan is below — review any answer or regenerate anytime.':'Review any answer below, or generate your plan now.'));
           var bt=document.createElement('div'); bt.className='convbtns';
+          function reveal(){ if(abar) abar.hidden=false; if(bt.parentNode) bt.parentNode.removeChild(bt); }
           var rb=document.createElement('button'); rb.type='button'; rb.className='cbtn sec'; rb.textContent='Review & edit all answers';
-          rb.addEventListener('click', function(){ pform.hidden=false; rb.disabled=true; seeB(pform); });
-          var gb=document.createElement('button'); gb.type='button'; gb.className='cbtn'; gb.textContent='Generate my career plan';
-          gb.addEventListener('click', function(){ var g=document.getElementById('assessgo'); if(g){ g.click(); seeB(g); } });
-          bt.appendChild(gb); bt.appendChild(rb); d.appendChild(bt); seeB(d);
+          rb.addEventListener('click', function(){ reveal(); pform.hidden=false; seeB(pform); });
+          if(!hasPlan){
+            var gb=document.createElement('button'); gb.type='button'; gb.className='cbtn'; gb.textContent='Generate my career plan';
+            gb.addEventListener('click', function(){ reveal(); var g=document.getElementById('assessgo'); if(g){ g.click(); seeB(g); } });
+            bt.appendChild(gb);
+          } else if(abar){ abar.hidden=false; }
+          bt.appendChild(rb); d.appendChild(bt); seeB(d);
         }
         function ask(i){
           if(i>=steps.length){ finish(); return; }

@@ -130,9 +130,10 @@ a.ddbtn{text-decoration:none}
 .pfrate input{accent-color:var(--accent)}
 .qcard input.pfin{width:100%; box-sizing:border-box; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:10px 12px}
 .qcard input.pfin:focus{outline:none; border-color:var(--accent)}
+.convprog{position:sticky; bottom:0; background:var(--bg); padding:12px 0 10px; z-index:5}
 .convbar{height:8px; background:var(--chip); border-radius:999px; overflow:hidden; margin:4px 0 6px}
 .convfill{height:100%; width:0%; background:var(--accent); border-radius:999px; transition:width .4s ease}
-.convlabel{color:var(--muted); font-size:13.5px; margin:0 0 14px}
+.convlabel{color:var(--muted); font-size:13.5px; margin:6px 0 0}
 #convthread{display:flex; flex-direction:column; gap:12px; margin:0 0 18px}
 .convsec{background:var(--accent-soft); color:var(--accent-ink); border-radius:12px; padding:12px 16px; font-size:14px; max-width:56ch}
 .convai{background:var(--card); border:1px solid var(--line); border-radius:12px 12px 12px 4px; padding:11px 15px; font-size:14.5px; max-width:56ch}
