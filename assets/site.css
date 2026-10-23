@@ -168,6 +168,7 @@ body.gated{overflow:hidden}
 .airesult p{margin:0 0 10px; white-space:normal}
 .airesult .h{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:16px; margin:14px 0 4px}
 .airesult a{color:var(--accent); font-weight:600}
+.airesult a.cbtn{color:#fff; display:inline-block; text-decoration:none}
 .askai{border:1px solid var(--line); background:var(--faint); border-radius:12px; padding:18px 20px; margin:4px 0 26px}
 .askai h2{margin:0 0 4px; font-family:'Bricolage Grotesque',sans-serif; font-size:19px}
 .askai .sub{color:var(--muted); font-size:14.5px; margin:0 0 12px}
