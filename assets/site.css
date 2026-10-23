@@ -223,6 +223,10 @@ footer .ver{color:var(--faint); font-size:12px; align-self:center}
 .statband .n{display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:40px; font-weight:800; color:var(--accent-ink); line-height:1; margin:0 0 8px}
 .statband .l{font-size:13.5px; color:var(--ink); line-height:1.55}
 .statband .l a{color:var(--muted); font-size:12px}
+.permin{font-size:13px; color:var(--faint); font-weight:600}
+.bksteps{margin:0 0 12px; padding-left:20px; color:var(--muted); font-size:13.5px}
+.bksteps li{margin:0 0 4px}
+.bkcal{width:100%; min-height:660px; border:1px solid var(--line); border-radius:12px; background:#fff; margin:12px 0}
 .roadmap li{margin:0 0 12px; line-height:1.6}
 @media (max-width:760px){ .ikgrid{grid-template-columns:1fr} .stepcols{grid-template-columns:1fr} }
 @media (max-width:760px){

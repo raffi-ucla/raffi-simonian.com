@@ -172,6 +172,39 @@
     askQ.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); askGo(); } });
   }
 
+  // ---- on-site booking page ----
+  var bkt=document.getElementById('bktiers');
+  if(bkt){
+    var BK=window.BOOKCFG||{};
+    var BKDIG={ '1eaf63a1e965523d1c94c43750a12e9b90d25d544255a97f51494aaa80aee387':'launch',
+                '8c67a2f206e477b941417277808026bb86d8fcd71ffceab7b35cd08643b71dba':'strategy',
+                '24d991c953915501001c7f1ccbd2a65f880f6cd422a998d01991e1dc7f42a0ac':'consult' };
+    var bkdone=document.getElementById('bkdone');
+    function showBooked(tier, fresh){
+      if(!bkdone) return;
+      var cfg=BK[tier]||{};
+      var h = fresh ? '<p><b>✓ Payment received'+(cfg.label?(' for '+cfg.label):'')+' — thank you.</b> Pick your time below; a confirmation lands in your email.</p>'
+                    : '<p><b>Your '+(cfg.label||'session')+':</b> pick or revisit your time below.</p>';
+      if(cfg.cal){ h+='<iframe class="bkcal" src="'+cfg.cal+'" loading="lazy" title="Pick a time"></iframe>'; }
+      else { h+='<p>I will email you within 24 hours to schedule your time. Prefer sooner? <a href="/contact/">Contact me</a>.</p>'; }
+      if(tier!=='consult'){ h+='<p><a class="cbtn sec" id="bkprep" href="/career-plan/">Complete your prep intake &rarr;</a></p>'; }
+      bkdone.innerHTML=h; bkdone.hidden=false;
+      var bp=document.getElementById('bkprep'); if(bp) bp.addEventListener('click', function(){ try{ localStorage.setItem('cp-prep','1'); }catch(e){} });
+      try{ bkdone.scrollIntoView({behavior:'smooth'}); }catch(e){}
+    }
+    var bq=null; try{ bq=new URLSearchParams(location.search).get('paid'); }catch(e){}
+    if(bq && window.crypto && crypto.subtle){
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(bq)).then(function(buf){
+        var hex=Array.prototype.map.call(new Uint8Array(buf), function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
+        var tier=BKDIG[hex];
+        if(tier){ try{ localStorage.setItem('cp-booked-'+tier,'1'); }catch(e){} try{ history.replaceState(null,'',location.pathname); }catch(e){} showBooked(tier, true); }
+      });
+    } else {
+      var bt0=null; try{ ['launch','strategy','consult'].forEach(function(k){ if(!bt0 && localStorage.getItem('cp-booked-'+k)) bt0=k; }); }catch(e){}
+      if(bt0) showBooked(bt0, false);
+    }
+  }
+
   // career plan: Ikigai -> AI prompt
   var ikf=document.getElementById('ikform');
   if(ikf){
