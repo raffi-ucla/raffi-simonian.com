@@ -183,11 +183,20 @@
     function showBooked(tier, fresh){
       if(!bkdone) return;
       var cfg=BK[tier]||{};
-      var h = fresh ? '<p><b>✓ Payment received'+(cfg.label?(' for '+cfg.label):'')+' — thank you.</b> Pick your time below; a confirmation lands in your email.</p>'
-                    : '<p><b>Your '+(cfg.label||'session')+':</b> pick or revisit your time below.</p>';
-      if(cfg.cal){ h+='<iframe class="bkcal" src="'+cfg.cal+'" loading="lazy" title="Pick a time"></iframe>'; }
-      else { h+='<p>I will email you within 24 hours to schedule your time. Prefer sooner? <a href="/contact/">Contact me</a>.</p>'; }
-      if(tier!=='consult'){ h+='<p><a class="cbtn sec" id="bkprep" href="/career-plan/">Complete your prep intake &rarr;</a></p>'; }
+      var intakeDone=false; try{ intakeDone=!!localStorage.getItem('cp-assess-md'); }catch(e){}
+      var needIntake = (tier!=='consult') && !intakeDone;
+      var h = fresh ? '<p><b>✓ Payment received'+(cfg.label?(' for '+cfg.label):'')+' — thank you.</b></p>'
+                    : '<p><b>Your '+(cfg.label||'session')+':</b></p>';
+      if(needIntake){
+        h+='<p>One step before you pick your time: complete your prep intake and generate your draft career plan — it is what makes your session count. The scheduler unlocks here the moment it is done.</p>';
+        h+='<p><a class="cbtn" id="bkprep" href="/career-plan/">Complete your prep intake &rarr;</a></p>';
+      } else if(cfg.cal){
+        h+='<p>Pick your time below — a confirmation lands in your email.</p>';
+        h+='<iframe class="bkcal" src="'+cfg.cal+'" loading="lazy" title="Pick a time"></iframe>';
+        if(tier!=='consult'){ h+='<p><a id="bkprep" href="/career-plan/">Review or refine your prep intake &rarr;</a></p>'; }
+      } else {
+        h+='<p>I will email you within 24 hours to schedule your time. Prefer sooner? <a href="/contact/">Contact me</a>.</p>';
+      }
       bkdone.innerHTML=h; bkdone.hidden=false;
       var bp=document.getElementById('bkprep'); if(bp) bp.addEventListener('click', function(){ try{ localStorage.setItem('cp-prep','1'); }catch(e){} });
       try{ bkdone.scrollIntoView({behavior:'smooth'}); }catch(e){}
