@@ -384,3 +384,9 @@ main{min-height:60vh; padding-bottom:10px}
 .tltag.build{background:var(--accent-soft); color:var(--accent-ink)}
 .tltag.teach{background:var(--badge); color:var(--deep)}
 .tltag.dt{background:var(--chip); color:var(--ink); border:1px solid var(--line)}
+
+/* --- section anchor links --- */
+h2.secttl, .sub h3, .sub[id]{scroll-margin-top:80px}
+.alink{opacity:0; margin-left:8px; color:var(--faint); text-decoration:none; font-weight:600; transition:opacity .12s}
+h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
+.alink:hover{color:var(--accent-ink)}
