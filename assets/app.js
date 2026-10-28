@@ -220,7 +220,7 @@
     // Testing helper: /career-plan/?reset=all wipes all saved state and reloads fresh
     try{
       if(new URLSearchParams(location.search).get('reset')==='all'){
-        ['cp-verified','cp-paid','cp-prep','cp-assess-md','cp-promo','cp-planform','ikigai-draft'].forEach(function(k){ localStorage.removeItem(k); });
+        ['cp-verified','cp-paid','cp-prep','cp-assess-md','cp-promo','cp-planform','ikigai-draft','cp-snap','cp-checklist','cp-seen-stages'].forEach(function(k){ localStorage.removeItem(k); });
         location.replace(location.pathname);
       }
     }catch(e){}
@@ -266,7 +266,7 @@
             var rd=res.body.getReader(); var dec=new TextDecoder(); var buf='';
             function pump(){ return rd.read().then(function(r){
               if(r.done){
-                snapBox.innerHTML=mdlite(full);
+                snapBox.innerHTML=mdlite(full); try{ localStorage.setItem('cp-snap','1'); }catch(e){}
                 if(ist) ist.textContent='';
                 snapBtn.disabled=false; snapBtn.textContent='Refresh my snapshot';
                 var isPaid=false; try{ isPaid=!!localStorage.getItem('cp-prep'); }catch(e){}
@@ -693,4 +693,150 @@
       emptyMsg2.classList.toggle('show', shown===0);
     });
   }
+})();
+
+// ---- Career-plan gamification: journey tracker, badges, intake meter, plan checklist ----
+;(function(){
+  if(!document.getElementById('ikform')) return;
+  function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lset(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function escH(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var PFK=['model','flow','strengths','drains','knownfor','top3','dealbreakers','causes','ratewhy','tech','transfer','leverage','peers','vision','milestones','resume','when','limits'];
+  function pfCount(){
+    var n=0, p={};
+    try{ p=JSON.parse(ls('cp-planform')||'{}'); }catch(e){}
+    PFK.forEach(function(k){
+      var el=document.getElementById('pf-'+k);
+      var v=el?el.value:(p[k]||'');
+      if(String(v).trim()) n++;
+    });
+    return n;
+  }
+  function stages(){
+    var s1=false;
+    try{ var d=JSON.parse(ls('ikigai-draft')||'{}'); for(var k in d){ if(String(d[k]||'').trim()) s1=true; } }catch(e){}
+    ['love','good','need','paid'].forEach(function(k){ var el=document.getElementById('ik-'+k); if(el&&el.value&&el.value.trim()) s1=true; });
+    var s3=pfCount()>=6;
+    var s5=false;
+    try{ for(var i=0;i<localStorage.length;i++){ if(localStorage.key(i).indexOf('cp-booked-')===0) s5=true; } }catch(e){}
+    return [s1, !!ls('cp-snap'), s3, !!ls('cp-assess-md'), s5];
+  }
+  var DEFS=[
+    {name:'Self-Discoverer', done:'Ikigai answered', next:'Answer your Ikigai questions', go:'ikform'},
+    {name:'Explorer', done:'Snapshot in hand', next:'Get your free snapshot', go:'snapgo'},
+    {name:'Prepared', done:'Prep intake done', next:'Complete your prep intake', go:'planform'},
+    {name:'Planner', done:'Draft plan generated', next:'Generate your draft plan', go:'assessgo'},
+    {name:'In Motion', done:'Session booked', next:'Book your session', go:'/book/'}
+  ];
+  var ph=document.querySelector('.pagehead'); if(!ph) return;
+  var rail=document.createElement('div'); rail.className='cptrack';
+  ph.parentNode.insertBefore(rail, ph.nextSibling);
+  function go(i){
+    var d=DEFS[i];
+    if(d.go==='/book/'){ location.href='/book/'; return; }
+    if(i>=2){
+      var aw=document.getElementById('assesswrap');
+      if(aw && aw.hidden){ lset('cp-prep','1'); aw.hidden=false; }
+    }
+    var el=document.getElementById(d.go);
+    if(el){ try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ el.scrollIntoView(); } }
+  }
+  var booted=false;
+  function toast(msg){
+    var t=document.createElement('div'); t.className='cptoast'; t.textContent=msg;
+    document.body.appendChild(t);
+    setTimeout(function(){ t.classList.add('on'); }, 30);
+    setTimeout(function(){ t.classList.remove('on'); setTimeout(function(){ t.remove(); }, 400); }, 4200);
+  }
+  function render(){
+    var st=stages();
+    var next=-1; for(var i=0;i<5;i++){ if(!st[i]){ next=i; break; } }
+    var done=0; st.forEach(function(x){ if(x) done++; });
+    var h='<div class="cptitle">Your journey <span class="cpcount">'+(done===5?'complete ✓':done+' of 5')+'</span></div><div class="cprail">';
+    DEFS.forEach(function(d,i){
+      var cls=st[i]?'done':(i===next?'next':'lock');
+      h+='<button type="button" class="cpnode '+cls+'" data-i="'+i+'" aria-label="'+d.name+'">'
+        +'<span class="cpdot">'+(st[i]?'✓':(i+1))+'</span>'
+        +'<span class="cpname">'+d.name+'</span>'
+        +'<span class="cpwhat">'+(st[i]?d.done:(i===next?d.next+' →':d.done))+'</span></button>';
+      if(i<4) h+='<span class="cpbar'+(st[i]?' fill':'')+'"></span>';
+    });
+    rail.innerHTML=h+'</div>';
+    [].forEach.call(rail.querySelectorAll('.cpnode'), function(b){
+      b.addEventListener('click', function(){ go(+b.getAttribute('data-i')); });
+    });
+    try{
+      var seen=JSON.parse(ls('cp-seen-stages')||'[]');
+      var fresh=[];
+      for(var i=0;i<5;i++){ if(st[i] && seen.indexOf(i)===-1){ seen.push(i); fresh.push(i); } }
+      lset('cp-seen-stages', JSON.stringify(seen));
+      if(booted && fresh.length){ toast('Milestone unlocked: '+DEFS[fresh[fresh.length-1]].name); }
+    }catch(e){}
+    booted=true;
+  }
+  // ---- intake completion meter ----
+  var pf=document.getElementById('planform');
+  var meter=null;
+  if(pf){
+    meter=document.createElement('div'); meter.className='pfmeter';
+    meter.innerHTML='<div class="pfmbar"><span></span></div><span class="pfmtext"></span>';
+    pf.insertBefore(meter, pf.firstChild);
+  }
+  function upMeter(){
+    if(!meter) return;
+    var n=pfCount();
+    meter.querySelector('.pfmbar span').style.width=Math.round(n/18*100)+'%';
+    meter.querySelector('.pfmtext').textContent = n>=18 ? '18 of 18 answered — complete ✓' : n+' of 18 answered';
+    meter.classList.toggle('full', n>=18);
+  }
+  // ---- plan action checklist ----
+  var abox=document.getElementById('assessresult');
+  var ck=null;
+  if(abox){ ck=document.createElement('div'); ck.className='cpcheck'; ck.hidden=true; abox.parentNode.insertBefore(ck, abox.nextSibling); }
+  function hash(s){ var h=0; for(var i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return 'c'+(h>>>0).toString(36); }
+  function clean(s){ return s.replace(/\*\*/g,'').replace(/\[([^\]]+)\]\([^)]*\)/g,'$1').replace(/\s+/g,' ').trim(); }
+  function ckItems(md){
+    var out=[]; var m; var re=/\*\*Milestone:?\*\*:?\s*([^\n]+)/g;
+    while((m=re.exec(md))){ var t=clean(String(m[1]).split('**Checkpoint')[0]); t=t.split('Checkpoint:')[0].trim().replace(/[,;]+$/,''); if(t) out.push(t); }
+    var parts=md.split(/^##+\s*Measures of Success.*$/m);
+    if(parts.length>1){
+      var sec=parts[1].split(/^##? /m)[0];
+      sec.split('\n').forEach(function(l){ if(/^\s*[-*]\s+/.test(l)){ var t=clean(l.replace(/^\s*[-*]\s+/,'')); if(t) out.push(t); } });
+    }
+    var seen={}; return out.filter(function(x){ var k=hash(x); if(seen[k]) return false; seen[k]=1; return true; }).slice(0,20);
+  }
+  function renderCk(){
+    if(!ck) return;
+    var md=ls('cp-assess-md')||'';
+    var it=md.trim()?ckItems(md):[];
+    if(!it.length){ ck.hidden=true; return; }
+    var state={}; try{ state=JSON.parse(ls('cp-checklist')||'{}'); }catch(e){}
+    var done=0; it.forEach(function(x){ if(state[hash(x)]) done++; });
+    var h='<h3>Your action checklist <span class="cpcount">'+done+' of '+it.length+' done</span></h3>'
+      +'<p class="cknote">Pulled from your plan’s milestones and measures of success. Ticks save in this browser — check things off as you go and bring the list to your session.</p><ul>';
+    it.forEach(function(x){ var id=hash(x); h+='<li><label><input type="checkbox" data-h="'+id+'"'+(state[id]?' checked':'')+'><span>'+escH(x)+'</span></label></li>'; });
+    ck.innerHTML=h+'</ul>'; ck.hidden=false;
+    [].forEach.call(ck.querySelectorAll('input'), function(c){
+      c.addEventListener('change', function(){
+        var st={}; try{ st=JSON.parse(ls('cp-checklist')||'{}'); }catch(e){}
+        if(c.checked) st[c.getAttribute('data-h')]=1; else delete st[c.getAttribute('data-h')];
+        lset('cp-checklist', JSON.stringify(st));
+        renderCk();
+      });
+    });
+  }
+  // ---- refresh wiring ----
+  var tmr=null;
+  function refresh(){ clearTimeout(tmr); tmr=setTimeout(function(){ upMeter(); render(); }, 350); }
+  document.addEventListener('input', function(e){
+    var t=e.target;
+    if(t && (t.tagName==='TEXTAREA'||t.tagName==='INPUT')) refresh();
+  });
+  if(window.MutationObserver){
+    var ob=new MutationObserver(function(){ refresh(); renderCk(); });
+    var sb=document.getElementById('snapresult');
+    if(sb) ob.observe(sb,{childList:true});
+    if(abox) ob.observe(abox,{childList:true});
+  }
+  upMeter(); render(); renderCk();
 })();

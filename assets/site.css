@@ -390,3 +390,38 @@ h2.secttl, .sub h3, .sub[id]{scroll-margin-top:80px}
 .alink{opacity:0; margin-left:8px; color:var(--faint); text-decoration:none; font-weight:600; transition:opacity .12s}
 h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
 .alink:hover{color:var(--accent-ink)}
+
+/* --- career-plan gamification --- */
+.cptrack{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:16px 18px 14px; margin:0 0 26px}
+.cptitle{font-weight:800; font-size:14px; margin-bottom:12px}
+.cpcount{font-weight:700; font-size:12px; color:var(--accent-ink); background:var(--accent-soft); border-radius:999px; padding:2px 9px; margin-left:8px; vertical-align:1px}
+.cprail{display:flex; align-items:flex-start; gap:6px}
+.cpnode{flex:1; background:none; border:none; font:inherit; cursor:pointer; text-align:center; padding:0 2px; min-width:0}
+.cpdot{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; font-weight:800; font-size:13px;
+  background:var(--chip); color:var(--faint); border:2px solid var(--line); margin-bottom:6px}
+.cpnode.done .cpdot{background:var(--accent); border-color:var(--accent); color:#fff}
+.cpnode.next .cpdot{background:var(--bg); border-color:var(--accent); color:var(--accent-ink); animation:cppulse 1.8s ease-in-out infinite}
+@keyframes cppulse{0%,100%{box-shadow:0 0 0 0 rgba(184,85,26,.35)}50%{box-shadow:0 0 0 7px rgba(184,85,26,0)}}
+.cpname{display:block; font-weight:700; font-size:12.5px; line-height:1.25}
+.cpnode.lock .cpname{color:var(--faint)}
+.cpwhat{display:block; font-size:11.5px; color:var(--faint); margin-top:2px; line-height:1.3}
+.cpnode.next .cpwhat{color:var(--accent-ink); font-weight:600}
+.cpnode.done .cpwhat{color:var(--muted)}
+.cpbar{flex:0 0 18px; height:2px; background:var(--line); margin-top:14px}
+.cpbar.fill{background:var(--accent)}
+@media(max-width:640px){ .cprail{flex-wrap:wrap; gap:10px} .cpnode{flex:1 1 40%} .cpbar{display:none} }
+.cptoast{position:fixed; left:50%; bottom:22px; transform:translate(-50%,12px); z-index:60; background:var(--ink); color:var(--bg);
+  font-weight:700; font-size:14px; border-radius:999px; padding:10px 20px; opacity:0; transition:all .35s; pointer-events:none; box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.cptoast.on{opacity:1; transform:translate(-50%,0)}
+.pfmeter{display:flex; align-items:center; gap:12px; background:var(--chip); border-radius:9px; padding:10px 14px; margin:0 0 16px}
+.pfmbar{flex:1; height:8px; background:var(--bg); border-radius:999px; overflow:hidden}
+.pfmbar span{display:block; height:100%; width:0; background:var(--accent); border-radius:999px; transition:width .3s}
+.pfmeter .pfmtext{font-size:12.5px; font-weight:700; color:var(--muted); white-space:nowrap}
+.pfmeter.full .pfmtext{color:var(--accent-ink)}
+.cpcheck{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:16px 18px; margin:14px 0 0}
+.cpcheck h3{margin:0 0 4px; font-size:16px}
+.cpcheck .cknote{margin:0 0 10px; font-size:12.5px; color:var(--faint)}
+.cpcheck ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px}
+.cpcheck label{display:flex; gap:9px; align-items:flex-start; font-size:14px; line-height:1.45; cursor:pointer}
+.cpcheck input{margin-top:3px; accent-color:var(--accent)}
+.cpcheck input:checked + span{color:var(--faint); text-decoration:line-through}
