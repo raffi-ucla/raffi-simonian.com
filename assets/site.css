@@ -182,7 +182,7 @@ body.gated{overflow:hidden}
 .tier[hidden]{display:none}
 .cbtn[hidden]{display:none}
 .tier.hl{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent)}
-.tier h3{margin:0; font-family:'Bricolage Grotesque',sans-serif; font-size:17px}
+.tier h3{margin:0; font-family:'Bricolage Grotesque',sans-serif; font-size:17px; min-height:53px; display:flex; align-items:flex-end}
 .tier .price{font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800}
 .tier p{margin:0; color:var(--muted); font-size:14.5px}
 .tier .cbtn{align-self:flex-start; margin-top:auto}
@@ -434,3 +434,17 @@ h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
 .workband .wbsub{font-size:13.5px; color:var(--muted)}
 .wbrow{display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-bottom:0!important}
 .wbsample{font-size:13.5px; font-weight:600; color:var(--accent-ink)}
+
+/* --- booking card collapsible details --- */
+.tier{position:relative}
+.incl{border:1px solid var(--line); border-radius:9px; background:var(--chip); font-size:12.5px; margin:2px 0 12px}
+.incl summary{list-style:none; cursor:pointer; padding:8px 14px; font-weight:700; color:var(--accent-ink); user-select:none}
+.incl summary::-webkit-details-marker{display:none}
+.incl summary::after{content:"\25B8"; margin-left:6px; font-size:10px; transition:transform .12s; display:inline-block}
+.incl[open] summary::after{transform:rotate(90deg)}
+.incl[open]{border-color:var(--accent)}
+.inclbody{position:absolute; left:14px; right:14px; z-index:7; margin-top:6px; background:var(--card);
+  border:1px solid var(--accent); border-radius:9px; box-shadow:0 12px 32px rgba(0,0,0,.14); padding:14px 16px; max-height:420px; overflow:auto}
+.inclbody .tierlist{margin:0}
+
+#bktiers .tier > p:first-of-type{min-height:90px}
