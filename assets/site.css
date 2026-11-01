@@ -387,7 +387,7 @@ main{min-height:60vh; padding-bottom:10px}
 .tltag.dt{background:var(--chip); color:var(--ink); border:1px solid var(--line)}
 
 /* --- section anchor links --- */
-h2.secttl, .sub h3, .sub[id]{scroll-margin-top:80px}
+h2.secttl, .sub h3, .sub[id], .uxcase[id]{scroll-margin-top:80px}
 .alink{opacity:0; margin-left:8px; color:var(--faint); text-decoration:none; font-weight:600; transition:opacity .12s}
 h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
 .alink:hover{color:var(--accent-ink)}
@@ -448,3 +448,10 @@ h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
 .inclbody .tierlist{margin:0}
 
 #bktiers .tier > p:first-of-type{min-height:90px}
+
+/* --- CX field-notes card gallery --- */
+.cxgrid{margin-top:18px}
+.cxtop{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:7px}
+.cxgrid .card .t{-webkit-line-clamp:3}
+.cxgrid .card .s{-webkit-line-clamp:5; margin-top:6px}
+.cxgrid .card .s b{color:var(--ink)}
