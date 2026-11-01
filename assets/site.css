@@ -455,3 +455,10 @@ h2.secttl:hover .alink, .sub h3:hover .alink{opacity:1}
 .cxgrid .card .t{-webkit-line-clamp:3}
 .cxgrid .card .s{-webkit-line-clamp:5; margin-top:6px}
 .cxgrid .card .s b{color:var(--ink)}
+
+/* --- consulting page service lists --- */
+.svclist{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:14.5px; line-height:1.55; color:var(--muted)}
+.svclist li b{color:var(--ink)}
+.svclist.cols{display:block; columns:2; column-gap:26px}
+.svclist.cols li{break-inside:avoid; margin-bottom:10px}
+@media(max-width:640px){ .svclist.cols{columns:1} }
