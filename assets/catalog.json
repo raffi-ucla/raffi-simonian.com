@@ -1410,384 +1410,6 @@
 "d": "Quick online tool for creating sequence diagrams and visual process documentation."
 },
 {
-"t": "Claude for Startups Program",
-"u": "https://claude.com/programs/startups",
-"s": "Entrepreneurship / Exploration",
-"d": "Anthropic's program offering startups credits, resources, and support to build with Claude."
-},
-{
-"t": "Create Your Own Bash Computer-Use Agent with NVIDIA Nemotron in One Hour",
-"u": "https://developer.nvidia.com/blog/create-your-own-bash-computer-use-agent-with-nvidia-nemotron-in-one-hour/",
-"s": "Entrepreneurship / Exploration",
-"d": "NVIDIA's tutorial on building a bash computer-use agent in an hour."
-},
-{
-"t": "Open Library Scraper — Apify",
-"u": "https://apify.com/parseforge/open-library-scraper",
-"s": "Entrepreneurship / Exploration",
-"d": "A ready-made Apify actor for scraping Open Library data."
-},
-{
-"t": "7 Steps to Create a Custom GPT",
-"u": "https://raffi-simonian.com/files/7-steps-to-create-a-custom-gpt.pdf",
-"s": "Entrepreneurship / Exploration",
-"d": "A practical seven-step guide to building a custom GPT in about two hours: gathering organizational context, defining your audience, analyzing your best content samples, then implementing and revising in ChatGPT's GPT builder. Good first project for non-technical professionals productizing their expertise with AI."
-},
-{
-"t": "AWS Cloud Innovation Centers",
-"u": "https://aws.amazon.com/government-education/cloud-innovation-centers/",
-"s": "Entrepreneurship / Exploration",
-"d": "AWS's university-based centers solving public-sector challenges with cloud and AI."
-},
-{
-"t": "20 Hidden ChatGPT Features Most People Never Use (But Should)",
-"u": "https://medium.com/@anukampachoudhary/20-hidden-chatgpt-features-most-people-never-use-but-should-c6522a6ca3f2",
-"s": "Entrepreneurship / Exploration",
-"d": "Twenty lesser-known ChatGPT features worth using."
-},
-{
-"t": "What Makes Fabric Feel Different from Notion, Obsidian, and Every Tool I Tried Before",
-"u": "https://medium.com/activated-thinker/what-makes-fabric-feel-different-from-notion-obsidian-and-every-tool-i-tried-before-f25f2febe822",
-"s": "Entrepreneurship / Exploration",
-"d": "Why Fabric feels different from Notion, Obsidian, and other tools."
-},
-{
-"t": "The 17 Unexpected Uses of Mac mini Most People Don't Know About",
-"u": "https://medium.com/macoclock/17-unexpected-uses-of-mac-mini-most-people-dont-know-about-00edd82d3ec8",
-"s": "Entrepreneurship / Exploration",
-"d": "Seventeen unexpected ways to put a Mac mini to work."
-},
-{
-"t": "Building with Amazon Bedrock — Claude Code, Kiro, AgentCore & Strands Agents",
-"u": "https://catalog.workshops.aws/building-with-amazon-bedrock/en-US",
-"s": "Entrepreneurship / Exploration",
-"d": "Free hands-on AWS workshop for building generative-AI apps with Amazon Bedrock, agents, and Claude models."
-},
-{
-"t": "Apfel: The AI Already on Your Mac",
-"u": "https://stories.byburk.net/apfel-the-ai-already-on-your-mac-94862a48c5a4",
-"s": "Entrepreneurship / Exploration",
-"d": "A look at the AI capabilities already built into your Mac."
-},
-{
-"t": "Top 5 n8n Automations",
-"u": "https://medium.com/write-a-catalyst/the-5-n8n-automations-making-solo-founders-10k-month-step-by-step-f363aab3e397",
-"s": "Entrepreneurship / Exploration",
-"d": "Five n8n automations solo founders use to generate income."
-},
-{
-"t": "Claude Cowork 101: From Prompts to Deliverables & Automated Workflows",
-"u": "https://levelup.gitconnected.com/claude-cowork-101-from-prompts-to-deliverables-automated-workflows-42f31d73a57f",
-"s": "Entrepreneurship / Exploration",
-"d": "A primer on turning Claude Cowork prompts into deliverables and workflows."
-},
-{
-"t": "I Tested 150 AI Prompts So You Don't Have To — the 12 That Actually Saved Me 10+ Hours",
-"u": "https://medium.com/@ytzoom/i-tested-150-ai-prompts-so-you-dont-have-to-here-are-the-12-that-actually-saved-me-10-hours-0588135a2407",
-"s": "Entrepreneurship / Exploration",
-"d": "The 12 AI prompts that survived a 150-prompt field test."
-},
-{
-"t": "Forget ChatGPT & Gemini — These New AI Tools Actually Solve Real Problems",
-"u": "https://medium.com/@nitinfab/forget-chatgpt-gemini-these-new-ai-tools-actually-solve-real-problems-no-bs-1c5d1ca6a185",
-"s": "Entrepreneurship / Exploration",
-"d": "A roundup of newer AI tools that solve real problems."
-},
-{
-"t": "Google Just Turned Chrome Into a Programmable AI Assistant. Here's How to Use It.",
-"u": "https://medium.com/@creativeaininja/google-just-turned-chrome-into-a-programmable-ai-assistant-heres-how-to-use-it-8ed2f6a94061",
-"s": "Entrepreneurship / Exploration",
-"d": "How to use Chrome's new programmable AI assistant features."
-},
-{
-"t": "7 Game-Changing ChatGPT Prompts for LinkedIn Lead Generation",
-"u": "https://medium.com/@ahirlog/7-game-changing-chatgpt-prompts-for-linkedin-lead-generation-d01c286c7693",
-"s": "Entrepreneurship / Exploration",
-"d": "ChatGPT prompts designed for LinkedIn lead generation."
-},
-{
-"t": "10 Claude AI Prompts That Will 10x Your Productivity in 2026",
-"u": "https://medium.com/no-time/10-claude-ai-prompts-that-will-10x-your-productivity-in-2026-4be8e7008673",
-"s": "Entrepreneurship / Exploration",
-"d": "Ten Claude prompts aimed at multiplying your productivity."
-},
-{
-"t": "Before You Use Claude Cowork, Build This First",
-"u": "https://medium.com/artificial-corner/before-you-use-claude-cowork-build-this-first-ce587b6bd41e",
-"s": "Entrepreneurship / Exploration",
-"d": "What to set up before using Claude Cowork."
-},
-{
-"t": "12 Free AI Tools That Replace $200/Month Subscriptions",
-"u": "https://nitingavhane.medium.com/free-12-ai-tools-that-replace-200-month-subscriptions-f7bafcb4595e",
-"s": "Entrepreneurship / Exploration",
-"d": "Free AI tools that can replace expensive subscriptions."
-},
-{
-"t": "I Spent 24 Hours with the New Siri. It Knew My Life Better Than I Did.",
-"u": "https://medium.com/macoclock/i-spent-24-hours-with-the-new-siri-it-knew-my-life-better-than-i-did-a41a3d7e3590",
-"s": "Entrepreneurship / Exploration",
-"d": "A 24-hour test drive of the new Siri."
-},
-{
-"t": "9 Best APIs Developers Can Use to Build Crazy Apps",
-"u": "https://medium.com/@darshankhandelwal12/9-best-apis-developers-can-use-to-build-crazy-apps-in-2026-25af39633834",
-"s": "Entrepreneurship / Exploration",
-"d": "Nine interesting APIs for building creative apps."
-},
-{
-"t": "Build a Secure, Always-On Local AI Agent with OpenClaw and NVIDIA NemoClaw",
-"u": "https://developer.nvidia.com/blog/build-a-secure-always-on-local-ai-agent-with-nvidia-nemoclaw-and-openclaw/",
-"s": "Entrepreneurship / Exploration",
-"d": "NVIDIA's guide to a secure, always-on local AI agent."
-},
-{
-"t": "Secret ChatGPT Commands That Do the Work for You",
-"u": "https://medium.com/@oxair/secret-chatgpt-commands-that-do-the-work-for-you-730fcba58c6d",
-"s": "Entrepreneurship / Exploration",
-"d": "ChatGPT commands that quietly automate work for you."
-},
-{
-"t": "Google Is Back at It Again — 10 AI Tools Worth Your Attention",
-"u": "https://medium.com/design-bootcamp/google-is-back-at-it-again-here-are-10-ai-tools-worth-your-attention-48765ed95c01",
-"s": "Entrepreneurship / Exploration",
-"d": "Ten new Google AI tools worth your attention."
-},
-{
-"t": "Building Agents with the Google Agent Development Kit (ADK) — LinkedIn Learning",
-"u": "https://www.linkedin.com/learning/hands-on-ai-building-agents-with-the-google-agent-development-toolkit-adk/welcome",
-"s": "Entrepreneurship / Exploration",
-"d": "A LinkedIn Learning course on building agents with Google's ADK."
-},
-{
-"t": "Agent Development Kit (ADK) — Tutorials",
-"u": "https://adk.dev/tutorials/",
-"s": "Entrepreneurship / Exploration",
-"d": "Official tutorials for Google's Agent Development Kit — the open framework for building production AI agents."
-},
-{
-"t": "The 6 Best LLM Tools to Run Models Locally",
-"u": "https://getstream.io/blog/best-local-llm-tools/",
-"s": "Entrepreneurship / Exploration",
-"d": "A comparison of the six best tools for running large language models locally — Ollama, LM Studio, and more."
-},
-{
-"t": "The 10 Claude Prompts I Actually Use for Productivity",
-"u": "https://medium.com/@JoshDubowsky/the-10-claude-prompts-i-actually-use-for-productivity-e2e7a672d8e2",
-"s": "Entrepreneurship / Exploration",
-"d": "The Claude prompts one writer actually uses every day."
-},
-{
-"t": "Stop Sending AI a One-Line Message to Analyze Your Data — Use This Prompt Instead",
-"u": "https://medium.com/write-a-catalyst/stop-sending-ai-a-one-line-message-to-analyze-your-data-use-this-prompt-instead-60895fbb03fd",
-"s": "Entrepreneurship / Exploration",
-"d": "A better prompt structure for AI data analysis."
-},
-{
-"t": "MIT RAISE — Responsible AI for Social Empowerment and Education",
-"u": "https://raise.mit.edu/",
-"s": "Entrepreneurship / Exploration",
-"d": "MIT's initiative on responsible AI — free curricula, research, and programs on AI literacy for education and social empowerment."
-},
-{
-"t": "How to Build a McKinsey-Style PowerPoint with AI: 8 Simple Rules",
-"u": "https://medium.com/@2315610426/how-to-build-a-mckinsey-style-powerpoint-with-ai-8-simple-rules-for-consulting-grade-slides-a58c009dcb72",
-"s": "Entrepreneurship / Exploration",
-"d": "Eight rules for building consulting-grade slides with AI."
-},
-{
-"t": "NAR REACH — The #1 Accelerator in Real Estate",
-"u": "https://www.nar-reach.com/",
-"s": "Entrepreneurship / Exploration",
-"d": "The National Association of Realtors' real-estate technology accelerator."
-},
-{
-"t": "10 Insanely Powerful AI Tools You Didn’t Know You Needed (All Free)",
-"u": "https://medium.com/@JustSnehal/10-insanely-powerful-ai-tools-you-didnt-know-you-needed-all-100-free-d6bed64eded2",
-"s": "Entrepreneurship / Exploration",
-"d": "A Medium roundup of ten free AI tools across writing, design, research, and automation."
-},
-{
-"t": "Leadership at AUK — Driving Excellence & Innovation",
-"u": "https://www.auk.edu.kw/who-we-are/leadership",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "The leadership team of the American University of Kuwait."
-},
-{
-"t": "Sophie Oberstein — Author, Coach, Consultant",
-"u": "https://sophieoberstein.com/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "The site of author, coach, and L&D consultant Sophie Oberstein."
-},
-{
-"t": "Amy Porterfield's List Builder's Society",
-"u": "https://listbuilderssociety.amyporterfield.com/login",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "Amy Porterfield's List Builder's Society membership program."
-},
-{
-"t": "Harvard Alumni Entrepreneurs",
-"u": "https://www.harvardae.org/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "A global network for Harvard alumni founders and entrepreneurs."
-},
-{
-"t": "Salesforce Starter Suite CRM",
-"u": "https://www.salesforce.com/small-business/starter/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "Salesforce's entry-level CRM for small businesses — sales, service, and email marketing with built-in Einstein AI, from $25/month."
-},
-{
-"t": "Carrd — Simple, Free, Fully Responsive One-Page Sites",
-"u": "https://carrd.co/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "Build simple, free, fully responsive one-page websites — landing pages, portfolios, and link-in-bio sites in minutes."
-},
-{
-"t": "8 ChatGPT Prompts That Can Help You Start a Business from Scratch",
-"u": "https://medium.com/@ahirlog/8-chatgpt-prompts-that-can-help-you-start-a-business-from-scratch-9acad2e4b4d6",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "ChatGPT prompts for starting a business from scratch."
-},
-{
-"t": "How to Build a Personal Brand with AI Prompts",
-"u": "https://medium.com/write-a-catalyst/how-to-build-a-personal-brand-with-ai-prompts-292ab7f17c37",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "Using AI prompts to build a personal brand."
-},
-{
-"t": "AWS for Startups",
-"u": "https://aws.amazon.com/startups/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "AWS's startup program — up to $100k in cloud credits, technical support, and go-to-market resources for founders."
-},
-{
-"t": "2026 Grad Slam PR Judging Instructions & Guidelines",
-"u": "https://raffi-simonian.com/files/2026-grad-slam-pr-judging-instructions-guidelines.pdf",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "UCLA Grad Slam 2026 judging instructions and score card for the video-submission preliminary round: judges rate graduate students on how well they communicate their research to a non-specialist audience, not on the research itself. A useful model for running research-communication competitions."
-},
-{
-"t": "ICF Los Angeles",
-"u": "https://www.icfla.org/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "The Los Angeles chapter of the International Coaching Federation."
-},
-{
-"t": "GuideStar — Nonprofit Data | Candid",
-"u": "https://www.guidestar.org/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "Candid's database of 1.8M nonprofit profiles — financials, Form 990s, and transparency ratings for donors and researchers."
-},
-{
-"t": "CareerCOACH Services",
-"u": "https://www.careercoachsvc.com/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "A career coaching services firm."
-},
-{
-"t": "LAEDC — Los Angeles County Economic Development Corporation",
-"u": "https://laedc.org/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "LA County's economic development corporation."
-},
-{
-"t": "Miami Business Show — SME & Startup Expo",
-"u": "https://thebusinessshowus.com/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "An SME and startup expo held in Miami."
-},
-{
-"t": "NVIDIA Inception Program for Startups",
-"u": "https://www.nvidia.com/en-us/startups/",
-"s": "Entrepreneurship / Epicenter Ventures",
-"d": "NVIDIA's free program for AI and accelerated-computing startups — training credits, technical resources, and investor exposure, with no equity taken."
-},
-{
-"t": "Referrals | Mercor",
-"u": "https://work.mercor.com/refer",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Mercor's referral program for AI training work."
-},
-{
-"t": "How to Sell on Amazon FBA: 9-Step Guide for Beginners — Jungle Scout",
-"u": "https://www.junglescout.com/how-to-sell-on-amazon-for-beginners/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "A beginner's nine-step guide to starting an Amazon FBA business — product research through first sale."
-},
-{
-"t": "DataAnnotation — Future-Proof Your Career with AI Training Work",
-"u": "https://www.dataannotation.tech/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Get paid to train AI models — flexible, remote data-annotation and AI-feedback work for subject-matter experts."
-},
-{
-"t": "Clarity — On-Demand Business Advice",
-"u": "https://clarity.fm/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Marketplace for selling business advice by the minute — monetize expertise through paid phone consultations."
-},
-{
-"t": "LA County Bidding Opportunities — RAMP",
-"u": "https://www.rampla.org/s",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Bidding opportunities for Los Angeles County contracts."
-},
-{
-"t": "Alignerr",
-"u": "https://www.alignerr.com/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Paid AI-training work for experts — review and improve AI model outputs in your domain at competitive hourly rates."
-},
-{
-"t": "A Foundery",
-"u": "https://www.afoundery.com/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "A venture-building community and studio."
-},
-{
-"t": "The 4-Step Claude Method for Writing a Book in 30 Days",
-"u": "https://medium.com/write-a-catalyst/the-4-step-claude-method-for-writing-a-book-in-30-days-f849b5d2ad04",
-"s": "Entrepreneurship / Side Hustles",
-"d": "A four-step Claude method for writing a book in 30 days."
-},
-{
-"t": "EveryExpert",
-"u": "https://www.everyexpert.com",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Marketplace for monetizing expertise through paid one-on-one sessions."
-},
-{
-"t": "Softr Expert Program",
-"u": "https://www.softr.io/blog/expert-program",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Softr's revamped program for expert partners."
-},
-{
-"t": "Softr Ambassador Program",
-"u": "https://www.softr.io/ambassador-program",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Earn as a Softr community ambassador."
-},
-{
-"t": "Awin — Global Affiliate Marketing Platform",
-"u": "https://www.awin.com/us/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Global affiliate marketing network — earn commissions promoting thousands of brands' products."
-},
-{
-"t": "Phantombuster Affiliate Program",
-"u": "https://phantombuster.firstpromoter.com/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "The affiliate program for the Phantombuster automation suite."
-},
-{
-"t": "Amazon Delivery Service Partner Program",
-"u": "https://logistics.amazon.com/",
-"s": "Entrepreneurship / Side Hustles",
-"d": "Amazon's Delivery Service Partner program — own and operate a package-delivery business with Amazon volume."
-},
-{
 "t": "Grantable",
 "u": "https://grantable.co/",
 "s": "Productivity Apps",
@@ -2190,12 +1812,6 @@
 "d": "Google’s AI filmmaking studio built on Veo — generate video scenes from text, extend shots, and direct with prompts."
 },
 {
-"t": "Verizon Digital Ready — Free Digital Courses, Coaching & Grants",
-"u": "https://digitalready.verizonwireless.com/",
-"s": "Newsletters & Reading",
-"d": "Free digital-skills courses, coaching, and grants for small businesses."
-},
-{
 "t": "NVIDIA Email Signup",
 "u": "https://www.nvidia.com/en-us/preferences/email-signup/",
 "s": "Newsletters & Reading",
@@ -2412,12 +2028,6 @@
 "d": "Weekly briefs on emerging startups."
 },
 {
-"t": "Strategyzer",
-"u": "https://www.strategyzer.com/",
-"s": "Newsletters & Reading",
-"d": "Business-model and value-proposition tools from Strategyzer."
-},
-{
 "t": "Strategyn",
 "u": "https://strategyn.com/",
 "s": "Newsletters & Reading",
@@ -2512,5 +2122,59 @@
 "u": "https://partner.marketwatch.com/p/p_mwbarstudentpremium/enter-redemption-code/UCLA5WBE4XT8",
 "s": "Newsletters & Reading",
 "d": "Free premium Barron's and MarketWatch subscriptions for UCLA students — market news and investing analysis, redeemed with a school email."
+},
+{
+"t": "Verizon Digital Ready — Free Courses, Coaching & Grants",
+"u": "https://digitalready.verizonwireless.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Free digital-skills courses, one-on-one coaching, and small-business grants from Verizon."
+},
+{
+"t": "How to Sell on Amazon FBA: 9-Step Guide for Beginners",
+"u": "https://www.junglescout.com/how-to-sell-on-amazon-for-beginners/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "A beginner's nine-step guide to starting an Amazon FBA business — product research through first sale."
+},
+{
+"t": "Cloud Innovation Centers",
+"u": "https://aws.amazon.com/government-education/cloud-innovation-centers/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "AWS's university-based centers solving public-sector challenges with cloud and AI."
+},
+{
+"t": "AWS for Startups",
+"u": "https://aws.amazon.com/startups/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "AWS's startup program — up to $100k in cloud credits, technical support, and go-to-market resources for founders."
+},
+{
+"t": "Strategyzer — Strategy & Growth Tools for Business Teams",
+"u": "https://www.strategyzer.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Business-model and value-proposition tools from Strategyzer."
+},
+{
+"t": "Claude for Startups",
+"u": "https://claude.com/programs/startups",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Anthropic's program offering startups credits, resources, and support to build with Claude."
+},
+{
+"t": "Techstars Entrepreneur's Toolkit",
+"u": "https://toolkit.techstars.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Techstars' free library of short startup lessons — idea validation, fundraising, pitching, and growth, drawn from accelerator mentors."
+},
+{
+"t": "Amazon Business — Procurement & Wholesale Buying",
+"u": "https://business.amazon.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Amazon’s purchasing platform for organizations — business pricing, quantity discounts, multi-user accounts, and spend controls."
+},
+{
+"t": "Kim Perell — Entrepreneurship Courses",
+"u": "https://courses.kimperell.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Online courses from entrepreneur and investor Kim Perell on starting, funding, and growing a business."
 }
 ]
