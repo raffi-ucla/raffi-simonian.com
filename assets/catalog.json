@@ -1428,22 +1428,10 @@
 "d": "A ready-made Apify actor for scraping Open Library data."
 },
 {
-"t": "LM Studio — Local AI on Your Computer",
-"u": "https://lmstudio.ai/",
-"s": "Entrepreneurship / Exploration",
-"d": "Free desktop app for running open-source AI models locally — private, offline LLMs on your own computer."
-},
-{
 "t": "7 Steps to Create a Custom GPT",
 "u": "https://raffi-simonian.com/files/7-steps-to-create-a-custom-gpt.pdf",
 "s": "Entrepreneurship / Exploration",
 "d": "A practical seven-step guide to building a custom GPT in about two hours: gathering organizational context, defining your audience, analyzing your best content samples, then implementing and revising in ChatGPT's GPT builder. Good first project for non-technical professionals productizing their expertise with AI."
-},
-{
-"t": "Hostinger",
-"u": "https://www.hostinger.com",
-"s": "Entrepreneurship / Exploration",
-"d": "Budget web hosting with an AI website builder, WordPress hosting, and VPS plans — popular for first websites."
 },
 {
 "t": "AWS Cloud Innovation Centers",
@@ -1614,10 +1602,10 @@
 "d": "The National Association of Realtors' real-estate technology accelerator."
 },
 {
-"t": "10 AI Tools Everyone Will Be Using in Six Months",
-"u": "https://ai.plainenglish.io/10-ai-tools-everyone-will-be-using-in-six-months-but-almost-nobodys-found-yet-735a5471ea22",
+"t": "10 Insanely Powerful AI Tools You Didn’t Know You Needed (All Free)",
+"u": "https://medium.com/@JustSnehal/10-insanely-powerful-ai-tools-you-didnt-know-you-needed-all-100-free-d6bed64eded2",
 "s": "Entrepreneurship / Exploration",
-"d": "Medium roundup of ten lesser-known AI tools positioned to go mainstream, with what each does best."
+"d": "A Medium roundup of ten free AI tools across writing, design, research, and automation."
 },
 {
 "t": "Leadership at AUK — Driving Excellence & Innovation",
@@ -2182,6 +2170,24 @@
 "u": "https://openai.com/blog/chatgpt/",
 "s": "Productivity Apps",
 "d": "OpenAI's conversational AI — drafting, brainstorming, research, data analysis, and custom GPTs for everyday work."
+},
+{
+"t": "Wispr Flow — Voice to Text Dictation & AI Notetaker",
+"u": "https://wisprflow.ai/",
+"s": "Productivity Apps",
+"d": "Voice-to-text dictation that works in any app — speak naturally and get clean, formatted text, plus an AI notetaker."
+},
+{
+"t": "Google Labs Pomelli",
+"u": "https://labs.google.com/u/0/pomelli/onboarding",
+"s": "Productivity Apps",
+"d": "Google Labs’ AI marketing experiment — reads your website, builds a brand profile, and generates on-brand campaign content."
+},
+{
+"t": "Google Flow — AI Creative Studio",
+"u": "https://flow.google.com/",
+"s": "Productivity Apps",
+"d": "Google’s AI filmmaking studio built on Veo — generate video scenes from text, extend shots, and direct with prompts."
 },
 {
 "t": "Verizon Digital Ready — Free Digital Courses, Coaching & Grants",
