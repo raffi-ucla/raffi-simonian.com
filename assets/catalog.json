@@ -372,6 +372,12 @@
 "d": "UC San Diego's annual process-improvement event — Lean Six Sigma learning, case competitions, and continuous-improvement practice for professionals."
 },
 {
+"t": "McKinsey Forward",
+"u": "https://www.mckinsey.org/our-programs/forward/overview",
+"s": "Career Development / Learning Platforms",
+"d": "McKinsey's online learning program for building practical professional skills."
+},
+{
 "t": "CompTIA Certifications — LearnZapp",
 "u": "https://comptia.learnzapp.com/welcome/",
 "s": "Career Development / Certifications",
@@ -685,7 +691,7 @@
 },
 {
 "t": "EduGems",
-"u": "https://www.edugems.ai/home",
+"u": "https://www.eduprompts.ai/",
 "s": "Higher Education / Teaching",
 "d": "AI-powered teaching resource platform for educators."
 },
@@ -1134,6 +1140,12 @@
 "d": "WGU's annual Workforce Decoded report — data on the skills, credentials, and pathways employers actually hire for."
 },
 {
+"t": "Google for Education Certified Innovator Program",
+"u": "https://edu.google.com/intl/ALL_us/for-educators/certification-programs/professional-expertise/certified-innovator/?modal_active=none",
+"s": "Higher Education / Teaching",
+"d": "Google for Education's certification program for educators developing innovative solutions to challenges in education."
+},
+{
 "t": "The 2032 Career Readiness Crisis",
 "u": "https://youtu.be/gWYOIokqNuk",
 "s": "Higher Education / Future of Higher Education",
@@ -1408,6 +1420,12 @@
 "u": "https://www.websequencediagrams.com/",
 "s": "Higher Education / Free Apps for Students",
 "d": "Quick online tool for creating sequence diagrams and visual process documentation."
+},
+{
+"t": "Glasp Free Access for Students",
+"u": "https://substack.com/redirect/911c7892-20ab-40c3-b452-305a75dfd408?j=eyJ1IjoiOGMwYmU1In0.F5x_0y8Axxj8xDk4Yqi9j92BCKZonieeqyaQi9h1LwY",
+"s": "Higher Education / Free Apps for Students",
+"d": "Student offer granting free access to Glasp's web highlighting and knowledge-sharing tools."
 },
 {
 "t": "Grantable",
@@ -1752,12 +1770,6 @@
 "d": "Amazon's AI-powered workspace for research, writing, and quick automations connected to your business data."
 },
 {
-"t": "Clean Email — Upgrade with 15% Discount",
-"u": "https://clean.email/plans/upgrade?start=yearly&c=HERESYOUR15",
-"s": "Productivity Apps",
-"d": "A discounted upgrade link for Clean Email."
-},
-{
 "t": "Attio",
 "u": "https://attio.com/",
 "s": "Productivity Apps",
@@ -1810,6 +1822,12 @@
 "u": "https://flow.google.com/",
 "s": "Productivity Apps",
 "d": "Google’s AI filmmaking studio built on Veo — generate video scenes from text, extend shots, and direct with prompts."
+},
+{
+"t": "ClickUp",
+"u": "https://clickup.com/",
+"s": "Productivity Apps",
+"d": "All-in-one productivity platform bringing tasks, docs, and AI together in one workspace."
 },
 {
 "t": "NVIDIA Email Signup",
@@ -2176,5 +2194,11 @@
 "u": "https://courses.kimperell.com/",
 "s": "Entrepreneurship / Founder Essentials",
 "d": "Online courses from entrepreneur and investor Kim Perell on starting, funding, and growing a business."
+},
+{
+"t": "CoFoundersLab",
+"u": "https://cofounderslab.com/",
+"s": "Entrepreneurship / Founder Essentials",
+"d": "Online network for meeting potential co-founders and early startup teammates."
 }
 ]
