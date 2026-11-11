@@ -552,42 +552,6 @@
   "d": "The Harvard Business School alumni association of Southern California."
  },
  {
-  "t": "Substack — A New Economic Engine for Culture",
-  "u": "https://substack.com",
-  "s": "Career Development / Personal Branding",
-  "d": "Publishing platform for newsletters with built-in paid subscriptions."
- },
- {
-  "t": "North American Case Research Association",
-  "u": "https://nacra.net/",
-  "s": "Career Development / Personal Branding",
-  "d": "The association supporting case research and case writing for teaching."
- },
- {
-  "t": "Leadership Network — Entrepreneur",
-  "u": "https://www.entrepreneur.com/leadership-network",
-  "s": "Career Development / Personal Branding",
-  "d": "Entrepreneur's contributor program for publishing leadership content."
- },
- {
-  "t": "Medium Partner Program",
-  "u": "https://medium.com/partner-program",
-  "s": "Career Development / Personal Branding",
-  "d": "Medium's program for earning money as a writer."
- },
- {
-  "t": "About EDUCAUSE Review",
-  "u": "https://er.educause.edu/about",
-  "s": "Career Development / Personal Branding",
-  "d": "EDUCAUSE's magazine on higher-ed technology, open to contributors."
- },
- {
-  "t": "Join the Flipboard Creator Community",
-  "u": "https://docs.google.com/forms/d/1SE3YHuM67pyLEP1xy3O1SbvK5KaEwF1P0osEn0lZ3a0/viewform",
-  "s": "Career Development / Personal Branding",
-  "d": "Application to join Flipboard's creator community."
- },
- {
   "t": "Taking a Skills-Based Approach to Building the Future Workforce — McKinsey",
   "u": "https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/taking-a-skills-based-approach-to-building-the-future-workforce",
   "s": "Career Development / Future Workforce",
@@ -1846,6 +1810,12 @@
   "u": "https://clickup.com/",
   "s": "Productivity Apps",
   "d": "All-in-one productivity platform bringing tasks, docs, and AI together in one workspace."
+ },
+ {
+  "t": "OpenRouter",
+  "u": "https://openrouter.ai/",
+  "s": "Productivity Apps",
+  "d": "Unified API gateway that gives you access to hundreds of AI models from many providers through a single endpoint and account."
  },
  {
   "t": "NVIDIA Email Signup",
